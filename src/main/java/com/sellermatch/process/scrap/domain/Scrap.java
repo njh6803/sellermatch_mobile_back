@@ -34,4 +34,6 @@ public class Scrap {
 
     @Column(name = "last_regist_dt")
     private Date lastRegistDt;
+
 }
+
