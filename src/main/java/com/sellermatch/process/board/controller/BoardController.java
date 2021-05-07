@@ -3,10 +3,11 @@ package com.sellermatch.process.board.controller;
 import com.sellermatch.process.board.domain.Board;
 import com.sellermatch.process.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 public class BoardController {
@@ -15,7 +16,33 @@ public class BoardController {
     public BoardRepository boardRepository;
 
     @GetMapping("/board")
-    public List<Board> selectBoard(){
-        return boardRepository.findAll();
+    public Page<Board> selectBoard(){
+        Pageable pageable = PageRequest.of(0,1);
+        return boardRepository.findAll(pageable);
+    }
+    @GetMapping("/board/list")
+    public Page<Board> selectBoardList(Pageable pageable){
+        return boardRepository.findAll(pageable);
+    }
+
+    @PostMapping("/board")
+    public Board insertBoard(Board board){
+        return boardRepository.save(board);
+    }
+
+    @PutMapping("/board")
+    public Board updateBoard(Board board){
+        boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
+            boardRepository.save(board);
+        }, () -> {});
+        return board;
+    }
+
+    @DeleteMapping("/board")
+    public Board deleteBoard(Board board){
+        boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
+            boardRepository.delete(board);
+        }, () -> {});
+        return board;
     }
 }

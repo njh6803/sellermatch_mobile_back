@@ -1,7 +1,11 @@
 package com.sellermatch.process.board.repository;
 
 import com.sellermatch.process.board.domain.Board;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface BoardRepository extends JpaRepository<Board, Integer> {
+public interface BoardRepository extends PagingAndSortingRepository<Board, Integer> {
+
+    Page<Board> findAll(Pageable pageable);
 }
