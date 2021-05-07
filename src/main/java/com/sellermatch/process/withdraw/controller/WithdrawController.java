@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -24,7 +21,7 @@ public class WithdrawController {
         return withdrawRepository.findAll(pageable);
     }
 
-    @GetMapping("/withdraw")
+    @GetMapping("/withdraw/list")
     public Page<Withdraw> selectWithdrawList(Pageable pageable) {
         return withdrawRepository.findAll(pageable);
     }
@@ -42,7 +39,7 @@ public class WithdrawController {
         return withdraw;
     }
 
-    @PutMapping("/withdraw")
+    @DeleteMapping("/withdraw")
     public Withdraw deleteWithdraw(Withdraw withdraw) {
         withdrawRepository.findById(withdraw.getWithdrawIdx()).ifPresentOrElse(temp -> {
             withdrawRepository.delete(withdraw);

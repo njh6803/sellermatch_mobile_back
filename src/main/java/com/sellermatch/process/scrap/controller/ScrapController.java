@@ -20,7 +20,7 @@ public class ScrapController {
         return scrapRepository.findAll(pageable);
     }
 
-    @GetMapping("/scrap")
+    @GetMapping("/scrap/list")
     public Page<Scrap> selectScrapList(Pageable pageable) {
         return scrapRepository.findAll(pageable);
     }

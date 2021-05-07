@@ -21,7 +21,7 @@ public class ProjectController {
         return projectRepository.findAll(pageable);
     }
 
-    @GetMapping("/project")
+    @GetMapping("/project/list")
     public Page<Project> selectProjectList(Pageable pageable) {
         return projectRepository.findAll(pageable);
     }
