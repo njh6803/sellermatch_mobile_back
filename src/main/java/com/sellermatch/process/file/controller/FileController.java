@@ -45,9 +45,7 @@ public class FileController {
     public void updateFile(MultipartFile multipartFile, int fileIdx) {
         fileRepository.findById(fileIdx).ifPresentOrElse(file ->{
             try {
-                File newFile = fileUtil.saveMultipartFile(multipartFile);
-                fileRepository.save(newFile);
-                fileService.removeFile(file);
+                fileService.editFile(file, fileIdx, multipartFile);
                 // 프로필 or 프로젝트 테이블 수정 부분
             } catch (Exception e) {
                 e.printStackTrace();

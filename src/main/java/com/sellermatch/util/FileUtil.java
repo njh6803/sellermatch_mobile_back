@@ -88,12 +88,6 @@ public class FileUtil {
 
         /** 썸네일 이미지 생성*/
 
-        String thumbnailPath = null;
-        if (multipartFile.getContentType().indexOf("image") > -1) {
-
-        }
-
-
         // 리턴할 정보를 구성한다.
         item = new File();
         item.setContentType(multipartFile.getContentType());
@@ -155,4 +149,9 @@ public class FileUtil {
             awsS3Client.deleteObject(bucket, fileName);
         }
     }
+
+    public void test() throws Exception {
+        throw new Exception("test");
+    }
+
 }

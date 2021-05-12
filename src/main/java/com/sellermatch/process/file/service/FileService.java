@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FileService {
 
@@ -24,4 +25,12 @@ public class FileService {
         fileRepository.delete(file);
         fileUtil.delete(file);
     };
+
+    @Transactional
+    public void editFile(File file,int fileIdx ,MultipartFile multipartFile) throws Exception{
+        File newFile = fileUtil.saveMultipartFile(multipartFile);
+        newFile.setFileIdx(fileIdx);
+        fileRepository.save(newFile);
+        fileUtil.delete(file);
+    }
 }
