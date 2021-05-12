@@ -1,11 +1,9 @@
 package com.sellermatch.util;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.internal.Mimetypes;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.util.IOUtils;
 import com.sellermatch.process.file.domain.File;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,5 +145,14 @@ public class FileUtil {
         awsS3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), objMeta)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return awsS3Client.getUrl(bucket, fileName).toString();
+    }
+
+    public void delete(File file) {
+        java.io.File loadFile =  new java.io.File(file.getFilePath());
+        String fileName = loadFile.getName();
+        boolean isExistObject = awsS3Client.doesObjectExist(bucket, fileName);
+        if(isExistObject) {
+            awsS3Client.deleteObject(bucket, fileName);
+        }
     }
 }
