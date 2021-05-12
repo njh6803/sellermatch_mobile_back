@@ -1,6 +1,6 @@
-package com.sellermatch.process.NewsLetter.repository;
+package com.sellermatch.process.newsletter.repository;
 
-import com.sellermatch.process.NewsLetter.domain.NewsLetter;
+import com.sellermatch.process.newsletter.domain.NewsLetter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

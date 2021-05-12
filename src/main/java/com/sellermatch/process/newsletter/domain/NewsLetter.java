@@ -1,4 +1,4 @@
-package com.sellermatch.process.NewsLetter.domain;
+package com.sellermatch.process.newsletter.domain;
 
 import lombok.Getter;
 import lombok.Setter;
