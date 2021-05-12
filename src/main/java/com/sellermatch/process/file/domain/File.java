@@ -17,14 +17,14 @@ public class File {
     @Column(name = "file_idx")
     private Integer fileIdx;
 
-    @Column(name = "origin_name")
-    private String originName;
+    @Column(name = "orgin_name")
+    private String orginName;
 
     @Column(name = "content_type")
     private String contentType;
 
     @Column(name = "file_size")
-    private Integer fileSize;
+    private Long fileSize;
 
     @Column(name = "file_path")
     private String filePath;
