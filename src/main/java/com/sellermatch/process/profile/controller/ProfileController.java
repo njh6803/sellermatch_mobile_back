@@ -37,9 +37,13 @@ public class ProfileController {
     }
 
     @PutMapping("/profile")
-    public Profile updateProfile(Profile profile) {
+    public Profile updateProfile(Profile profile, MultipartFile file) {
         profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp ->{
-            profileRepository.save(profile);
+            try {
+                profileService.insertProfile(profile,file);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }, () -> {});
         return profile;
     }
