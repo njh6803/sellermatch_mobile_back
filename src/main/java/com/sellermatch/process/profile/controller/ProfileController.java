@@ -2,11 +2,13 @@ package com.sellermatch.process.profile.controller;
 
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
+import com.sellermatch.process.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -14,6 +16,9 @@ public class ProfileController {
 
     @Autowired
     public ProfileRepository profileRepository;
+
+    @Autowired
+    private ProfileService profileService;
 
     @GetMapping("/profile")
     public Page<Profile> selectProfile() {
@@ -27,8 +32,8 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public Profile insertProfile(Profile profile) {
-        return profileRepository.save(profile);
+    public Profile insertProfile(Profile profile, MultipartFile file) throws Exception {
+        return profileService.insertProfile(profile,file);
     }
 
     @PutMapping("/profile")

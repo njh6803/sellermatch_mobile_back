@@ -3,6 +3,7 @@ package com.sellermatch.process.file.service;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.repository.FileRepository;
 import com.sellermatch.util.FileUtil;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class FileService {
     private FileRepository fileRepository;
 
     @Transactional
-    public void removeFile(File file) throws Exception {
+    public void removeFile(File file) {
         fileRepository.delete(file);
         fileUtil.delete(file);
     };
@@ -32,5 +33,17 @@ public class FileService {
         newFile.setFileIdx(fileIdx);
         fileRepository.save(newFile);
         fileUtil.delete(file);
+    }
+
+    public File insertFile(MultipartFile file,File FileInfo) throws Exception{
+        File fileDto  = fileUtil.saveMultipartFile(file);
+        if(!Util.isEmpty(FileInfo.getProfileId())) {
+            fileDto.setProfileId(FileInfo.getProfileId());
+        }
+        if(!Util.isEmpty(FileInfo.getProjId())) {
+            fileDto.setProfileId(FileInfo.getProfileId());
+            fileDto.setProfileId(FileInfo.getProjThumbnail());
+        }
+        return fileRepository.save(fileDto);
     }
 }

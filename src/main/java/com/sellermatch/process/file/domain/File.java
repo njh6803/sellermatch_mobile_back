@@ -38,7 +38,10 @@ public class File {
     @Column(name = "proj_id")
     private String projId;
 
-    @Column(name = "profile_id", columnDefinition = "char")
+    @Column(name = "profile_id")
+    private String profileId;
+
+    @Column(name = "proj_thumbnail", columnDefinition = "char")
     private String projThumbnail;
 
 }
