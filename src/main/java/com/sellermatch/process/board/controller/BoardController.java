@@ -22,11 +22,6 @@ public class BoardController {
     @GetMapping("/board")
     public Page<Board> selectBoard(){
         Pageable pageable = PageRequest.of(0,1);
-        try {
-            mailUtil.sendMail("njh4803@naver.com", "제목", "내용");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return boardRepository.findAll(pageable);
     }
     @GetMapping("/board/list")
