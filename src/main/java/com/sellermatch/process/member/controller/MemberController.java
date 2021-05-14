@@ -2,6 +2,7 @@ package com.sellermatch.process.member.controller;
 
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,9 @@ public class MemberController {
 
     @Autowired
     public MemberRepository memberRepository;
+
+    @Autowired
+    public MemberService memberService;
 
     @Autowired
     public JWTUtil jwtUtil;
@@ -49,8 +53,8 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public Member insertMember(Member member) {
-        return memberRepository.save(member);
+    public void insertMember(Member member) throws Exception {
+        memberService.insertMember(member);
     }
 
     @DeleteMapping("/member")

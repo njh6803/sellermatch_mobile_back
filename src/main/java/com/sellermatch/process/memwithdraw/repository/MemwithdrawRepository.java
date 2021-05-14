@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface MemWithdrawRepository extends PagingAndSortingRepository<MemWithdraw, Integer> {
+public interface MemwithdrawRepository extends PagingAndSortingRepository<MemWithdraw, Integer> {
 
     Page<MemWithdraw> findAll(Pageable pageable);
 }

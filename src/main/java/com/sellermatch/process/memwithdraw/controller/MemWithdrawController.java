@@ -2,7 +2,7 @@ package com.sellermatch.process.memwithdraw.controller;
 
 
 import com.sellermatch.process.memwithdraw.domain.MemWithdraw;
-import com.sellermatch.process.memwithdraw.repository.MemWithdrawRepository;
+import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemWithdrawController {
 
     @Autowired
-    private MemWithdrawRepository memWithdrawRepository;
+    private MemwithdrawRepository memWithdrawRepository;
 
     @GetMapping("/memWithdraw")
     public Page<MemWithdraw> selectMemWithdraw() {
