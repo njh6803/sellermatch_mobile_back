@@ -44,6 +44,7 @@ public class FileService {
             fileDto.setProfileId(FileInfo.getProfileId());
             fileDto.setProfileId(FileInfo.getProjThumbnail());
         }
+        fileDto.setThumbnailPath("none"); //모바일 썸네일 패스는 이미지 서버 정리전까지 none으로 고정
         return fileRepository.save(fileDto);
     }
 }
