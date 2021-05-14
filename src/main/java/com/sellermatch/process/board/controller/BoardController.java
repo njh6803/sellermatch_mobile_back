@@ -2,6 +2,7 @@ package com.sellermatch.process.board.controller;
 
 import com.sellermatch.process.board.domain.Board;
 import com.sellermatch.process.board.repository.BoardRepository;
+import com.sellermatch.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +16,17 @@ public class BoardController {
     @Autowired
     public BoardRepository boardRepository;
 
+    @Autowired
+    public MailUtil mailUtil;
+
     @GetMapping("/board")
     public Page<Board> selectBoard(){
         Pageable pageable = PageRequest.of(0,1);
+        try {
+            mailUtil.sendMail("njh4803@naver.com", "제목", "내용");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return boardRepository.findAll(pageable);
     }
     @GetMapping("/board/list")
