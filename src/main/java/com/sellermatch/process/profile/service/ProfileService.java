@@ -4,11 +4,11 @@ import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.service.FileService;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
+import com.sellermatch.process.project.domain.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,11 +22,11 @@ public class ProfileService {
     private ProfileRepository profileRepository;
 
     @Transactional
-    public Profile insertProfile(Profile profile, MultipartFile file) throws Exception {
-        profileRepository.save(profile);
+    public Profile insertProfile(ProjectDto projectDto) throws Exception {
+        profileRepository.save(projectDto.getProfile());
         File fileDto = new File();
-        fileDto.setProfileId(profile.getProfileId());
-        fileService.insertFile(file,fileDto);
-        return profile;
+        fileDto.setProfileId(projectDto.getProfile().getProfileId());
+        fileService.insertFile(projectDto.getProfileImgFile(),projectDto.getFile());
+        return projectDto.getProfile();
     }
 }

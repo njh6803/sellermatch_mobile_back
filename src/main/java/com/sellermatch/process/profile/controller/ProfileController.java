@@ -3,12 +3,12 @@ package com.sellermatch.process.profile.controller;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.service.ProfileService;
+import com.sellermatch.process.project.domain.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -32,20 +32,20 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public Profile insertProfile(Profile profile, MultipartFile file) throws Exception {
-        return profileService.insertProfile(profile,file);
+    public Profile insertProfile(ProjectDto projectDto) throws Exception {
+        return profileService.insertProfile(projectDto);
     }
 
     @PutMapping("/profile")
-    public Profile updateProfile(Profile profile, MultipartFile file) {
-        profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp ->{
+    public Profile updateProfile(ProjectDto projectDto) {
+        profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp ->{
             try {
-                profileService.insertProfile(profile,file);
+                profileService.insertProfile(projectDto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }, () -> {});
-        return profile;
+        return projectDto.getProfile();
     }
 
     @DeleteMapping("/profile")
