@@ -27,39 +27,39 @@ public class HashtagService {
         hashtagRepository.delete(hashtag);
     }
 
-    public void insertHashtag(Hashtag hashtag) throws Exception {
+    public void insertAndUpdateHashtag(Hashtag hashtag) throws Exception {
         AtomicInteger ai = new AtomicInteger();
         hashtag.getHashNmList().forEach(s -> {
             int index = ai.getAndIncrement();
             hashtaglistRepository.findByHashNm(s).ifPresentOrElse(temp -> {
-                if (index == 0) {
-                    hashtag.setHashTag1(temp.getHashId());
-                } else if (index == 1){
-                    hashtag.setHashTag2(temp.getHashId());
-                } else if (index == 2){
-                    hashtag.setHashTag3(temp.getHashId());
-                } else if (index == 3){
-                    hashtag.setHashTag4(temp.getHashId());
-                } else {
-                    hashtag.setHashTag5(temp.getHashId());
-                }
+                tagSwitch(hashtag, index, temp);
             }, ()->{
                 Hashtaglist hashtaglist = new Hashtaglist();
                 hashtaglist.setHashNm(s);
                 hashtaglistRepository.save(hashtaglist);
-                if (index == 0){
-                    hashtag.setHashTag1(hashtaglist.getHashId());
-                } else if (index == 1){
-                    hashtag.setHashTag2(hashtaglist.getHashId());
-                } else if (index == 2){
-                    hashtag.setHashTag3(hashtaglist.getHashId());
-                } else if (index == 3){
-                    hashtag.setHashTag4(hashtaglist.getHashId());
-                } else {
-                    hashtag.setHashTag5(hashtaglist.getHashId());
-                }
+                tagSwitch(hashtag, index, hashtaglist);
             });
         });
         hashtagRepository.save(hashtag);
+    }
+
+    private void tagSwitch(Hashtag hashtag, int index, Hashtaglist temp) {
+        switch (index+1){
+            case 1:
+                hashtag.setHashTag1(temp.getHashId());
+                break;
+            case 2:
+                hashtag.setHashTag2(temp.getHashId());
+                break;
+            case 3:
+                hashtag.setHashTag3(temp.getHashId());
+                break;
+            case 4:
+                hashtag.setHashTag4(temp.getHashId());
+                break;
+            case 5:
+                hashtag.setHashTag5(temp.getHashId());
+                break;
+        }
     }
 }
