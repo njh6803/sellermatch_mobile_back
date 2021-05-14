@@ -36,9 +36,8 @@ public class FileController {
 
     @PostMapping("/file")
     public File insertFile(MultipartFile file) throws Exception {
-        File fileDto = new File();
-        fileDto = fileUtil.saveMultipartFile(file);
-        return fileRepository.save(fileDto);
+        File fileInfo = new File();
+        return fileService.insertFile(file,fileInfo);
     }
 
     @PutMapping("/file")
