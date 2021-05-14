@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "NEWSLETTER")
+@Table(name = "NewsLetterList")
 @Getter
 @Setter
 public class NewsLetter {
@@ -19,12 +20,12 @@ public class NewsLetter {
     @Column(name = "NewsLetter_email")
     private String NewsLetterEmail;
 
-    @Column(name = "NewsLetter_agreeYN")
+    @Column(name = "NewsLetter_agreeYN", columnDefinition = "char")
     private String NewsLetterAgreeYN;
 
     @Column(name = "NewsLetter_reg_date")
-    private String NewsLetterRegDate;
+    private Date NewsLetterRegDate;
 
     @Column(name = "NewsLetter_edit_date")
-    private String NewsLetterEditDate;
+    private Date NewsLetterEditDate;
 }

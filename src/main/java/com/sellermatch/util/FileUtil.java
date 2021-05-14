@@ -91,7 +91,7 @@ public class FileUtil {
         // 리턴할 정보를 구성한다.
         item = new File();
         item.setContentType(multipartFile.getContentType());
-        item.setFileSize(multipartFile.getSize());
+        item.setFileSize((int) multipartFile.getSize());
         item.setOrginName(orginName);
         item.setFilePath(this.uploadPath);
 

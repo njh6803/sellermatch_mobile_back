@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "FILELIST")
+@Table(name = "fileList")
 @Getter
 @Setter
 public class File {
@@ -24,7 +24,7 @@ public class File {
     private String contentType;
 
     @Column(name = "file_size")
-    private Long fileSize;
+    private Integer fileSize;
 
     @Column(name = "file_path")
     private String filePath;
@@ -38,7 +38,7 @@ public class File {
     @Column(name = "proj_id")
     private String projId;
 
-    @Column(name = "profile_id")
+    @Column(name = "profile_id", columnDefinition = "char")
     private String projThumbnail;
 
 }

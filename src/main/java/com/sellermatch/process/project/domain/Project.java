@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "PROJECTLIST")
+@Table(name = "ProjectList")
 @Getter
 @Setter
 public class Project {
@@ -26,7 +26,7 @@ public class Project {
     @Column(name = "proj_title")
     private String projTitle;
 
-    @Column(name = "proj_sort")
+    @Column(name = "proj_sort", columnDefinition = "char")
     private String projSort;
 
     @Column(name = "proj_indus")
@@ -36,7 +36,7 @@ public class Project {
     private String projPrice;
 
     @Column(name = "proj_margin")
-    private String projMargin;
+    private Integer projMargin;
 
     @Column(name = "proj_nation")
     private String projNation;
@@ -47,10 +47,10 @@ public class Project {
     @Column(name = "proj_end_date")
     private Date projEndDate;
 
-    @Column(name = "proj_recuruit_num")
-    private Integer projRecuruitNum;
+    @Column(name = "proj_recruit_num")
+    private Integer projRecruitNum;
 
-    @Column(name = "proj_detail")
+    @Column(name = "proj_detail", columnDefinition = "TEXT")
     private String projDetail;
 
     @Column(name = "proj_require")
@@ -65,7 +65,7 @@ public class Project {
     @Column(name = "proj_file")
     private String projFile;
 
-    @Column(name = "proj_state")
+    @Column(name = "proj_state", columnDefinition = "char")
     private String projState;
 
     @Column(name = "proj_reg_date")
@@ -77,7 +77,7 @@ public class Project {
     @Column(name = "proj_thumbnail_img")
     private String projThumbnailImg;
 
-    @Column(name = "proj_prod_certi")
+    @Column(name = "proj_prod_certi", columnDefinition = "char")
     private String projProdCerti;
 
     @Column(name = "proj_hit")
@@ -86,7 +86,7 @@ public class Project {
     @Column(name = "proj_channel")
     private String projChannel;
 
-    @Column(name = "proj_profit")
+    @Column(name = "proj_profit", columnDefinition = "char")
     private String projProfit;
 
     @Column(name = "proj_profit_chk_date")

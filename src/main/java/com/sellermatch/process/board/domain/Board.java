@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "BOARDLIST")
+@Table(name = "BoardList")
 @Getter
 @Setter
 public class Board {
@@ -23,7 +23,7 @@ public class Board {
     @Column(name = "board_title")
     private String boardTitle;
 
-    @Column(name = "board_contents")
+    @Column(name = "board_contents", columnDefinition = "TEXT")
     private String boardContents;
 
     @Column(name = "board_writer")
@@ -48,8 +48,8 @@ public class Board {
     private Date boardEditDate;
 
     @Column(name = "board_file")
-    private Date boardFile;
+    private String boardFile;
 
     @Column(name = "board_notice_top")
-    private Date boardNoticeTop;
+    private String boardNoticeTop;
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "PROFILELIST")
+@Table(name = "ProfileList")
 @Getter
 @Setter
 public class Profile {
@@ -23,25 +23,25 @@ public class Profile {
     @Column(name = "profile_mem_id")
     private String profileMemId;
 
-    @Column(name = "profile_grade")
+    @Column(name = "profile_grade", columnDefinition = "char")
     private String profileGrade;
 
-    @Column(name = "profile_intro")
+    @Column(name = "profile_intro", columnDefinition = "TEXT")
     private String profileIntro;
 
-    @Column(name = "profile_ch")
+    @Column(name = "profile_ch", columnDefinition = "char")
     private String profileCh;
 
-    @Column(name = "profile_ch_chk")
+    @Column(name = "profile_ch_chk", columnDefinition = "char")
     private String profileChChk;
 
     @Column(name = "profile_ch_chk_date")
     private Date profileChChkDate;
 
-    @Column(name = "profile_career")
+    @Column(name = "profile_career", columnDefinition = "char")
     private String profileCareer;
 
-    @Column(name = "profile_sale_chk")
+    @Column(name = "profile_sale_chk", columnDefinition = "char")
     private String profileSaleChk;
 
     @Column(name = "profile_volume")
@@ -53,10 +53,10 @@ public class Profile {
     @Column(name = "profile_biz_num")
     private String profileBizNum;
 
-    @Column(name = "profile_biz_sort")
+    @Column(name = "profile_biz_sort", columnDefinition = "char")
     private String profileBizSort;
 
-    @Column(name = "profile_biz_certi")
+    @Column(name = "profile_biz_certi", columnDefinition = "char")
     private String profileBizCerti;
 
     @Column(name = "profile_indus")
@@ -65,7 +65,7 @@ public class Profile {
     @Column(name = "profile_photo")
     private String profilePhoto;
 
-    @Column(name = "profile_state")
+    @Column(name = "profile_state", columnDefinition = "char")
     private String profileState;
 
     @Column(name = "profile_reg_date")
@@ -77,10 +77,10 @@ public class Profile {
     @Column(name = "profile_hashtag")
     private String profileHashtag;
 
-    @Column(name = "profile_rname")
+    @Column(name = "profile_rname", columnDefinition = "char")
     private String profileRname;
 
-    @Column(name = "profile_sort")
+    @Column(name = "profile_sort", columnDefinition = "char")
     private String profileSort;
 
     @Column(name = "profile_hit")

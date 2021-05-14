@@ -7,15 +7,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name ="REPLYLIST")
+@Table(name ="ReplyList")
 @Getter
 @Setter
 public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_idx")
-    private Integer replyIdx;
+    @Column(name = "reply_id")
+    private Integer replyId;
 
     @Column(name = "reply_parent")
     private Integer replyParent;
@@ -35,10 +35,10 @@ public class Reply {
     @Column(name = "reply_pw")
     private String replyPw;
 
-    @Column(name = "reply_secret")
+    @Column(name = "reply_secret", columnDefinition = "char")
     private String replySecret;
 
-    @Column(name = "reply_depth")
+    @Column(name = "reply_depth", columnDefinition = "char")
     private String replyDepth;
 
     @Column(name = "reply_parent_mem_id")

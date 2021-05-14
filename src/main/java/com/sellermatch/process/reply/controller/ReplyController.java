@@ -33,7 +33,7 @@ public class ReplyController {
 
     @PutMapping("/reply")
     public Reply updateReply(Reply reply) {
-        replyRepository.findById(reply.getReplyIdx()).ifPresentOrElse(temp -> {
+        replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
             replyRepository.save(reply);
         }, () -> {});
         return reply;
@@ -41,7 +41,7 @@ public class ReplyController {
 
     @DeleteMapping("/reply")
     public Reply deleteReply(Reply reply) {
-        replyRepository.findById(reply.getReplyIdx()).ifPresentOrElse(temp -> {
+        replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
             replyRepository.save(reply);
         }, () -> {});
         return reply;

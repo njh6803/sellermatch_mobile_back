@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "HASHTAGLIST")
+@Table(name = "HashTagList")
 @Getter
 @Setter
 public class Hashtaglist {

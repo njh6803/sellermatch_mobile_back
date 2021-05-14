@@ -5,9 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "HASHTAG")
+@Table(name = "HashTag")
 @Getter
 @Setter
 public class Hashtag {
@@ -20,7 +21,7 @@ public class Hashtag {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "hash_type")
+    @Column(name = "hash_type", columnDefinition = "char")
     private String hashType;
 
     @Column(name = "hash_tag1")
@@ -49,4 +50,7 @@ public class Hashtag {
 
     @Column(name = "last_regist_dt")
     private Date lastRegistDt;
+
+    @Transient
+    private List<String> hashNmList;
 }

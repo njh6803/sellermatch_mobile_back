@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "MEMLIST")
+@Table(name = "MemList")
 @Getter
 @Setter
 public class Member {
@@ -26,7 +26,7 @@ public class Member {
     @Column(name = "mem_state")
     private String memState;
 
-    @Column(name = "mem_class")
+    @Column(name = "mem_class", columnDefinition = "char")
     private String memClass;
 
     @Column(name = "mem_class_sdate")
@@ -35,7 +35,7 @@ public class Member {
     @Column(name = "mem_class_edate")
     private Date memClassEdate;
 
-    @Column(name = "mem_sort")
+    @Column(name = "mem_sort", columnDefinition = "char")
     private String memSort;
 
     @Column(name = "mem_country")
@@ -59,7 +59,7 @@ public class Member {
     @Column(name = "mem_name")
     private String memName;
 
-    @Column(name = "mem_rname")
+    @Column(name = "mem_rname", columnDefinition = "char")
     private String memRname;
 
     @Column(name = "mem_nick")
@@ -102,7 +102,7 @@ public class Member {
     private String sessionKey;
 
     @Column(name = "session_limit")
-    private String sessionLimit;
+    private Date sessionLimit;
 
     @Column(name = "withdraw_auth_code")
     private String widthdrawAuthCode;
