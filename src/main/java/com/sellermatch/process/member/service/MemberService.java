@@ -26,6 +26,7 @@ public class MemberService {
         memberRepository.save(member);
         ProjectDto projectDto = new ProjectDto();
         Profile profile = new Profile();
+        profile.setProfileMemId(member.getMemId());
         projectDto.setProfile(profile);
         profileService.insertAndUpdateProfile(projectDto);
         return member;

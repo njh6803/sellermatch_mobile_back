@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class ProjectController {
-
     @Autowired
     public ProjectRepository projectRepository;
 

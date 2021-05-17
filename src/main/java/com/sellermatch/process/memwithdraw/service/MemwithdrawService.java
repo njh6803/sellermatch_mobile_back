@@ -33,6 +33,9 @@ public class MemwithdrawService {
         CommonDTO result = new CommonDTO();
         Map<String, Object> data = new HashMap<>();
 
+        withdraw.setMemIdx(member.getMemIdx());
+        withdraw.setMemId(member.getMemId());
+
         data.put("member", memberRepository.save(member));
         data.put("withdraw", withdrawRepository.save(withdraw));
         result.setContent(data);
