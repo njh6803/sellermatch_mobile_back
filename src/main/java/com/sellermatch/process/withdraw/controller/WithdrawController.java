@@ -1,10 +1,9 @@
 package com.sellermatch.process.withdraw.controller;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
-import com.sellermatch.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,38 +15,43 @@ public class WithdrawController {
     @Autowired
     public WithdrawRepository withdrawRepository;
 
-    @Autowired
-    MailUtil mailUtil;
-
     @GetMapping("/withdraw")
-    public Page<Withdraw> selectWithdraw() {
+    public CommonDTO selectWithdraw() {
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return withdrawRepository.findAll(pageable);
+        result.setContent(withdrawRepository.findAll(pageable));
+        return result;
     }
 
     @GetMapping("/withdraw/list")
-    public Page<Withdraw> selectWithdrawList(Pageable pageable) {
-        return withdrawRepository.findAll(pageable);
+    public CommonDTO selectWithdrawList(Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(withdrawRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/withdraw")
-    public Withdraw insertWithdraw(Withdraw withdraw) {
-        return withdrawRepository.save(withdraw);
+    public CommonDTO insertWithdraw(Withdraw withdraw) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(withdrawRepository.save(withdraw));
+        return result;
     }
 
     @PutMapping("/withdraw")
-    public Withdraw updateWithdraw(Withdraw withdraw) {
+    public CommonDTO updateWithdraw(Withdraw withdraw) {
+        CommonDTO result = new CommonDTO();
         withdrawRepository.findById(withdraw.getWithdrawIdx()).ifPresentOrElse(temp -> {
-            withdrawRepository.save(withdraw);
+            result.setContent(withdrawRepository.save(withdraw));
         }, () -> {});
-        return withdraw;
+        return result;
     }
 
     @DeleteMapping("/withdraw")
-    public Withdraw deleteWithdraw(Withdraw withdraw) {
+    public CommonDTO deleteWithdraw(Withdraw withdraw) {
+        CommonDTO result = new CommonDTO();
         withdrawRepository.findById(withdraw.getWithdrawIdx()).ifPresentOrElse(temp -> {
             withdrawRepository.delete(withdraw);
         }, () -> {});
-        return withdraw;
+        return result;
     }
 }

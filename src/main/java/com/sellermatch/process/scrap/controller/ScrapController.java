@@ -1,9 +1,9 @@
 package com.sellermatch.process.scrap.controller;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.scrap.domain.Scrap;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -15,34 +15,42 @@ public class ScrapController {
     private ScrapRepository scrapRepository;
 
     @GetMapping("/scrap")
-    public Page<Scrap> selectScrap() {
+    public CommonDTO selectScrap() {
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return scrapRepository.findAll(pageable);
+        result.setContent(scrapRepository.findAll(pageable));
+        return result;
     }
 
     @GetMapping("/scrap/list")
-    public Page<Scrap> selectScrapList(Pageable pageable) {
-        return scrapRepository.findAll(pageable);
+    public CommonDTO selectScrapList(Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(scrapRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/scrap")
-    public Scrap insertScrap(Scrap scrap) {
-        return scrapRepository.save(scrap);
+    public CommonDTO insertScrap(Scrap scrap) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(scrapRepository.save(scrap));
+        return result;
     }
 
     @PutMapping("/scrap")
-    public Scrap updateScrap(Scrap scrap) {
+    public CommonDTO updateScrap(Scrap scrap) {
+        CommonDTO result = new CommonDTO();
         scrapRepository.findById(scrap.getScrapNo()).ifPresentOrElse(temp -> {
-            scrapRepository.save(scrap);
+            result.setContent(scrapRepository.save(scrap));
         }, () -> {});
-        return scrap;
+        return result;
     }
 
     @DeleteMapping("/scrap")
-    public Scrap deleteScrap(Scrap scrap) {
+    public CommonDTO deleteScrap(Scrap scrap) {
+        CommonDTO result = new CommonDTO();
         scrapRepository.findById(scrap.getScrapNo()).ifPresentOrElse(temp -> {
             scrapRepository.delete(scrap);
         }, () -> {});
-        return scrap;
+        return result;
     }
 }

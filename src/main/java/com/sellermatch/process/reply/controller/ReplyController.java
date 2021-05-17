@@ -1,9 +1,9 @@
 package com.sellermatch.process.reply.controller;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,34 +16,42 @@ public class ReplyController {
     public ReplyRepository replyRepository;
 
     @GetMapping("/reply")
-    public Page<Reply> selectReply() {
+    public CommonDTO selectReply() {
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return replyRepository.findAll(pageable);
+        result.setContent(replyRepository.findAll(pageable));
+        return result;
     }
 
     @GetMapping("/reply/list")
-    public Page<Reply> selectReplyList(Pageable pageable) {
-        return replyRepository.findAll(pageable);
+    public CommonDTO selectReplyList(Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(replyRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/reply")
-    public Reply insertReply(Reply reply) {
-        return replyRepository.save(reply);
+    public CommonDTO insertReply(Reply reply) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(replyRepository.save(reply));
+        return result;
     }
 
     @PutMapping("/reply")
-    public Reply updateReply(Reply reply) {
+    public CommonDTO updateReply(Reply reply) {
+        CommonDTO result = new CommonDTO();
         replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
-            replyRepository.save(reply);
+            result.setContent(replyRepository.save(reply));
         }, () -> {});
-        return reply;
+        return result;
     }
 
     @DeleteMapping("/reply")
-    public Reply deleteReply(Reply reply) {
+    public CommonDTO deleteReply(Reply reply) {
+        CommonDTO result = new CommonDTO();
         replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
             replyRepository.save(reply);
         }, () -> {});
-        return reply;
+        return result;
     }
 }
