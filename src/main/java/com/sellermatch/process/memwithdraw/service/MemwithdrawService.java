@@ -1,5 +1,6 @@
 package com.sellermatch.process.memwithdraw.service;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,8 +29,13 @@ public class MemwithdrawService {
     MemberRepository memberRepository;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
-    public void insertMemwithdraw(Member member, Withdraw withdraw) throws Exception{
-        memberRepository.save(member);
-        withdrawRepository.save(withdraw);
-    }
+    public CommonDTO insertMemwithdraw(Member member, Withdraw withdraw) throws Exception{
+        CommonDTO result = new CommonDTO();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("member", memberRepository.save(member));
+        data.put("withdraw", withdrawRepository.save(withdraw));
+        result.setContent(data);
+        return result;
+    };
 }
