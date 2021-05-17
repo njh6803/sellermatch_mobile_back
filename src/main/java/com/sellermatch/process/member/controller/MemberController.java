@@ -1,10 +1,12 @@
 package com.sellermatch.process.member.controller;
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.JWTUtil;
+import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +52,52 @@ public class MemberController {
     @PostMapping("/member")
     public CommonDTO insertMember(Member member) throws Exception {
         CommonDTO result = new CommonDTO();
+
+        //NULL 체크
+        if(Util.isEmpty(member.getMemId())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_100);
+            return result;
+        }
+        if(member.getMemSnsCh() == "01"){   //이메일 회원가입일 경우만 PW 체크
+            if(Util.isEmpty(member.getMemPw())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_101);
+                return result;
+            }
+            if(Util.isPassword(member.getMemPw())) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_FORMAT_104);
+                return result;
+            }
+            if(Util.isEmpty(member.getMemPwChk())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_101);
+                return result;
+            }
+        }
+        if(Util.isEmpty(member.getMemTel())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_105);
+            return result;
+        }
+        if(Util.isEmpty(member.getMemSort())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_107);
+            return result;
+        }
+        //FORMAT 체크
+        if(Util.isEmail(member.getMemId())) {
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_FORMAT_104);
+            return result;
+        }
+        if(Util.isTel(member.getMemTel())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_FORMAT_106);
+            return result;
+        }
+
         result.setContent(memberService.insertMember(member));
         return result;
     }

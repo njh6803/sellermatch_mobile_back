@@ -107,4 +107,6 @@ public class Member {
     @Column(name = "withdraw_auth_code")
     private String widthdrawAuthCode;
 
+    @Transient
+    private String memPwChk;
 }

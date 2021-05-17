@@ -1,6 +1,11 @@
 package com.sellermatch.process.common.domain;
 
 public class CommonConstant {
+
+    /*성공,실패 result메시지*/
+    public final static String SUCCESS= "SUCCESS";
+    public final static String ERROR= "ERROR";
+
     /* 공백 또는 NULL */
     public final static int ERROR_NULL_100 = -100; // 아이디 공백/null
     public final static int ERROR_NULL_101 = -101; // 비밀번호 공백/null
@@ -38,7 +43,7 @@ public class CommonConstant {
     public final static int ERROR_DUPLICATE_205 = -205; // 스크랩 중복
     public final static int ERROR_DUPLICATE_207 = -207; // 제안하기 중복
 
-    /* 형식 미일치*/
+    /* 형식 미일치 */
     public final static int ERROR_FORMAT_104 = -104;  // 이메일 형식 미일치
     public final static int ERROR_FORMAT_106 = -106;  // 연락처(휴대폰) 형식 미일치
     public final static int ERROR_FORMAT_111 = -111;  // 비밀번호 형식 미일치
