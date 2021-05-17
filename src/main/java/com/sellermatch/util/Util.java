@@ -44,7 +44,7 @@ public class Util {
      */
     public static boolean isPassword(String str) {
         boolean result = false;
-        result = Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", str);
+        result = Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{6,}$", str);
         return result;
     }
     /**
