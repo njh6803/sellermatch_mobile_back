@@ -2,6 +2,7 @@ package com.sellermatch.process.profile.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -69,6 +70,7 @@ public class Profile {
     private String profileState;
 
     @Column(name = "profile_reg_date")
+    @CreatedDate
     private Date profileRegDate;
 
     @Column(name = "profile_edit_date")

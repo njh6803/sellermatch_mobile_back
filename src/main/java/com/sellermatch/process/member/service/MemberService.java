@@ -27,6 +27,6 @@ public class MemberService {
         ProjectDto projectDto = new ProjectDto();
         Profile profile = new Profile();
         projectDto.setProfile(profile);
-        profileService.insertProfile(projectDto);
+        profileService.insertAndUpdateProfile(projectDto);
     }
 }
