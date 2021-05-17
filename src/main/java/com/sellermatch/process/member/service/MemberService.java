@@ -21,7 +21,7 @@ public class MemberService {
     @Autowired
     ProfileService profileService;
 
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public void insertMember(Member member) throws Exception{
         memberRepository.save(member);
         ProjectDto projectDto = new ProjectDto();
