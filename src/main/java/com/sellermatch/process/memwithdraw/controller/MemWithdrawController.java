@@ -1,8 +1,12 @@
 package com.sellermatch.process.memwithdraw.controller;
 
 
+import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.memwithdraw.domain.MemWithdraw;
 import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
+import com.sellermatch.process.memwithdraw.service.MemwithdrawService;
+import com.sellermatch.process.withdraw.domain.Withdraw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,10 +19,15 @@ public class MemWithdrawController {
     @Autowired
     private MemwithdrawRepository memWithdrawRepository;
 
+    @Autowired
+    private MemwithdrawService memwithdrawService;
+
     @GetMapping("/memWithdraw")
-    public Page<MemWithdraw> selectMemWithdraw() {
+    public CommonDTO selectMemWithdraw() {
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return memWithdrawRepository.findAll(pageable);
+        result.setContent(memWithdrawRepository.findAll(pageable));
+        return result;
     }
 
     @GetMapping("/memWithdraw/list")
@@ -27,8 +36,12 @@ public class MemWithdrawController {
     }
 
     @PostMapping("/memWithdraw")
-    public MemWithdraw insertMemWithdraw(MemWithdraw memWithdraw) {
-        return memWithdrawRepository.save(memWithdraw);
+    public void insertMemWithdraw(Member member, MemWithdraw memWithdraw, Withdraw withdraw) {
+        try {
+            memwithdrawService.insertMemwithdraw(member, withdraw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @PutMapping("/memWithdraw")

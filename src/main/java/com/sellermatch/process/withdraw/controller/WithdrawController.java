@@ -2,6 +2,7 @@ package com.sellermatch.process.withdraw.controller;
 
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
+import com.sellermatch.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,9 @@ public class WithdrawController {
 
     @Autowired
     public WithdrawRepository withdrawRepository;
+
+    @Autowired
+    MailUtil mailUtil;
 
     @GetMapping("/withdraw")
     public Page<Withdraw> selectWithdraw() {
