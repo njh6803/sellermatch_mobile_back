@@ -8,7 +8,6 @@ import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
 import com.sellermatch.process.memwithdraw.service.MemwithdrawService;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -31,32 +30,39 @@ public class MemWithdrawController {
     }
 
     @GetMapping("/memWithdraw/list")
-    public Page<MemWithdraw> selectMemWithdrawList(Pageable pageable) {
-        return memWithdrawRepository.findAll(pageable);
+    public CommonDTO selectMemWithdrawList(Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(memWithdrawRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/memWithdraw")
-    public void insertMemWithdraw(Member member, MemWithdraw memWithdraw, Withdraw withdraw) {
+    public CommonDTO insertMemWithdraw(Member member, MemWithdraw memWithdraw, Withdraw withdraw) {
+        CommonDTO result = new CommonDTO();
+
         try {
-            memwithdrawService.insertMemwithdraw(member, withdraw);
+            result = memwithdrawService.insertMemwithdraw(member, withdraw);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @PutMapping("/memWithdraw")
-    public MemWithdraw updateMemWithdraw(MemWithdraw memWithdraw) {
+    public CommonDTO updateMemWithdraw(MemWithdraw memWithdraw) {
+        CommonDTO result = new CommonDTO();
         memWithdrawRepository.findById(memWithdraw.getMemWithdrawIdx()).ifPresentOrElse(temp ->{
-            memWithdrawRepository.save(memWithdraw);
+            result.setContent(memWithdrawRepository.save(memWithdraw));
         }, () -> {});
-        return memWithdraw;
+        return result;
     }
 
     @DeleteMapping("/memWithdraw")
-    public MemWithdraw deleteMemWithdraw(MemWithdraw memWithdraw) {
+    public CommonDTO deleteMemWithdraw(MemWithdraw memWithdraw) {
+        CommonDTO result = new CommonDTO();
         memWithdrawRepository.findById(memWithdraw.getMemWithdrawIdx()).ifPresentOrElse(temp ->{
             memWithdrawRepository.delete(memWithdraw);
         }, () -> {});
-        return memWithdraw;
+        return result;
     }
 }
