@@ -36,6 +36,7 @@ public class ProfileService {
             fileService.insertFile(projectDto.getProfileImgFile(),file);
         }
         if(!Util.isEmpty(projectDto.getProfileHashtag())) {
+            projectDto.getProjHashtag().setId(profile.getProfileId());
             hashtagService.insertAndUpdateHashtag(projectDto.getProfileHashtag());
         }
         return projectDto.getProfile();

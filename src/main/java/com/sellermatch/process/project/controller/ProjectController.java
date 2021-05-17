@@ -41,11 +41,11 @@ public class ProjectController {
     }
 
     @PutMapping("/project")
-    public Project updateProject(ProjectDto projectDto,MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) {
+    public Project updateProject(ProjectDto projectDto,MultipartFile file1, MultipartFile file2, MultipartFile file3) {
         projectRepository.findById(projectDto.getProject().getProjIdx()).ifPresentOrElse(temp -> {
-            projectDto.setProfileImgFile(profileImg);
-            projectDto.setProjImgFile(projectImg);
-            projectDto.setProjAttFile(projectAttFile);
+            projectDto.setProfileImgFile(file1);
+            projectDto.setProjImgFile(file2);
+            projectDto.setProjAttFile(file3);
             try {
                 projectService.insertAndUpdateProject(projectDto);
             } catch (Exception e) {
