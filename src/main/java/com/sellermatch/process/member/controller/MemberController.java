@@ -1,11 +1,11 @@
 package com.sellermatch.process.member.controller;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,37 +29,35 @@ public class MemberController {
     public JWTUtil jwtUtil;
 
     @GetMapping("/member")
-    public Page<Member> selectMember() {
+    public CommonDTO selectMember() {
+        CommonDTO result = new CommonDTO();
         Pageable sortedByName = PageRequest.of(0, 3);
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_ADMIN");
-        String aaa = jwtUtil.createToken("1",roles);
 
-        String bbb = jwtUtil.getUserPk(aaa);
+        result.setContent(memberRepository.findAll(sortedByName));
 
-        System.out.println(aaa);
-        System.out.println(bbb);
-
-        return (Page<Member>) memberRepository.findAll(sortedByName);
+        return result;
     }
 
     @GetMapping("/member/list")
-    public Page<Member> selectMemberList(Pageable pageable, String token) {
-
-        Boolean ccc = jwtUtil.validateToken(token);
-
-        System.out.println(ccc);
-        return memberRepository.findAll(pageable);
+    public CommonDTO selectMemberList(Pageable pageable, String token) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(memberRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/member")
-    public void insertMember(Member member) throws Exception {
-        memberService.insertMember(member);
+    public CommonDTO insertMember(Member member) throws Exception {
+        CommonDTO result = new CommonDTO();
+        result.setContent(memberService.insertMember(member));
+        return result;
     }
 
     @DeleteMapping("/member")
-    public String deleteMember(Integer memIdx) {
-        String result = "fail";
+    public CommonDTO deleteMember(Integer memIdx) {
+        CommonDTO result = new CommonDTO();
+
         memberRepository.findById(memIdx).ifPresent(temp -> {
             memberRepository.delete(temp);
         });

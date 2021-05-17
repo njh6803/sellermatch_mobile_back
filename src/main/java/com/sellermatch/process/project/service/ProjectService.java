@@ -50,6 +50,7 @@ public class ProjectService {
         }
         //프로젝트 해시태그 있을 경우 첨부
         if(!Util.isEmpty(projectDto.getProjHashtag())) {
+            projectDto.getProjHashtag().setId(project.getProjId());
             hashtagService.insertAndUpdateHashtag(projectDto.getProfileHashtag());
         }
         //프로필 있을 경우 프로필 첨부

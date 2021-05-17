@@ -1,11 +1,11 @@
 package com.sellermatch.process.project.controller;
 
-import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +52,9 @@ public class ProjectController {
     public CommonDTO updateProject(ProjectDto projectDto,MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) {
         CommonDTO result = new CommonDTO();
         projectRepository.findById(projectDto.getProject().getProjIdx()).ifPresentOrElse(temp -> {
-            projectDto.setProfileImgFile(profileImg);
-            projectDto.setProjImgFile(projectImg);
-            projectDto.setProjAttFile(projectAttFile);
+            projectDto.setProfileImgFile(file1);
+            projectDto.setProjImgFile(file2);
+            projectDto.setProjAttFile(file3);
             try {
                 result.setContent(projectService.insertAndUpdateProject(projectDto));
             } catch (Exception e) {

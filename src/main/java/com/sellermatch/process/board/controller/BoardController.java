@@ -2,9 +2,9 @@ package com.sellermatch.process.board.controller;
 
 import com.sellermatch.process.board.domain.Board;
 import com.sellermatch.process.board.repository.BoardRepository;
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -20,33 +20,41 @@ public class BoardController {
     public MailUtil mailUtil;
 
     @GetMapping("/board")
-    public Page<Board> selectBoard(){
+    public CommonDTO selectBoard(){
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return boardRepository.findAll(pageable);
+        result.setContent(boardRepository.findAll(pageable));
+        return result;
     }
     @GetMapping("/board/list")
-    public Page<Board> selectBoardList(Pageable pageable){
-        return boardRepository.findAll(pageable);
+    public CommonDTO selectBoardList(Pageable pageable){
+        CommonDTO result = new CommonDTO();
+        result.setContent(boardRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/board")
-    public Board insertBoard(Board board){
-        return boardRepository.save(board);
+    public CommonDTO insertBoard(Board board){
+        CommonDTO result = new CommonDTO();
+        result.setContent(boardRepository.save(board));
+        return result;
     }
 
     @PutMapping("/board")
-    public Board updateBoard(Board board){
+    public CommonDTO updateBoard(Board board){
+        CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
-            boardRepository.save(board);
+            result.setContent(boardRepository.save(board));
         }, () -> {});
-        return board;
+        return result;
     }
 
     @DeleteMapping("/board")
-    public Board deleteBoard(Board board){
+    public CommonDTO deleteBoard(Board board){
+        CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
             boardRepository.delete(board);
         }, () -> {});
-        return board;
+        return result;
     }
 }

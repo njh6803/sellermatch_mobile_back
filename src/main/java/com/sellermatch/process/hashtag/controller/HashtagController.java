@@ -1,9 +1,9 @@
 package com.sellermatch.process.hashtag.controller;
 
+import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -15,34 +15,42 @@ public class HashtagController {
     public HashtagRepository hashtagRepository;
 
     @GetMapping("/hashtag")
-    public Page<Hashtag> selectHashtag(){
+    public CommonDTO selectHashtag(){
+        CommonDTO result = new CommonDTO();
         Pageable pageable = PageRequest.of(0,1);
-        return hashtagRepository.findAll(pageable);
+        result.setContent(hashtagRepository.findAll(pageable));
+        return result;
     }
 
     @GetMapping("/hashtag/list")
-    public Page<Hashtag> selectHashtagList(Pageable pageable){
-        return hashtagRepository.findAll(pageable);
+    public CommonDTO selectHashtagList(Pageable pageable){
+        CommonDTO result = new CommonDTO();
+        result.setContent(hashtagRepository.findAll(pageable));
+        return result;
     }
 
     @PostMapping("/hashtag")
-    public Hashtag insertHashtag(Hashtag hashtag){
-        return hashtagRepository.save(hashtag);
+    public CommonDTO insertHashtag(Hashtag hashtag){
+        CommonDTO result = new CommonDTO();
+        result.setContent(hashtagRepository.save(hashtag));
+        return result;
     }
 
     @PutMapping("/hashtag")
-    public Hashtag updateHashtag(Hashtag hashtag){
+    public CommonDTO updateHashtag(Hashtag hashtag){
+        CommonDTO result = new CommonDTO();
         hashtagRepository.findById(hashtag.getNo()).ifPresentOrElse(temp -> {
-            hashtagRepository.save(hashtag);
+            result.setContent(hashtagRepository.save(hashtag));
         }, () -> {});
-        return hashtag;
+        return result;
     }
 
     @DeleteMapping("/hashtag")
-    public Hashtag deleteHashtag(Hashtag hashtag){
+    public CommonDTO deleteHashtag(Hashtag hashtag){
+        CommonDTO result = new CommonDTO();
         hashtagRepository.findById(hashtag.getNo()).ifPresentOrElse(temp -> {
             hashtagRepository.delete(hashtag);
         }, () -> {});
-        return hashtag;
+        return result;
     }
 }
