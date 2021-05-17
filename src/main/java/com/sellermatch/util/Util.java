@@ -24,7 +24,11 @@ public class Util {
      */
     public static boolean isKorAndEng(String str) {
         boolean result = false;
-        result = Pattern.matches("/^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;", str);
+        result = Pattern.matches("/^[가-힣a-zA-Z]+$/;", str);
+
+        if (Util.isEng(str) || Util.isKor(str)) {
+            result = true;
+        }
         return result;
     }
     /**
@@ -34,7 +38,7 @@ public class Util {
      */
     public static boolean isNum(String str) {
         boolean result = false;
-        result = Pattern.matches("/^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;", str);
+        result = Pattern.matches("^[0-9]*$", str);
         return result;
     }
     /**
@@ -56,7 +60,7 @@ public class Util {
      */
     public static boolean isLengthChk(String str, int min, int max) {
         boolean result = false;
-        if (str.length() < min || str.length() >= max) {
+        if (str.length() < min || str.length() > max) {
             result = false;
         } else {
             result = true;
@@ -129,5 +133,25 @@ public class Util {
             }
         }
         return true;
+    }
+    /**
+     * 영문으로만 구성되었는지에 대한 형식 검사
+     * @param str - 검사할 문자열
+     * @return boolean - 형식에 맞을 경우 true, 맞지 않을 경우 false
+     */
+    public static boolean isEng(String str) {
+        boolean result = false;
+        result = Pattern.matches("^[a-zA-Z]*$", str);
+        return result;
+    }
+    /**
+     * 한글로만 구성되었는지에 대한 형식 검사
+     * @param str- 검사할 문자열
+     * @return boolean - 형식에 맞을 경우 true, 맞이 않을 경우 false
+     */
+    public static boolean isKor(String str) {
+        boolean result = false;
+        result = Pattern.matches("^[가-힣]*$", str);
+        return result;
     }
 }

@@ -5,7 +5,6 @@ import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.JWTUtil;
-import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +41,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/list")
-    public CommonDTO selectMemberList(Pageable pageable, String token) {
+    public CommonDTO selectMemberList(Pageable pageable, String token, String str) {
         CommonDTO result = new CommonDTO();
         result.setContent(memberRepository.findAll(pageable));
         return result;
@@ -52,7 +51,6 @@ public class MemberController {
     public CommonDTO insertMember(Member member) throws Exception {
         CommonDTO result = new CommonDTO();
         result.setContent(memberService.insertMember(member));
-        System.out.println(Util.isTel(member.getMemTel()));
         return result;
     }
 
