@@ -21,13 +21,13 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public void removeFile(File file) {
         fileRepository.delete(file);
         fileUtil.delete(file);
     };
 
-    @Transactional
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public void editFile(File file,int fileIdx ,MultipartFile multipartFile) throws Exception{
         File newFile = fileUtil.saveMultipartFile(multipartFile);
         newFile.setFileIdx(fileIdx);
@@ -44,7 +44,7 @@ public class FileService {
             fileDto.setProfileId(FileInfo.getProfileId());
             fileDto.setProfileId(FileInfo.getProjThumbnail());
         }
-        fileDto.setThumbnailPath("none"); //모바일 썸네일 패스는 이미지 서버 정리전까지 none으로 고정
+        fileDto.setThumbnailPath("none"); //모바일 썸네일 path는 이미지 서버 정리전까지 none으로 고정
         return fileRepository.save(fileDto);
     }
 }

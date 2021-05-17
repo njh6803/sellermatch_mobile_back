@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -32,15 +33,16 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public Profile insertProfile(ProjectDto projectDto) throws Exception {
-        return profileService.insertProfile(projectDto);
+    public Profile insertProfile(ProjectDto projectDto, MultipartFile multipartFile) throws Exception {
+        projectDto.setProfileImgFile(multipartFile);
+        return profileService.insertAndUpdateProfile(projectDto);
     }
 
     @PutMapping("/profile")
     public Profile updateProfile(ProjectDto projectDto) {
         profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp ->{
             try {
-                profileService.insertProfile(projectDto);
+                profileService.insertAndUpdateProfile(projectDto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
