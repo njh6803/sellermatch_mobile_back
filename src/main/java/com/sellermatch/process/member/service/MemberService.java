@@ -22,11 +22,12 @@ public class MemberService {
     ProfileService profileService;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
-    public void insertMember(Member member) throws Exception{
+    public Member insertMember(Member member) throws Exception{
         memberRepository.save(member);
         ProjectDto projectDto = new ProjectDto();
         Profile profile = new Profile();
         projectDto.setProfile(profile);
         profileService.insertAndUpdateProfile(projectDto);
+        return member;
     }
 }

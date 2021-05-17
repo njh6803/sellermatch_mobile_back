@@ -2,8 +2,8 @@ package com.sellermatch.process.apply.controller;
 
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
+import com.sellermatch.process.common.domain.CommonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,34 +16,42 @@ public class ApplyController {
         public ApplyRepository applyRepository;
 
         @GetMapping("/apply")
-        public Page<Apply> selectApply() {
+        public CommonDTO selectApply() {
+                CommonDTO result = new CommonDTO();
                 Pageable pageable = PageRequest.of(0,1);
-            return applyRepository.findAll(pageable);
+                result.setContent(applyRepository.findAll(pageable));
+                return result;
         }
 
         @GetMapping("/apply/list")
-        public Page<Apply> selectApplyList(Pageable pageable) {
-                return applyRepository.findAll(pageable);
+        public CommonDTO selectApplyList(Pageable pageable) {
+                CommonDTO result = new CommonDTO();
+                result.setContent(applyRepository.findAll(pageable));
+                return result;
         }
 
         @PostMapping("/apply")
-        public Apply insertApply(Apply apply) {
-                return applyRepository.save(apply);
+        public CommonDTO insertApply(Apply apply) {
+                CommonDTO result = new CommonDTO();
+                result.setContent(applyRepository.save(apply));
+                return result;
         }
 
         @PutMapping("/apply")
-        public Apply updateApply(Apply apply) {
+        public CommonDTO updateApply(Apply apply) {
+                CommonDTO result = new CommonDTO();
                 applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
-                        applyRepository.save(apply);
+                        result.setContent(applyRepository.save(apply));
                 }, () -> {});
-                return apply;
+                return result;
         }
 
         @DeleteMapping("/apply")
-        public Apply deleteApply(Apply apply) {
+        public CommonDTO deleteApply(Apply apply) {
+                CommonDTO result = new CommonDTO();
                 applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
                         applyRepository.delete(apply);
                 }, () -> {});
-                return apply;
+                return result;
         }
 }
