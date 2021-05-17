@@ -33,14 +33,15 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public Profile insertProfile(ProjectDto projectDto, MultipartFile multipartFile) throws Exception {
-        projectDto.setProfileImgFile(multipartFile);
+    public Profile insertProfile(ProjectDto projectDto, MultipartFile profileImg) throws Exception {
+        projectDto.setProfileImgFile(profileImg);
         return profileService.insertAndUpdateProfile(projectDto);
     }
 
     @PutMapping("/profile")
-    public Profile updateProfile(ProjectDto projectDto) {
+    public Profile updateProfile(ProjectDto projectDto, MultipartFile profileImg) {
         profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp ->{
+            projectDto.setProfileImgFile(profileImg);
             try {
                 profileService.insertAndUpdateProfile(projectDto);
             } catch (Exception e) {
