@@ -23,11 +23,12 @@ public class WithdrawService {
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Withdraw insert(Withdraw withdraw) throws Exception {
-        Member member = new Member();
-        member.setMemIdx(withdraw.getMemIdx());
-        member.setMemId(withdraw.getMemId());
-        if(!Util.isEmpty(memberRepository.findByMemIdxAndWidthdrawAuthCode(member))) {
+        if(!Util.isEmpty(memberRepository.findByMemIdxAndWidthdrawAuthCode(withdraw.getMemIdx(),withdraw.getWidthdrawAuthCode()))) {
             withdrawRepository.save(withdraw);
+            Member member = new Member();
+            member.setMemIdx(withdraw.getMemIdx());
+            member.setMemId(withdraw.getMemId());
+            member.setWidthdrawAuthCode(withdraw.getWidthdrawAuthCode());
             member.setMemState("1");
             memberRepository.save(member);
         }

@@ -13,7 +13,7 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Int
 
     Optional<Member> findByMemNick(String memNick);
 
-    Optional<Member> findByMemIdxAndWidthdrawAuthCode(Member member);
+    Optional<Member> findByMemIdxAndWidthdrawAuthCode(Integer memId,String widthdrawAuthCode);
     Optional<Member> findByMemId(String memId);
 
 }
