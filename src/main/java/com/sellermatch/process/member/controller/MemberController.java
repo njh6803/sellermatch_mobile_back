@@ -73,7 +73,7 @@ public class MemberController {
             return result;
         }
         //ID: 중복체크
-        if(memberRepository.findByMemId(member.getMemId())){
+        if(Util.isEmpty(memberRepository.findByMemId(member.getMemId()))){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_108);
             return result;
