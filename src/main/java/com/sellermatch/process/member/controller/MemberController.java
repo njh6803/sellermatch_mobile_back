@@ -112,7 +112,7 @@ public class MemberController {
             return result;
         }
         //닉네임: 중복 체크
-        if(memberRepository.findByMemNick(member.getMemNick())){
+        if(!Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_114);
             return result;
@@ -180,7 +180,7 @@ public class MemberController {
             return result;
         }
         //닉네임: 중복 체크
-        if(memberRepository.findByMemNick(member.getMemNick())){
+        if(!Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_114);
             return result;
