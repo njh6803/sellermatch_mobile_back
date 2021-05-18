@@ -2,15 +2,21 @@ package com.sellermatch.process.member.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "MemList")
 @Getter
 @Setter
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,4 +115,48 @@ public class Member {
 
     @Transient
     private String memPwChk;
+
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
+    }
+
+    @Transient
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Transient
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Transient
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

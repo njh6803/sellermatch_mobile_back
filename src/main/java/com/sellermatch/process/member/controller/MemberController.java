@@ -33,9 +33,7 @@ public class MemberController {
         Pageable sortedByName = PageRequest.of(0, 3);
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_ADMIN");
-
         result.setContent(memberRepository.findAll(sortedByName));
-
         return result;
     }
 
