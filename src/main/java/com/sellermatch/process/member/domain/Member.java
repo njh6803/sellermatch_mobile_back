@@ -127,13 +127,13 @@ public class Member implements UserDetails {
     @Transient
     @Override
     public String getPassword() {
-        return null;
+        return getMemPw();
     }
 
     @Transient
     @Override
     public String getUsername() {
-        return null;
+        return getMemId();
     }
 
     @Transient

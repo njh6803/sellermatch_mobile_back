@@ -13,7 +13,7 @@ public class SignController {
 
     private final JWTUtil jwtUtil;
 
-    @PostMapping("/singin")
+    @PostMapping("/signin")
     public CommonDTO signin(Member member) {
         CommonDTO result = new CommonDTO();
         String token = jwtUtil.createToken(member.getMemId());
