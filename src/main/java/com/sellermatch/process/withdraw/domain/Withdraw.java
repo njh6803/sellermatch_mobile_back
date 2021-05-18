@@ -31,4 +31,7 @@ public class Withdraw {
 
     @Column(name = "withdraw_date")
     private Date withdrawDate;
+
+    @Transient
+    private String widthdrawAuthCode;
 }

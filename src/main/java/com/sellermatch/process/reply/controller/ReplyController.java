@@ -1,8 +1,10 @@
 package com.sellermatch.process.reply.controller;
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
+import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,19 @@ public class ReplyController {
     @PostMapping("/reply")
     public CommonDTO insertReply(Reply reply) {
         CommonDTO result = new CommonDTO();
+        //댓글내용: NULL 체크
+        if(Util.isEmpty(reply.getReplyContents())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_149);
+            return result;
+        }
+        //댓글내용: 길이 체크 (100자)
+        if(Util.isLengthChk(reply.getReplyContents(),0,100)){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_LENGTH_151);
+            return result;
+        }
+
         result.setContent(replyRepository.save(reply));
         return result;
     }

@@ -11,6 +11,9 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Int
 
     Page<Member> findAll(Pageable pageable);
 
+    Optional<Member> findByMemNick(String memNick);
+
+    Optional<Member> findByMemIdxAndWidthdrawAuthCode(Member member);
     Optional<Member> findByMemId(String memId);
 
 }
