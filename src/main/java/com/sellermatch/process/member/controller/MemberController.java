@@ -89,7 +89,7 @@ public class MemberController {
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
             if(Util.isPassword(member.getMemPw())) {
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_104);
+                result.setStatus(CommonConstant.ERROR_FORMAT_111);
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
