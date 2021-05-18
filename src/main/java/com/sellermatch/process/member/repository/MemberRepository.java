@@ -9,4 +9,9 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Int
 
     Page<Member> findAll(Pageable pageable);
 
+    boolean findByMemId(String memId);
+
+    boolean findByMemNick(String memNick);
+
+    boolean findByMemIdxAndWidthdrawAuthCode(Member member);
 }

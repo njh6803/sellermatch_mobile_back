@@ -1,9 +1,11 @@
 package com.sellermatch.process.newsletter.controller;
 
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.newsletter.domain.NewsLetter;
 import com.sellermatch.process.newsletter.repository.NewsLetterRepository;
+import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,11 @@ public class NewsLetterController {
     @PostMapping("/newsLetter")
     public CommonDTO insertNewsLetter(NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
+        if(Util.isEmail(newsLetter.getNewsLetterEmail())) {
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_FORMAT_104);
+            return result;
+        }
         result.setContent(newsLetterRepository.save(newsLetter));
         return result;
     }
