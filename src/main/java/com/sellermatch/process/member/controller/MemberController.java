@@ -65,7 +65,7 @@ public class MemberController {
             }
             if(Util.isPassword(member.getMemPw())) {
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_104);
+                result.setStatus(CommonConstant.ERROR_FORMAT_111);
                 return result;
             }
             if(Util.isEmpty(member.getMemPwChk())){

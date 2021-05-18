@@ -154,4 +154,14 @@ public class Util {
         result = Pattern.matches("^[가-힣]*$", str);
         return result;
     }
+
+    /**
+     * 고유ID 값을 생성해준다.
+     *
+     * @param tableName - 데이터베이스 테이블명
+     * @param sortNum - 분류번호
+     */
+    public static String getUniqueId(String tableName, int sortNum) {
+        return String.format("%s%d%d", tableName, sortNum, System.currentTimeMillis());
+    }
 }
