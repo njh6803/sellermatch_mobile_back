@@ -61,13 +61,13 @@ public class MemberController {
             return result;
         }
         //ID: 이메일형식 체크
-        if(Util.isEmail(member.getMemId())) {
+        if(!Util.isEmail(member.getMemId())) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_104);
             return result;
         }
         //ID: 길이 체크 45자
-        if(Util.isLengthChk(member.getMemId(),0,45)) {
+        if(!Util.isLengthChk(member.getMemId(),0,45)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_109);
             return result;
@@ -100,19 +100,19 @@ public class MemberController {
             }
         }
         //닉네임: NULL 체크
-        if(!Util.isEmpty(member.getMemNick())){
+        if(Util.isEmpty(member.getMemNick())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_113);
             return result;
         }
         //닉네임: 길이 체크 100자
-        if(Util.isLengthChk(member.getMemNick(),0,100)) {
+        if(!Util.isLengthChk(member.getMemNick(),1,100)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_115);
             return result;
         }
         //닉네임: 중복 체크
-        if(!Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
+        if(!memberRepository.findByMemNick(member.getMemNick()).isEmpty()){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_114);
             return result;
@@ -124,7 +124,7 @@ public class MemberController {
             return result;
         }
         //전화번호: 전화번호 형식 체크
-        if(Util.isTel(member.getMemTel())){
+        if(!Util.isTel(member.getMemTel())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_106);
             return result;
