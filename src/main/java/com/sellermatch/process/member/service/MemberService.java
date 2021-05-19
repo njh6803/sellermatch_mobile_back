@@ -31,6 +31,7 @@ public class MemberService {
         member.setMemState("0");
         member.setMemClass("0");
         member.setMemDate(new Date());
+        member.setSessionKey("none");
         // 비밀번호 암호화
         member.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
 
