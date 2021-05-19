@@ -1,5 +1,6 @@
 package com.sellermatch.util;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -175,5 +176,29 @@ public class Util {
      */
     public static String getUniqueId(String tableName, int sortNum) {
         return String.format("%s%d%d", tableName, sortNum, System.currentTimeMillis());
+    }
+
+    /**
+     * request Header에서 고객 IP 값 추출
+     */
+    public static String getClientIP(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+
+        return ip;
     }
 }

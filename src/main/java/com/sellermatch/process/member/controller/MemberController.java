@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,9 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public CommonDTO insertMember(@RequestBody Member member) throws Exception {
+    public CommonDTO insertMember(
+            HttpServletRequest request,
+            @RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //회원유형: NULL 체크
@@ -129,6 +132,8 @@ public class MemberController {
             result.setStatus(CommonConstant.ERROR_FORMAT_106);
             return result;
         }
+
+        member.setMemIp(Util.getClientIP(request));
 
         result.setContent(memberService.insertMember(member));
         return result;
