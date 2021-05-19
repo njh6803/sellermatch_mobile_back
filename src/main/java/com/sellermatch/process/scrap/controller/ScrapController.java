@@ -30,14 +30,14 @@ public class ScrapController {
     }
 
     @PostMapping("/scrap")
-    public CommonDTO insertScrap(Scrap scrap) {
+    public CommonDTO insertScrap(@RequestBody Scrap scrap) {
         CommonDTO result = new CommonDTO();
         result.setContent(scrapRepository.save(scrap));
         return result;
     }
 
     @PutMapping("/scrap")
-    public CommonDTO updateScrap(Scrap scrap) {
+    public CommonDTO updateScrap(@RequestBody Scrap scrap) {
         CommonDTO result = new CommonDTO();
         scrapRepository.findById(scrap.getScrapNo()).ifPresentOrElse(temp -> {
             result.setContent(scrapRepository.save(scrap));
@@ -45,12 +45,12 @@ public class ScrapController {
         return result;
     }
 
-    @DeleteMapping("/scrap")
+/*    @DeleteMapping("/scrap")
     public CommonDTO deleteScrap(Scrap scrap) {
         CommonDTO result = new CommonDTO();
         scrapRepository.findById(scrap.getScrapNo()).ifPresentOrElse(temp -> {
             scrapRepository.delete(scrap);
         }, () -> {});
         return result;
-    }
+    }*/
 }

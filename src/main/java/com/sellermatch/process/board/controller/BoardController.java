@@ -34,14 +34,14 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public CommonDTO insertBoard(Board board){
+    public CommonDTO insertBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
         result.setContent(boardRepository.save(board));
         return result;
     }
 
     @PutMapping("/board")
-    public CommonDTO updateBoard(Board board){
+    public CommonDTO updateBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
             result.setContent(boardRepository.save(board));
@@ -49,12 +49,12 @@ public class BoardController {
         return result;
     }
 
-    @DeleteMapping("/board")
+/*    @DeleteMapping("/board")
     public CommonDTO deleteBoard(Board board){
         CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
             boardRepository.delete(board);
         }, () -> {});
         return result;
-    }
+    }*/
 }

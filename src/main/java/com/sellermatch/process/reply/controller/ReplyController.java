@@ -33,7 +33,7 @@ public class ReplyController {
     }
 
     @PostMapping("/reply")
-    public CommonDTO insertReply(Reply reply) {
+    public CommonDTO insertReply(@RequestBody Reply reply) {
         CommonDTO result = new CommonDTO();
         //댓글내용: NULL 체크
         if(Util.isEmpty(reply.getReplyContents())){
@@ -53,7 +53,7 @@ public class ReplyController {
     }
 
     @PutMapping("/reply")
-    public CommonDTO updateReply(Reply reply) {
+    public CommonDTO updateReply(@RequestBody Reply reply) {
         CommonDTO result = new CommonDTO();
         replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
             result.setContent(replyRepository.save(reply));
@@ -61,12 +61,12 @@ public class ReplyController {
         return result;
     }
 
-    @DeleteMapping("/reply")
+/*    @DeleteMapping("/reply")
     public CommonDTO deleteReply(Reply reply) {
         CommonDTO result = new CommonDTO();
         replyRepository.findById(reply.getReplyId()).ifPresentOrElse(temp -> {
             replyRepository.save(reply);
         }, () -> {});
         return result;
-    }
+    }*/
 }

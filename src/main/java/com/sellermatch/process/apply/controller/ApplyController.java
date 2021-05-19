@@ -31,14 +31,14 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(Apply apply) {
+        public CommonDTO insertApply(@RequestBody Apply apply) {
                 CommonDTO result = new CommonDTO();
                 result.setContent(applyRepository.save(apply));
                 return result;
         }
 
         @PutMapping("/apply")
-        public CommonDTO updateApply(Apply apply) {
+        public CommonDTO updateApply(@RequestBody Apply apply) {
                 CommonDTO result = new CommonDTO();
                 applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
                         result.setContent(applyRepository.save(apply));
@@ -46,12 +46,12 @@ public class ApplyController {
                 return result;
         }
 
-        @DeleteMapping("/apply")
+/*        @DeleteMapping("/apply")
         public CommonDTO deleteApply(Apply apply) {
                 CommonDTO result = new CommonDTO();
                 applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
                         applyRepository.delete(apply);
                 }, () -> {});
                 return result;
-        }
+        }*/
 }

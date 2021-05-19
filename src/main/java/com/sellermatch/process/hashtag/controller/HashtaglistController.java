@@ -26,23 +26,23 @@ public class HashtaglistController {
     }
 
     @PostMapping("/hashtaglist")
-    public Hashtaglist insertHashtaglist(Hashtaglist hashtaglist) {
+    public Hashtaglist insertHashtaglist(@RequestBody Hashtaglist hashtaglist) {
         return hashtaglistRepository.save(hashtaglist);
     }
 
     @PutMapping("/hashtaglist")
-    public Hashtaglist updateHashtaglist(Hashtaglist hashtaglist) {
+    public Hashtaglist updateHashtaglist(@RequestBody Hashtaglist hashtaglist) {
         hashtaglistRepository.findById(hashtaglist.getHashId()).ifPresentOrElse(temp -> {
             hashtaglistRepository.save(hashtaglist);
         }, () -> {});
         return hashtaglist;
     }
 
-    @DeleteMapping("/hashtaglist")
+/*    @DeleteMapping("/hashtaglist")
     public Hashtaglist deleteHashtaglist(Hashtaglist hashtaglist) {
         hashtaglistRepository.findById(hashtaglist.getHashId()).ifPresentOrElse(temp -> {
             hashtaglistRepository.delete(hashtaglist);
         }, () -> {});
         return hashtaglist;
-    }
+    }*/
 }

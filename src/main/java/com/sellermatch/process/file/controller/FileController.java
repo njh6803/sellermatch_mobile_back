@@ -58,7 +58,7 @@ public class FileController {
         return result;
     }
 
-    @DeleteMapping("/file")
+/*    @DeleteMapping("/file")
     public CommonDTO deleteFile(int fileIdx) {
         CommonDTO result = new CommonDTO();
         fileRepository.findById(fileIdx).ifPresentOrElse(file ->{
@@ -70,5 +70,5 @@ public class FileController {
             }
         },() ->{});
         return result;
-    }
+    }*/
 }
