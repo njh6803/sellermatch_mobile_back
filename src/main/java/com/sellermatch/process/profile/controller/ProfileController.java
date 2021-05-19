@@ -57,7 +57,7 @@ public class ProfileController {
             return result;
         }
         // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
-        if (Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
+        if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_122);
             return result;
@@ -68,12 +68,12 @@ public class ProfileController {
             result.setStatus(CommonConstant.ERROR_NULL_123);
         }
         // 매출규모 : 숫자형식 체크
-        if (Util.isNum(String.valueOf(profile.getProfileVolume()))){
+        if (!Util.isNum(String.valueOf(profile.getProfileVolume()))){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_124);
         }
         // 매출규모 : 길이 체크 ( 0원 부터 1조원 까지)
-        if (Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
+        if (!Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_125);
         }
@@ -93,7 +93,7 @@ public class ProfileController {
             result.setStatus(CommonConstant.ERROR_NULL_128);
         }
         // 사업자번호 : 사업자번호형식 체크
-        if (Util.isNumeric(profile.getProfileBizNum())){
+        if (!Util.isNumeric(profile.getProfileBizNum())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_129);
         }

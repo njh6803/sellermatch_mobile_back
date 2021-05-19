@@ -5,6 +5,7 @@ import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
+import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,11 @@ public class MemberService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Member insertMember(Member member) throws Exception{
         member.setMemRname("0");
-        member.setMemState("1");
+        member.setMemState("0");
+        member.setMemClass("0");
+        // 비밀번호 암호화
+        member.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
+
         memberRepository.save(member);
         ProjectDto projectDto = new ProjectDto();
         Profile profile = new Profile();
