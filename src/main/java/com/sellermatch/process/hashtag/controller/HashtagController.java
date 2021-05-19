@@ -30,14 +30,14 @@ public class HashtagController {
     }
 
     @PostMapping("/hashtag")
-    public CommonDTO insertHashtag(Hashtag hashtag){
+    public CommonDTO insertHashtag(@RequestBody Hashtag hashtag){
         CommonDTO result = new CommonDTO();
         result.setContent(hashtagRepository.save(hashtag));
         return result;
     }
 
     @PutMapping("/hashtag")
-    public CommonDTO updateHashtag(Hashtag hashtag){
+    public CommonDTO updateHashtag(@RequestBody Hashtag hashtag){
         CommonDTO result = new CommonDTO();
         hashtagRepository.findById(hashtag.getNo()).ifPresentOrElse(temp -> {
             result.setContent(hashtagRepository.save(hashtag));
@@ -45,12 +45,12 @@ public class HashtagController {
         return result;
     }
 
-    @DeleteMapping("/hashtag")
+/*    @DeleteMapping("/hashtag")
     public CommonDTO deleteHashtag(Hashtag hashtag){
         CommonDTO result = new CommonDTO();
         hashtagRepository.findById(hashtag.getNo()).ifPresentOrElse(temp -> {
             hashtagRepository.delete(hashtag);
         }, () -> {});
         return result;
-    }
+    }*/
 }

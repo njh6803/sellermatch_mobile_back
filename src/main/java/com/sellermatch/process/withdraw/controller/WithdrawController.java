@@ -33,7 +33,7 @@ public class WithdrawController {
     }
 
     @PostMapping("/withdraw")
-    public CommonDTO insertWithdraw(Withdraw withdraw) {
+    public CommonDTO insertWithdraw(@RequestBody Withdraw withdraw) {
         CommonDTO result = new CommonDTO();
 
         //탈퇴사유: NULL 체크
@@ -54,7 +54,7 @@ public class WithdrawController {
     }
 
     @PutMapping("/withdraw")
-    public CommonDTO updateWithdraw(Withdraw withdraw) {
+    public CommonDTO updateWithdraw(@RequestBody Withdraw withdraw) {
         CommonDTO result = new CommonDTO();
         withdrawRepository.findById(withdraw.getWithdrawIdx()).ifPresentOrElse(temp -> {
             result.setContent(withdrawRepository.save(withdraw));
@@ -62,12 +62,12 @@ public class WithdrawController {
         return result;
     }
 
-    @DeleteMapping("/withdraw")
+/*    @DeleteMapping("/withdraw")
     public CommonDTO deleteWithdraw(Withdraw withdraw) {
         CommonDTO result = new CommonDTO();
         withdrawRepository.findById(withdraw.getWithdrawIdx()).ifPresentOrElse(temp -> {
             withdrawRepository.delete(withdraw);
         }, () -> {});
         return result;
-    }
+    }*/
 }

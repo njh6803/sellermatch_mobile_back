@@ -37,7 +37,7 @@ public class MemWithdrawController {
     }
 
     @PostMapping("/memWithdraw")
-    public CommonDTO insertMemWithdraw(Member member, MemWithdraw memWithdraw, Withdraw withdraw) {
+    public CommonDTO insertMemWithdraw(@RequestBody Member member, @RequestBody MemWithdraw memWithdraw, @RequestBody Withdraw withdraw) {
         CommonDTO result = new CommonDTO();
 
         try {
@@ -49,7 +49,7 @@ public class MemWithdrawController {
     }
 
     @PutMapping("/memWithdraw")
-    public CommonDTO updateMemWithdraw(MemWithdraw memWithdraw) {
+    public CommonDTO updateMemWithdraw(@RequestBody MemWithdraw memWithdraw) {
         CommonDTO result = new CommonDTO();
         memWithdrawRepository.findById(memWithdraw.getMemWithdrawIdx()).ifPresentOrElse(temp ->{
             result.setContent(memWithdrawRepository.save(memWithdraw));
@@ -57,12 +57,12 @@ public class MemWithdrawController {
         return result;
     }
 
-    @DeleteMapping("/memWithdraw")
+/*    @DeleteMapping("/memWithdraw")
     public CommonDTO deleteMemWithdraw(MemWithdraw memWithdraw) {
         CommonDTO result = new CommonDTO();
         memWithdrawRepository.findById(memWithdraw.getMemWithdrawIdx()).ifPresentOrElse(temp ->{
             memWithdrawRepository.delete(memWithdraw);
         }, () -> {});
         return result;
-    }
+    }*/
 }

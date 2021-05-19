@@ -45,7 +45,7 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public CommonDTO insertMember(Member member) throws Exception {
+    public CommonDTO insertMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //회원유형: NULL 체크
@@ -134,7 +134,7 @@ public class MemberController {
         return result;
     }
     @PutMapping("/member")
-    public CommonDTO updateMember(Member member) throws Exception {
+    public CommonDTO updateMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //비밀번호 존재 시 체크
@@ -201,7 +201,7 @@ public class MemberController {
         return result;
     }
 
-    @DeleteMapping("/member")
+/*    @DeleteMapping("/member")
     public CommonDTO deleteMember(Integer memIdx) {
         CommonDTO result = new CommonDTO();
 
@@ -209,6 +209,6 @@ public class MemberController {
             memberRepository.delete(temp);
         });
         return result;
-    }
+    }*/
 
 }
