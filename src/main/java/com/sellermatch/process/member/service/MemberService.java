@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class MemberService {
         member.setMemRname("0");
         member.setMemState("0");
         member.setMemClass("0");
+        member.setMemDate(new Date());
         // 비밀번호 암호화
         member.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
 
