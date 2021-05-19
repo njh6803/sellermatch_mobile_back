@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -50,6 +51,9 @@ public class MemberController {
             HttpServletRequest request,
             @RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
+
+        member.setMemDate(new Date());
+        System.out.println(member.getMemDate());
 
         //회원유형: NULL 체크
         if(Util.isEmpty(member.getMemSort())){
@@ -133,8 +137,8 @@ public class MemberController {
             return result;
         }
 
+        //IP 입력
         member.setMemIp(Util.getClientIP(request));
-
         result.setContent(memberService.insertMember(member));
         return result;
     }
