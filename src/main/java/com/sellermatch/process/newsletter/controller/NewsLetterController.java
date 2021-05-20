@@ -33,7 +33,7 @@ public class NewsLetterController {
     }
 
     @PostMapping("/newsLetter")
-    public CommonDTO insertNewsLetter(NewsLetter newsLetter) {
+    public CommonDTO insertNewsLetter(@RequestBody NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         if(Util.isEmail(newsLetter.getNewsLetterEmail())) {
             result.setResult(CommonConstant.ERROR);
@@ -45,7 +45,7 @@ public class NewsLetterController {
     }
 
     @PutMapping("/newsLetter")
-    public CommonDTO updateNewsLetter(NewsLetter newsLetter) {
+    public CommonDTO updateNewsLetter(@RequestBody NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         newsLetterRepository.findById(newsLetter.getNewsLetterIdx()).ifPresentOrElse(temp ->{
             result.setContent(newsLetterRepository.save(newsLetter));
@@ -53,12 +53,12 @@ public class NewsLetterController {
         return result;
     }
 
-    @DeleteMapping("/newsLetter")
+/*    @DeleteMapping("/newsLetter")
     public CommonDTO deleteNewsLetter(NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         newsLetterRepository.findById(newsLetter.getNewsLetterIdx()).ifPresentOrElse(temp ->{
             newsLetterRepository.delete(newsLetter);
         }, () -> {});
         return result;
-    }
+    }*/
 }

@@ -35,6 +35,7 @@ public class CommonConstant {
     public final static int ERROR_NULL_147 = -147; // 탈퇴 인증 코드 공백/null
     public final static int ERROR_NULL_149 = -149; // 댓글 공백/null
     public final static int ERROR_NULL_150 = -150; // 검색어 공백/null, 2글자 미만
+    public final static int ERROR_NULL_152 = -152; // 매칭 대표이미지 null
 
     /* 중복 */
     public final static int ERROR_DUPLICATE_108 = -108; // 이메일 중복
@@ -82,5 +83,5 @@ public class CommonConstant {
     public final static int ERROR_ACCESS_201 = -201;  // 탈퇴회원으로 로그인
     public final static int ERROR_ACCESS_204 = -204;  // 마감거래 지원
 
-    /* 마감거래 지원원 */
+    public final static int ERROR_999 = -999;  // 알수 없는 공통 에러
 }

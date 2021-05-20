@@ -40,7 +40,7 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public CommonDTO insertProfile(ProjectDto projectDto, MultipartFile profileImg) throws Exception {
+    public CommonDTO insertProfile(@RequestBody ProjectDto projectDto, MultipartFile profileImg) throws Exception {
         CommonDTO result = new CommonDTO();
         projectDto.setProfileImgFile(profileImg);
         result.setContent(profileService.insertAndUpdateProfile(projectDto));
@@ -48,7 +48,7 @@ public class ProfileController {
     }
 
     @PutMapping("/profile")
-    public CommonDTO updateProfile(ProjectDto projectDto, MultipartFile profileImg) {
+    public CommonDTO updateProfile(@RequestBody ProjectDto projectDto, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
         Profile profile = projectDto.getProfile();
         // 자기소개 : NULL 체크
@@ -114,12 +114,12 @@ public class ProfileController {
         return result;
     }
 
-    @DeleteMapping("/profile")
+/*    @DeleteMapping("/profile")
     public CommonDTO deleteProfile(Profile profile) {
         CommonDTO result = new CommonDTO();
         profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp ->{
             profileRepository.delete(profile);
         }, () -> {});
         return result;
-    }
+    }*/
 }

@@ -12,7 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -45,8 +47,13 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public CommonDTO insertMember(Member member) throws Exception {
+    public CommonDTO insertMember(
+            HttpServletRequest request,
+            @RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
+
+        member.setMemDate(new Date());
+        System.out.println(member.getMemDate());
 
         //회원유형: NULL 체크
         if(Util.isEmpty(member.getMemSort())){
@@ -130,11 +137,13 @@ public class MemberController {
             return result;
         }
 
+        //IP 입력
+        member.setMemIp(Util.getClientIP(request));
         result.setContent(memberService.insertMember(member));
         return result;
     }
     @PutMapping("/member")
-    public CommonDTO updateMember(Member member) throws Exception {
+    public CommonDTO updateMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //비밀번호 존재 시 체크
@@ -201,7 +210,7 @@ public class MemberController {
         return result;
     }
 
-    @DeleteMapping("/member")
+/*    @DeleteMapping("/member")
     public CommonDTO deleteMember(Integer memIdx) {
         CommonDTO result = new CommonDTO();
 
@@ -209,6 +218,6 @@ public class MemberController {
             memberRepository.delete(temp);
         });
         return result;
-    }
+    }*/
 
 }
