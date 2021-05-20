@@ -34,7 +34,8 @@ public class ProfileController {
     @GetMapping("/profile/list")
     public CommonDTO selectProfileList(Pageable pageable) {
         CommonDTO result = new CommonDTO();
-        result.setContent(profileRepository.findAll(pageable));
+        Profile profile = new Profile();
+        result.setContent(profileRepository.findAllSeller(pageable, profile));
         return result;
     }
 
