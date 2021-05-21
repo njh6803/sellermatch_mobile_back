@@ -8,14 +8,11 @@ import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.JWTUtil;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 public class MemberController {
@@ -30,17 +27,23 @@ public class MemberController {
     public JWTUtil jwtUtil;
 
     @GetMapping("/member")
-    public CommonDTO selectMember() {
+    public CommonDTO selectMember(String token) {
         CommonDTO result = new CommonDTO();
-        Pageable sortedByName = PageRequest.of(0, 3);
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_ADMIN");
-        result.setContent(memberRepository.findAll(sortedByName));
+        if(token != null) {
+            memberRepository.findByMemId(jwtUtil.getUserMemId(token)).ifPresentOrElse(temp -> {
+                result.setContent(temp);
+            }, () -> {
+                result.setResult("ERROR");
+                result.setStatus(0);
+                result.setContent(new Member());
+            });
+        }
+        // 토큰값 일치 확인
         return result;
     }
 
     @GetMapping("/member/list")
-    public CommonDTO selectMemberList(Pageable pageable, String token, String str) {
+    public CommonDTO selectMemberList(Pageable pageable) {
         CommonDTO result = new CommonDTO();
         result.setContent(memberRepository.findAll(pageable));
         return result;

@@ -2,6 +2,7 @@ package com.sellermatch.process.member.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.util.List;
 @Table(name = "MemList")
 @Getter
 @Setter
+@ToString
 public class Member implements UserDetails {
 
     @Id
@@ -127,13 +129,13 @@ public class Member implements UserDetails {
     @Transient
     @Override
     public String getPassword() {
-        return getMemPw();
+        return this.getMemPw();
     }
 
     @Transient
     @Override
     public String getUsername() {
-        return getMemId();
+        return this.getMemId();
     }
 
     @Transient
