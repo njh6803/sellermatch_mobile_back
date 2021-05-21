@@ -6,16 +6,14 @@ import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api-v1")
 public class SignController {
 
     private final JWTUtil jwtUtil;
