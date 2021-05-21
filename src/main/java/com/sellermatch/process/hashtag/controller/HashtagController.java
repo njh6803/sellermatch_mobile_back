@@ -1,10 +1,10 @@
 package com.sellermatch.process.hashtag.controller;
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +14,16 @@ public class HashtagController {
     @Autowired
     public HashtagRepository hashtagRepository;
 
-    @GetMapping("/hashtag")
-    public CommonDTO selectHashtag(){
+    @GetMapping("/hashtag/{id}")
+    public CommonDTO selectHashtag(@PathVariable Integer id){
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(hashtagRepository.findAll(pageable));
+        hashtagRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Hashtag());
+        });
         return result;
     }
 

@@ -8,4 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface HashtagRepository extends PagingAndSortingRepository<Hashtag, Integer> {
 
     Page<Hashtag> findAll(Pageable pageable);
+
+    Hashtag findById(String profileId);
 }

@@ -1,6 +1,7 @@
 package com.sellermatch.process.memwithdraw.controller;
 
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.memwithdraw.domain.MemWithdraw;
@@ -8,7 +9,6 @@ import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
 import com.sellermatch.process.memwithdraw.service.MemwithdrawService;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +21,16 @@ public class MemWithdrawController {
     @Autowired
     private MemwithdrawService memwithdrawService;
 
-    @GetMapping("/memWithdraw")
-    public CommonDTO selectMemWithdraw() {
+    @GetMapping("/memWithdraw/{id}")
+    public CommonDTO selectMemWithdraw(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(memWithdrawRepository.findAll(pageable));
+        memWithdrawRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new MemWithdraw());
+        });
         return result;
     }
 

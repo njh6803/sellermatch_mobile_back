@@ -1,5 +1,6 @@
 package com.sellermatch.process.file.controller;
 
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.repository.FileRepository;
@@ -22,10 +23,16 @@ public class FileController {
     @Autowired
     FileService fileService;
 
-    @GetMapping("/file")
-    public CommonDTO selectFile(int fileIdx) {
+    @GetMapping("/file/{id}")
+    public CommonDTO selectFile(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        result.setContent(fileRepository.findById(fileIdx));
+        fileRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new File());
+        });
         return result;
     }
 

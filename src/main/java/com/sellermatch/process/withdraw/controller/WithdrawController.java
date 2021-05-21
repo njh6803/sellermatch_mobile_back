@@ -6,7 +6,6 @@ import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +16,16 @@ public class WithdrawController {
     @Autowired
     public WithdrawRepository withdrawRepository;
 
-    @GetMapping("/withdraw")
-    public CommonDTO selectWithdraw() {
+    @GetMapping("/withdraw/{id}")
+    public CommonDTO selectWithdraw(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(withdrawRepository.findAll(pageable));
+        withdrawRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Withdraw());
+        });
         return result;
     }
 

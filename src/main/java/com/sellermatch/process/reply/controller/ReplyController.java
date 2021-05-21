@@ -6,7 +6,6 @@ import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +16,16 @@ public class ReplyController {
     @Autowired
     public ReplyRepository replyRepository;
 
-    @GetMapping("/reply")
-    public CommonDTO selectReply() {
+    @GetMapping("/reply/{id}")
+    public CommonDTO selectReply(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(replyRepository.findAll(pageable));
+        replyRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Reply());
+        });
         return result;
     }
 

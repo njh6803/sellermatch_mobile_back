@@ -1,46 +1,84 @@
 package com.sellermatch.process.profile.controller;
 
+import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.hashtag.domain.Hashtag;
+import com.sellermatch.process.hashtag.domain.Hashtaglist;
+import com.sellermatch.process.hashtag.repository.HashtagRepository;
+import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
+import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class ProfileController {
 
-    @Autowired
-    public ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
+    private final ProfileRepositoryCustom profileRepositoryCustom;
+    private final ProjectRepository projectRepository;
+    private final ApplyRepository applyRepository;
+    private final HashtagRepository hashtagRepository;
+    private final HashtaglistRepository hashtaglistRepository;
 
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private ProfileRepositoryCustom profileRepositoryCustom;
-
-    @GetMapping("/profile")
-    public CommonDTO selectProfile() {
+    @GetMapping("/profile/{id}")
+    public CommonDTO selectProfile(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(profileRepository.findAll(pageable));
+        profileRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Profile());
+        });
         return result;
     }
 
     @GetMapping("/profile/list")
-    public CommonDTO selectProfileList(Pageable pageable) {
+    public CommonDTO selectProfileList(Pageable pageable, Profile profile) {
         CommonDTO result = new CommonDTO();
-        Profile profile = new Profile();
-        result.setContent(profileRepositoryCustom.findAllSeller());
-        System.out.println(profileRepositoryCustom.findAllSeller());
+        List<Profile> profileList = new ArrayList<>();
+        profileList = profileRepositoryCustom.findAllSeller(profile);
+        profileList.forEach(profileDTO -> {
+            //profileDTO.setProfileIndusName();
+            String APPLYTYPE = "2";
+            String APPLYPROJSTATE = "5";
+            profileDTO.setProjAddCount(projectRepository.countByProjMemId(profileDTO.getMember().getMemId()));
+            profileDTO.setRecommendCount(applyRepository.countByApplyMemIdAndApplyType(profileDTO.getMember().getMemId(), APPLYTYPE));
+            profileDTO.setContractCount(applyRepository.countByApplyMemIdAndApplyProjState(profileDTO.getMember().getMemId(), APPLYPROJSTATE));
+
+            Hashtag hashtag = hashtagRepository.findById(profileDTO.getProfileId());
+            int hashtag1 = hashtag.getHashTag1();
+            int hashtag2 = hashtag.getHashTag2();
+            int hashtag3 = hashtag.getHashTag3();
+            int hashtag4 = hashtag.getHashTag4();
+            int hashtag5 = hashtag.getHashTag5();
+            Hashtaglist hashtaglist1 = hashtaglistRepository.findByHashId(hashtag1);
+            Hashtaglist hashtaglist2 = hashtaglistRepository.findByHashId(hashtag2);
+            Hashtaglist hashtaglist3 = hashtaglistRepository.findByHashId(hashtag3);
+            Hashtaglist hashtaglist4 = hashtaglistRepository.findByHashId(hashtag4);
+            Hashtaglist hashtaglist5 = hashtaglistRepository.findByHashId(hashtag5);
+
+            profileDTO.setHashTag1(hashtaglist1.getHashNm());
+            profileDTO.setHashTag2(hashtaglist2.getHashNm());
+            profileDTO.setHashTag3(hashtaglist3.getHashNm());
+            profileDTO.setHashTag4(hashtaglist4.getHashNm());
+            profileDTO.setHashTag5(hashtaglist5.getHashNm());
+        });
+        result.setContent(profileList);
         return result;
     }
 
