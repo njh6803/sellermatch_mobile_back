@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui",
                 "/swagger-resources", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**","/swagger/**"
+                "/swagger-ui.html", "/webjars/**", "/swagger/**"
         );
     }
 
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션도 사용 X
             .and()
             .authorizeRequests()
-            .antMatchers("/member/**").hasRole("USER")
+            .antMatchers("/api-v1/member/**").hasRole("USER")
             .anyRequest().permitAll()
             .and()
             .addFilterBefore(new SecurityJwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @RestController
+@RequestMapping(value = "/api-v1")
 public class MemberController {
 
     @Autowired
@@ -145,6 +146,7 @@ public class MemberController {
         result.setContent(memberService.insertMember(member));
         return result;
     }
+
     @PutMapping("/member")
     public CommonDTO updateMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
