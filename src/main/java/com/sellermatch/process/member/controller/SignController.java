@@ -82,7 +82,7 @@ public class SignController {
             return result;
         }
         //이메일 회원가입일 경우만 PW 체크
-        if(member.getMemSnsCh() == "01"){
+        if(member.getMemSnsCh().equalsIgnoreCase("01")){
             //비밀번호: NULL체크
             if(Util.isEmpty(member.getMemPw())){
                 result.setResult(CommonConstant.ERROR);
@@ -90,7 +90,7 @@ public class SignController {
                 return result;
             }
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
-            if(Util.isPassword(member.getMemPw())) {
+            if(!Util.isPassword(member.getMemPw())) {
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_FORMAT_111);
                 return result;
