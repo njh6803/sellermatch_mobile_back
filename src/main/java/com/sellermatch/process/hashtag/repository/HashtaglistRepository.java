@@ -13,4 +13,5 @@ public interface HashtaglistRepository extends PagingAndSortingRepository<Hashta
 
     Optional<Hashtaglist> findByHashNm(String hashNm);
 
+    Hashtaglist findByHashId(int hashtagNum);
 }

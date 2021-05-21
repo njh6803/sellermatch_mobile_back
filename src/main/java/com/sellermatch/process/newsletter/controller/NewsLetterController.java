@@ -7,7 +7,6 @@ import com.sellermatch.process.newsletter.domain.NewsLetter;
 import com.sellermatch.process.newsletter.repository.NewsLetterRepository;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,22 +16,27 @@ public class NewsLetterController {
     @Autowired
     public NewsLetterRepository newsLetterRepository;
 
-    @GetMapping("/newsLetter")
-    public CommonDTO selectNewsLetter() {
+    @GetMapping("/newsletter/{id}")
+    public CommonDTO selectNewsLetter(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(newsLetterRepository.findAll(pageable));
+        newsLetterRepository.findById(id).ifPresentOrElse(temp -> {
+            result.setContent(temp);
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new NewsLetter());
+        });
         return result;
     }
 
-    @GetMapping("/newsLetter/list")
+    @GetMapping("/newsletter/list")
     public CommonDTO selectNewsLetterList(Pageable pageable) {
         CommonDTO result = new CommonDTO();
         result.setContent(newsLetterRepository.findAll(pageable));
         return result;
     }
 
-    @PostMapping("/newsLetter")
+    @PostMapping("/newsletter")
     public CommonDTO insertNewsLetter(@RequestBody NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         if(Util.isEmail(newsLetter.getNewsLetterEmail())) {
@@ -44,7 +48,7 @@ public class NewsLetterController {
         return result;
     }
 
-    @PutMapping("/newsLetter")
+    @PutMapping("/newsletter")
     public CommonDTO updateNewsLetter(@RequestBody NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         newsLetterRepository.findById(newsLetter.getNewsLetterIdx()).ifPresentOrElse(temp ->{
@@ -53,7 +57,7 @@ public class NewsLetterController {
         return result;
     }
 
-/*    @DeleteMapping("/newsLetter")
+/*    @DeleteMapping("/newsletter")
     public CommonDTO deleteNewsLetter(NewsLetter newsLetter) {
         CommonDTO result = new CommonDTO();
         newsLetterRepository.findById(newsLetter.getNewsLetterIdx()).ifPresentOrElse(temp ->{

@@ -89,4 +89,31 @@ public class Profile {
     @OneToOne
     @JoinColumn(name = "profile_mem_id")
     private Member member;
+
+    @Transient
+    private int projAddCount;
+
+    @Transient
+    private int recommendCount;
+
+    @Transient
+    private int contractCount;
+
+    @Transient
+    private String hashTag1;
+
+    @Transient
+    private String hashTag2;
+
+    @Transient
+    private String hashTag3;
+
+    @Transient
+    private String hashTag4;
+
+    @Transient
+    private String hashTag5;
+
+    @Transient
+    private String profileIndusName;
 }

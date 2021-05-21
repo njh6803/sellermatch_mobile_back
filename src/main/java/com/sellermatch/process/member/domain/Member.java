@@ -1,5 +1,6 @@
 package com.sellermatch.process.member.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,6 +29,7 @@ public class Member implements UserDetails {
     @Column(name = "mem_id")
     private String memId;
 
+    @JsonIgnore
     @Column(name = "mem_pw")
     private String memPw;
 
@@ -129,13 +131,13 @@ public class Member implements UserDetails {
     @Transient
     @Override
     public String getPassword() {
-        return this.getMemPw();
+        return null;
     }
 
     @Transient
     @Override
     public String getUsername() {
-        return this.getMemId();
+        return null;
     }
 
     @Transient

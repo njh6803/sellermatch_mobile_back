@@ -2,9 +2,9 @@ package com.sellermatch.process.apply.controller;
 
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
+import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +15,16 @@ public class ApplyController {
         @Autowired
         public ApplyRepository applyRepository;
 
-        @GetMapping("/apply")
-        public CommonDTO selectApply() {
+        @GetMapping("/apply/{id}")
+        public CommonDTO selectApply(@PathVariable Integer id) {
                 CommonDTO result = new CommonDTO();
-                Pageable pageable = PageRequest.of(0,1);
-                result.setContent(applyRepository.findAll(pageable));
+                applyRepository.findById(id).ifPresentOrElse(temp -> {
+                        result.setContent(temp);
+                } , () -> {
+                        result.setContent("ERROR");
+                        result.setStatus(CommonConstant.ERROR_998);
+                        result.setContent(new Apply());
+                });
                 return result;
         }
 
