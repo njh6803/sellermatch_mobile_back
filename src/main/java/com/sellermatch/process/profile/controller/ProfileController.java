@@ -4,6 +4,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
+import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.util.Util;
@@ -23,6 +24,9 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private ProfileRepositoryCustom profileRepositoryCustom;
+
     @GetMapping("/profile")
     public CommonDTO selectProfile() {
         CommonDTO result = new CommonDTO();
@@ -35,7 +39,8 @@ public class ProfileController {
     public CommonDTO selectProfileList(Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Profile profile = new Profile();
-        result.setContent(profileRepository.findAllSeller(pageable, profile));
+        result.setContent(profileRepositoryCustom.findAllSeller());
+        System.out.println(profileRepositoryCustom.findAllSeller());
         return result;
     }
 
