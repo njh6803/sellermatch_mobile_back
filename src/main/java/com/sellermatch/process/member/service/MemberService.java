@@ -39,7 +39,7 @@ public class MemberService {
         ProjectDto projectDto = new ProjectDto();
         Profile profile = new Profile();
         profile.setProfileId(Util.getUniqueId("PF-", Integer.parseInt(member.getMemSort())));
-        profile.setProfileMemId(member.getMemId());
+        profile.setMember(member);
         profile.setProfileGrade("1");
         profile.setProfileChChk("0");
         profile.setProfileCareer("0");

@@ -1,5 +1,6 @@
 package com.sellermatch.process.profile.domain;
 
+import com.sellermatch.process.member.domain.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,9 +21,6 @@ public class Profile {
 
     @Column(name = "profile_id")
     private String profileId;
-
-    @Column(name = "profile_mem_id")
-    private String profileMemId;
 
     @Column(name = "profile_grade", columnDefinition = "char")
     private String profileGrade;
@@ -87,4 +85,8 @@ public class Profile {
 
     @Column(name = "profile_hit")
     private Integer profileHit;
+
+    @OneToOne
+    @JoinColumn(name = "profile_mem_id")
+    private Member member;
 }
