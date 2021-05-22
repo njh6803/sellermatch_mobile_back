@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
+@RequestMapping(value = "/api-v1")
 public class ProjectController {
     @Autowired
     public ProjectRepository projectRepository;
@@ -37,89 +38,88 @@ public class ProjectController {
         return result;
     }
 
-    @PostMapping("/project")
-    public CommonDTO inseretProject(ProjectDto projectDto,MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
+    @PostMapping("/project/registration")
+    public CommonDTO inseretProject(Project project, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //대표이미지: NULL 체크
-        if(Util.isEmpty(profileImg)) {
+        if(Util.isEmpty(projectImg)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_152);
             return result;
         }
         //제목: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjTitle())){
+        if(Util.isEmpty(project.getProjTitle())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_132);
             return result;
         }
         //제목: 길이 제한 체크
-        if(Util.isLengthChk(projectDto.getProject().getProjTitle(),0,100)){
+        if(!Util.isLengthChk(project.getProjTitle(),0,100)){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_132);
             return result;
         }
         //상품분류: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjIndus())){
+        if(Util.isEmpty(project.getProjIndus())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_127);
             return result;
         }
         //상품단가: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjPrice())){
+        if(Util.isEmpty(project.getProjPrice())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_134);
             return result;
         }
         //판매마진: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjMargin())){
+        if(Util.isEmpty(project.getProjMargin())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_135);
             return result;
         }
         //등록지역: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjNation())){
+        if(Util.isEmpty(project.getProjNation())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_136);
             return result;
         }
         //공급방법: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjSupplyType())){
+        if(Util.isEmpty(project.getProjSupplyType())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_137);
             return result;
         }
         //모집마감일: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjEndDate())){
+        if(Util.isEmpty(project.getProjEndDate())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_139);
             return result;
         }
         //모집인원: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjRecruitNum())){
+        if(Util.isEmpty(project.getProjRecruitNum())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_140);
             return result;
         }
         //모집인원: 숫자 형식 체크
-        if(Util.isNumeric(projectDto.getProject().getProjRecruitNum().toString())){
+        if(!Util.isNumeric(project.getProjRecruitNum().toString())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_142);
             return result;
         }
         //상세설명: NULL체크
-        if(Util.isEmpty(projectDto.getProject().getProjDetail())){
+        if(Util.isEmpty(project.getProjDetail())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_143);
             return result;
         }
 
-
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.setProject(project);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
-
-
 
         result.setContent(projectService.insertAndUpdateProject(projectDto));
         return result;
