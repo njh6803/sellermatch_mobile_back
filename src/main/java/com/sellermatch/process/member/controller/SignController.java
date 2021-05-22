@@ -26,7 +26,6 @@ public class SignController {
     private final MemberService memberService;
 
     @PostMapping("/signin")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public CommonDTO signin(@RequestBody Member member) {
         CommonDTO result = new CommonDTO();
         memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {

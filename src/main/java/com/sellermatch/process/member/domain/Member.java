@@ -1,6 +1,6 @@
 package com.sellermatch.process.member.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,7 +29,7 @@ public class Member implements UserDetails {
     @Column(name = "mem_id")
     private String memId;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "mem_pw")
     private String memPw;
 
