@@ -2,6 +2,7 @@ package com.sellermatch.process.project.controller;
 
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
@@ -39,7 +40,7 @@ public class ProjectController {
     }
 
     @PostMapping("/project/registration")
-    public CommonDTO inseretProject(Project project, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
+    public CommonDTO inseretProject(Boolean isExistProfile, Project project, Profile profile, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //대표이미지: NULL 체크
@@ -117,6 +118,7 @@ public class ProjectController {
 
         ProjectDto projectDto = new ProjectDto();
         projectDto.setProject(project);
+        if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
