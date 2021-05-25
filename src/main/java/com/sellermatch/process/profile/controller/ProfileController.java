@@ -13,12 +13,10 @@ import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,9 +46,7 @@ public class ProfileController {
     @GetMapping("/profile/list")
     public CommonDTO selectProfileList(Pageable pageable, Profile profile) {
         CommonDTO result = new CommonDTO();
-        List<Profile> profileList = new ArrayList<>();
-        profileList = profileRepositoryCustom.findAllSeller(profile);
-
+        Page<Profile> profileList = profileRepositoryCustom.findAllSeller(profile, pageable);
         result.setContent(profileList);
         return result;
     }

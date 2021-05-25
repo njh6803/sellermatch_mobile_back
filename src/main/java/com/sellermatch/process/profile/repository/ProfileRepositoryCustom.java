@@ -2,7 +2,11 @@ package com.sellermatch.process.profile.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sellermatch.process.apply.domain.QApply;
@@ -15,6 +19,10 @@ import com.sellermatch.process.profile.domain.QProfile;
 import com.sellermatch.process.project.domain.QProject;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +32,7 @@ import java.util.List;
 public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
 
-    public List<Profile> findAllSeller(Profile profile) {
+    public Page<Profile> findAllSeller(Profile profile, Pageable pageable) {
         QProfile qProfile = QProfile.profile;
         // 조인
         QMember qMember = QMember.member;
@@ -141,7 +149,20 @@ public class ProfileRepositoryCustom {
                                                     .from(qProfile)
                                                     .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
                                                     .where(builder)
+                                                    .orderBy(getSortedColumn(pageable.getSort(), qProfile))
+                                                    .offset(pageable.getOffset())
+                                                    .limit(pageable.getPageSize())
                                                     .fetch();
-        return jpaQuery;
+//        return jpaQuery;
+        return new PageImpl<>(jpaQuery, pageable, jpaQuery.size());
     }
+
+    private OrderSpecifier<?>[] getSortedColumn(Sort sorts, QProfile qProfile){
+        return sorts.toList().stream().map(x ->{
+            Order order = x.getDirection().name() == "ASC"? Order.ASC : Order.DESC;
+            SimplePath<Object> filedPath = Expressions.path(Object.class, qProfile, x.getProperty());
+            return new OrderSpecifier(order, filedPath);
+        }).toArray(OrderSpecifier[]::new);
+    }
+
 }
