@@ -3,8 +3,6 @@ package com.sellermatch.process.profile.controller;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
-import com.sellermatch.process.hashtag.domain.Hashtag;
-import com.sellermatch.process.hashtag.domain.Hashtaglist;
 import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
 import com.sellermatch.process.profile.domain.Profile;
@@ -52,32 +50,7 @@ public class ProfileController {
         CommonDTO result = new CommonDTO();
         List<Profile> profileList = new ArrayList<>();
         profileList = profileRepositoryCustom.findAllSeller(profile);
-        profileList.forEach(profileDTO -> {
-            //profileDTO.setProfileIndusName();
-            String APPLYTYPE = "2";
-            String APPLYPROJSTATE = "5";
-//            profileDTO.setProjAddCount(projectRepository.countByProjMemId(profileDTO.getMember().getMemId()));
-//            profileDTO.setRecommendCount(applyRepository.countByApplyMemIdAndApplyType(profileDTO.getMember().getMemId(), APPLYTYPE));
-//            profileDTO.setContractCount(applyRepository.countByApplyMemIdAndApplyProjState(profileDTO.getMember().getMemId(), APPLYPROJSTATE));
 
-            Hashtag hashtag = hashtagRepository.findById(profileDTO.getProfileId());
-            int hashtag1 = hashtag.getHashTag1();
-            int hashtag2 = hashtag.getHashTag2();
-            int hashtag3 = hashtag.getHashTag3();
-            int hashtag4 = hashtag.getHashTag4();
-            int hashtag5 = hashtag.getHashTag5();
-            Hashtaglist hashtaglist1 = hashtaglistRepository.findByHashId(hashtag1);
-            Hashtaglist hashtaglist2 = hashtaglistRepository.findByHashId(hashtag2);
-            Hashtaglist hashtaglist3 = hashtaglistRepository.findByHashId(hashtag3);
-            Hashtaglist hashtaglist4 = hashtaglistRepository.findByHashId(hashtag4);
-            Hashtaglist hashtaglist5 = hashtaglistRepository.findByHashId(hashtag5);
-
-            profileDTO.setHashTag1(hashtaglist1.getHashNm());
-            profileDTO.setHashTag2(hashtaglist2.getHashNm());
-            profileDTO.setHashTag3(hashtaglist3.getHashNm());
-            profileDTO.setHashTag4(hashtaglist4.getHashNm());
-            profileDTO.setHashTag5(hashtaglist5.getHashNm());
-        });
         result.setContent(profileList);
         return result;
     }

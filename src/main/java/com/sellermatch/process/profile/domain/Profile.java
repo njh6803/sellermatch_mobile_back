@@ -89,13 +89,13 @@ public class Profile {
     private Integer profileHit;
 
     @Transient
-    private int projAddCount;
+    private Long projAddCount;
 
     @Transient
-    private int recommendCount;
+    private Long recommendCount;
 
     @Transient
-    private int contractCount;
+    private Long contractCount;
 
     @Transient
     private String hashTag1;
@@ -114,4 +114,13 @@ public class Profile {
 
     @Transient
     private String profileIndusName;
+
+    @Transient
+    private String memNick;
+
+    @Transient
+    private String memRname;
+
+    @Transient
+    private String memState;
 }
