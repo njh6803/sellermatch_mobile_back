@@ -1,5 +1,7 @@
 package com.sellermatch.process.profile.domain;
 
+import com.sellermatch.util.Util;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -123,4 +125,23 @@ public class Profile {
 
     @Transient
     private String memState;
+
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private String hashtaglist;
+
+    public String getHashtaglist() {
+        if (!Util.isEmpty(this.hashTag1)){
+            hashtaglist = this.hashTag1;
+        } else if (!Util.isEmpty(this.hashTag2)){
+            hashtaglist += "," + this.hashTag2;
+        } else if (!Util.isEmpty(this.hashTag3)){
+            hashtaglist += "," + this.hashTag3;
+        } else if (!Util.isEmpty(this.hashTag4)){
+            hashtaglist += "," + this.hashTag4;
+        } else if (!Util.isEmpty(this.hashTag5)){
+            hashtaglist += "," + this.hashTag5;
+        }
+        return hashtaglist;
+    }
 }
