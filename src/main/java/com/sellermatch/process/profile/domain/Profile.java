@@ -133,13 +133,17 @@ public class Profile {
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){
             hashtaglist = this.hashTag1;
-        } else if (!Util.isEmpty(this.hashTag2)){
+        }
+        if (!Util.isEmpty(this.hashTag2)){
             hashtaglist += "," + this.hashTag2;
-        } else if (!Util.isEmpty(this.hashTag3)){
+        }
+        if (!Util.isEmpty(this.hashTag3)){
             hashtaglist += "," + this.hashTag3;
-        } else if (!Util.isEmpty(this.hashTag4)){
+        }
+        if (!Util.isEmpty(this.hashTag4)){
             hashtaglist += "," + this.hashTag4;
-        } else if (!Util.isEmpty(this.hashTag5)){
+        }
+        if (!Util.isEmpty(this.hashTag5)){
             hashtaglist += "," + this.hashTag5;
         }
         return hashtaglist;
