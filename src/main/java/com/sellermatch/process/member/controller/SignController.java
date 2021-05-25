@@ -74,12 +74,14 @@ public class SignController {
             result.setStatus(CommonConstant.ERROR_LENGTH_109);
             return result;
         }
+
         //ID: 중복체크
-        if(Util.isEmpty(memberRepository.findByMemId(member.getMemId()))){
+        if(!memberRepository.findByMemId(member.getMemId()).isEmpty()){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_108);
             return result;
         }
+
         //이메일 회원가입일 경우만 PW 체크
         if(member.getMemSnsCh().equalsIgnoreCase("01")){
             //비밀번호: NULL체크
