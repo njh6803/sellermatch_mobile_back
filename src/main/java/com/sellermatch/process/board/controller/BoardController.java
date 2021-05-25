@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequestMapping(value = "/api-v1")
 public class BoardController {
 
     @Autowired
@@ -32,9 +33,9 @@ public class BoardController {
         return result;
     }
     @GetMapping("/board/list")
-    public CommonDTO selectBoardList(Pageable pageable){
+    public CommonDTO selectBoardList(Pageable pageable, String boardType){
         CommonDTO result = new CommonDTO();
-        result.setContent(boardRepository.findAll(pageable));
+        result.setContent(boardRepository.findByBoardTypeRegex(pageable, boardType));
         return result;
     }
 

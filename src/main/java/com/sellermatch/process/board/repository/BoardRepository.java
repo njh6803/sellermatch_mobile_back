@@ -8,4 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface BoardRepository extends PagingAndSortingRepository<Board, Integer> {
 
     Page<Board> findAll(Pageable pageable);
+
+    Page<Board> findByBoardTypeRegex(Pageable pageable, String regex);
 }

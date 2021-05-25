@@ -56,9 +56,9 @@ public class ProfileController {
             //profileDTO.setProfileIndusName();
             String APPLYTYPE = "2";
             String APPLYPROJSTATE = "5";
-            profileDTO.setProjAddCount(projectRepository.countByProjMemId(profileDTO.getMember().getMemId()));
-            profileDTO.setRecommendCount(applyRepository.countByApplyMemIdAndApplyType(profileDTO.getMember().getMemId(), APPLYTYPE));
-            profileDTO.setContractCount(applyRepository.countByApplyMemIdAndApplyProjState(profileDTO.getMember().getMemId(), APPLYPROJSTATE));
+//            profileDTO.setProjAddCount(projectRepository.countByProjMemId(profileDTO.getMember().getMemId()));
+//            profileDTO.setRecommendCount(applyRepository.countByApplyMemIdAndApplyType(profileDTO.getMember().getMemId(), APPLYTYPE));
+//            profileDTO.setContractCount(applyRepository.countByApplyMemIdAndApplyProjState(profileDTO.getMember().getMemId(), APPLYPROJSTATE));
 
             Hashtag hashtag = hashtagRepository.findById(profileDTO.getProfileId());
             int hashtag1 = hashtag.getHashTag1();
