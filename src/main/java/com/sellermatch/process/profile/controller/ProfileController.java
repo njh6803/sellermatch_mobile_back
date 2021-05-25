@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api-v1")
 public class ProfileController {
 
     private final ProfileRepository profileRepository;

@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface BoardRepository extends PagingAndSortingRepository<Board, Integer> {
 
     Page<Board> findAll(Pageable pageable);
 
-    Page<Board> findByBoardTypeRegex(Pageable pageable, String regex);
+    Page<Board> findByBoardTypeIn(Pageable pageable, List<String> boardType);
 }
