@@ -2,6 +2,7 @@ package com.sellermatch.process.board.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -52,4 +53,10 @@ public class Board {
 
     @Column(name = "board_notice_top")
     private String boardNoticeTop;
+
+    @Formula("(SELECT A.Mem_nick FROM MemList AS A WHERE board_writer = A.Mem_Id)")
+    private String memNick;
+
+    @Formula("(SELECT A.Mem_sort FROM MemList AS A WHERE board_writer = A.Mem_Id)")
+    private String memSort;
 }
