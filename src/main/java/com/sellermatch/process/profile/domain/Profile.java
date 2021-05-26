@@ -130,6 +130,20 @@ public class Profile {
     @Transient
     private String hashtaglist;
 
+    /** 필터를 위한 배열 */
+    @Transient
+    private String[] profileNationArr;
+    @Transient
+    private String[] profileIndusArr;
+    @Transient
+    private String[] profileChannelArr;
+    @Transient
+    private String[] profileBizSortArr;
+    @Transient
+    private String[] profileCareerArr;
+    @Transient
+    private String[] profileVolumeArr;
+
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){
             hashtaglist = this.hashTag1;

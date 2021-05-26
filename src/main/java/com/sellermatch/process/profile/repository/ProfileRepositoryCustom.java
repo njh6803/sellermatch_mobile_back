@@ -50,18 +50,62 @@ public class ProfileRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
         BooleanBuilder orderBuilder = new BooleanBuilder();
 
+        // 판매자리스트페이지 노출 조건
         if (!Util.isEmpty(profile.getProfileSort())){
             // 프로필 유형 - 판매자 : 2
             builder.and(qProfile.profileSort.eq(profile.getProfileSort()));
             // 회원 이메일인증(신원인증) - 인증 : 1
             //builder.and(qMember.memRname.eq("1"));
         }
+
+        // 사업자유형 필터
+        if (!Util.isEmpty(profile.getProfileBizSortArr())){
+            builder.and(qProfile.profileBizSort.in(profile.getProfileBizSortArr()));
+        }
+        // 채널검증 필터
+        if (!Util.isEmpty(profile.getProfileChChk())){
+            builder.and(qProfile.profileChChk.eq(profile.getProfileChChk()));
+        }
+        // 매출검증 필터
+        if (!Util.isEmpty(profile.getProfileSaleChk())){
+            builder.and(qProfile.profileSaleChk.eq(profile.getProfileSaleChk()));
+        }
+        // 사업자인증 필터
+        if (!Util.isEmpty(profile.getProfileBizCerti())){
+            builder.and(qProfile.profileBizCerti.eq(profile.getProfileBizCerti()));
+        }
+        // 지역 필터
+        if (!Util.isEmpty(profile.getProfileNationArr())) {
+            builder.and(qProfile.profileNation.in(profile.getProfileNationArr()));
+        }
+        // 상품분류 필터
+        if (!Util.isEmpty(profile.getProfileIndusArr())) {
+            builder.and(qProfile.profileIndus.in(profile.getProfileIndusArr()));
+        }
+        // 판매채널 필터
+        if (!Util.isEmpty(profile.getProfileChannelArr())) {
+            BooleanBuilder builder2 = new BooleanBuilder();
+            for (int i=0; i < profile.getProfileChannelArr().length; i++){
+                builder2.or(qProfile.profileCh.contains(profile.getProfileChannelArr()[i]));
+            }
+            builder.and(builder2);
+        }
+        // 판매경력
+        if (!Util.isEmpty(profile.getProfileCareerArr())){
+            builder.and(qProfile.profileCareer.in(profile.getProfileCareerArr()));
+        }
+
+        // 매출규모
+        if (!Util.isEmpty(profile.getProfileVolumeArr())) {
+            //if (profile.getProfileVolumeArr())
+            builder.and(qProfile.profileVolume.goe(0));
+        }
+
+        // 검색 필터
         if (!Util.isEmpty(keyword)){
             builder.and(
                     qMember.memNick.contains(keyword)
-                            .or(
-                                    qProfile.profileIndus.contains(keyword)
-                            )
+                    .or(qProfile.profileIndus.contains(keyword))
             );
         }
 
@@ -183,7 +227,6 @@ public class ProfileRepositoryCustom {
                 .from(qProfile)
                 .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
                 .join(qIndus).on(qProfile.profileIndus.eq(qIndus.indusId))
-                .join(qApply).on(qProfile.profileMemId.eq(qApply.applyMemId))
                 .where(builder)
                 .orderBy(getSortedColumn(pageable.getSort(), qProfile, qApply))
                 .offset(pageable.getOffset())
