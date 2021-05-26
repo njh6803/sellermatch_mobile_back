@@ -8,6 +8,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sellermatch.process.apply.domain.QApply;
 import com.sellermatch.process.hashtag.domain.QHashtag;
@@ -25,14 +26,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Repository
 public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
 
     public Page<Profile> findAllSeller(Profile profile, Pageable pageable) {
+        profile.setProfileSort("2");
         QProfile qProfile = QProfile.profile;
         // 조인
         QMember qMember = QMember.member;
@@ -47,114 +47,22 @@ public class ProfileRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (!Util.isEmpty(profile.getProfileSort())){
+            // 프로필 유형 - 판매자 : 2
             builder.and(qProfile.profileSort.eq(profile.getProfileSort()));
+            // 회원 이메일인증(신원인증) - 인증 : 1
+            //builder.and(qMember.memRname.eq("1"));
         }
         if (!Util.isEmpty(profile.getMemNick()) || !Util.isEmpty(profile.getProfileIntro())){
-
+            builder.and(
+                    qMember.memNick.contains(profile.getMemNick())
+                            .or(
+                                    qProfile.profileIndus.contains(profile.getProfileIndus())
+                            )
+            );
         }
+        JPAQuery jpaQuery = getProfileList(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, builder, pageable);
 
-        List<Profile> jpaQuery = query.select(Projections.fields(Profile.class,
-                                                        qProfile.profileIdx,
-                                                        qProfile.profileId,
-                                                        qProfile.profileMemId,
-                                                        qProfile.profileIntro,
-                                                        qProfile.profileChChk,
-                                                        qProfile.profileCareer,
-                                                        qProfile.profile.profileSaleChk,
-                                                        qProfile.profileNation,
-                                                        qProfile.profileBizSort,
-                                                        qProfile.profileBizCerti,
-                                                        qProfile.profileCh,
-                                                        qProfile.profileIndus,
-                                                        qProfile.profilePhoto,
-                                                        qProfile.profileState,
-                                                        qProfile.profileRegDate,
-                                                        qProfile.profileEditDate,
-                                                        qProfile.profileSort,
-                                                        qProfile.profileVolume,
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qIndus.indusName)
-                                                                        .from(qIndus)
-                                                                        .where(qIndus.indusId.eq(qProfile.profileIndus))
-                                                                ,"profileIndusName"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qProject.projIdx.count())
-                                                                .from(qProject)
-                                                                .where(qProject.projMemId.eq(qProfile.profileMemId))
-                                                                ,"projAddCount"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qApply.applyIdx.count())
-                                                                        .from(qApply)
-                                                                        .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                                                        .where(qApply.applyType.eq("2"))
-                                                                ,"recommendCount"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qApply.applyIdx.count())
-                                                                        .from(qApply)
-                                                                        .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                                                        .where(qApply.applyProjState.eq("5"))
-                                                                ,"contractCount"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qHashtaglist.hashNm)
-                                                                .from(qHashtaglist)
-                                                                .where(qHashtaglist.hashId.eq(
-                                                                        query.select(qHashtag.hashTag1)
-                                                                        .from(qHashtag)
-                                                                        .where(qHashtag.id.eq(qProfile.profileId))
-                                                                )), "hashTag1"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qHashtaglist.hashNm)
-                                                                        .from(qHashtaglist)
-                                                                        .where(qHashtaglist.hashId.eq(
-                                                                                query.select(qHashtag.hashTag2)
-                                                                                        .from(qHashtag)
-                                                                                        .where(qHashtag.id.eq(qProfile.profileId))
-                                                                        )), "hashTag2"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qHashtaglist.hashNm)
-                                                                        .from(qHashtaglist)
-                                                                        .where(qHashtaglist.hashId.eq(
-                                                                                query.select(qHashtag.hashTag3)
-                                                                                        .from(qHashtag)
-                                                                                        .where(qHashtag.id.eq(qProfile.profileId))
-                                                                        )), "hashTag3"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qHashtaglist.hashNm)
-                                                                        .from(qHashtaglist)
-                                                                        .where(qHashtaglist.hashId.eq(
-                                                                                query.select(qHashtag.hashTag4)
-                                                                                        .from(qHashtag)
-                                                                                        .where(qHashtag.id.eq(qProfile.profileId))
-                                                                        )), "hashTag4"
-                                                        ),
-                                                        ExpressionUtils.as(
-                                                                JPAExpressions.select(qHashtaglist.hashNm)
-                                                                        .from(qHashtaglist)
-                                                                        .where(qHashtaglist.hashId.eq(
-                                                                                query.select(qHashtag.hashTag5)
-                                                                                        .from(qHashtag)
-                                                                                        .where(qHashtag.id.eq(qProfile.profileId))
-                                                                        )), "hashTag5"
-                                                        ),
-                                                        qMember.memNick,
-                                                        qMember.memRname,
-                                                        qMember.memState))
-                                                    .from(qProfile)
-                                                    .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
-                                                    .where(builder)
-                                                    .orderBy(getSortedColumn(pageable.getSort(), qProfile))
-                                                    .offset(pageable.getOffset())
-                                                    .limit(pageable.getPageSize())
-                                                    .fetch();
-//        return jpaQuery;
-        return new PageImpl<>(jpaQuery, pageable, jpaQuery.size());
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
     private OrderSpecifier<?>[] getSortedColumn(Sort sorts, QProfile qProfile){
@@ -165,4 +73,112 @@ public class ProfileRepositoryCustom {
         }).toArray(OrderSpecifier[]::new);
     }
 
+    private JPAQuery getProfileList(QProfile qProfile, QMember qMember,
+                                         QProject qProject, QApply qApply,
+                                         QHashtag qHashtag, QHashtaglist qHashtaglist,
+                                         QIndus qIndus, BooleanBuilder builder,
+                                         Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Profile.class,
+                qProfile.profileIdx,
+                qProfile.profileId,
+                qProfile.profileMemId,
+                qProfile.profileIntro,
+                qProfile.profileChChk,
+                qProfile.profileCareer,
+                qProfile.profile.profileSaleChk,
+                qProfile.profileNation,
+                qProfile.profileBizSort,
+                qProfile.profileBizCerti,
+                qProfile.profileCh,
+                qProfile.profileIndus,
+                qProfile.profilePhoto,
+                qProfile.profileState,
+                qProfile.profileRegDate,
+                qProfile.profileEditDate,
+                qProfile.profileSort,
+                qProfile.profileVolume,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qIndus.indusName)
+                                .from(qIndus)
+                                .where(qIndus.indusId.eq(qProfile.profileIndus))
+                        ,"profileIndusName"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qProject.projIdx.count())
+                                .from(qProject)
+                                .where(qProject.projMemId.eq(qProfile.profileMemId))
+                        ,"projAddCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
+                                .where(qApply.applyType.eq("2"))
+                        ,"recommendCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
+                                .where(qApply.applyProjState.eq("5"))
+                        ,"contractCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag1)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProfile.profileId))
+                                )), "hashTag1"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag2)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProfile.profileId))
+                                )), "hashTag2"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag3)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProfile.profileId))
+                                )), "hashTag3"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag4)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProfile.profileId))
+                                )), "hashTag4"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag5)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProfile.profileId))
+                                )), "hashTag5"
+                ),
+                qMember.memNick,
+                qMember.memRname,
+                qMember.memState))
+                .from(qProfile)
+                .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
+                .join(qIndus).on(qProfile.profileIndus.eq(qIndus.indusId))
+                .where(builder)
+                .orderBy(getSortedColumn(pageable.getSort(), qProfile))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return jpaQuery;
+    }
 }
