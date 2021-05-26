@@ -6,6 +6,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Repository;
 public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
 
-    public Page<Profile> findAllSeller(Profile profile, Pageable pageable) {
+    public Page<Profile> findAllSeller(Profile profile, Pageable pageable, String keyword) {
         profile.setProfileSort("2");
         QProfile qProfile = QProfile.profile;
         // 조인
@@ -44,7 +45,10 @@ public class ProfileRepositoryCustom {
         QApply qApply = QApply.apply;
         QIndus qIndus = QIndus.indus;
 
+        pageable.getSort();
+
         BooleanBuilder builder = new BooleanBuilder();
+        BooleanBuilder orderBuilder = new BooleanBuilder();
 
         if (!Util.isEmpty(profile.getProfileSort())){
             // 프로필 유형 - 판매자 : 2
@@ -52,23 +56,28 @@ public class ProfileRepositoryCustom {
             // 회원 이메일인증(신원인증) - 인증 : 1
             //builder.and(qMember.memRname.eq("1"));
         }
-        if (!Util.isEmpty(profile.getMemNick()) || !Util.isEmpty(profile.getProfileIntro())){
+        if (!Util.isEmpty(keyword)){
             builder.and(
-                    qMember.memNick.contains(profile.getMemNick())
+                    qMember.memNick.contains(keyword)
                             .or(
-                                    qProfile.profileIndus.contains(profile.getProfileIndus())
+                                    qProfile.profileIndus.contains(keyword)
                             )
             );
         }
+
         JPAQuery jpaQuery = getProfileList(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, builder, pageable);
 
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
-    private OrderSpecifier<?>[] getSortedColumn(Sort sorts, QProfile qProfile){
+    private OrderSpecifier[] getSortedColumn(Sort sorts, QProfile qProfile, QApply qApply){
         return sorts.toList().stream().map(x ->{
             Order order = x.getDirection().name() == "ASC"? Order.ASC : Order.DESC;
             SimplePath<Object> filedPath = Expressions.path(Object.class, qProfile, x.getProperty());
+            if (x.getProperty().equalsIgnoreCase("recommendCount")){
+                NumberPath<Long> aliasQuantity = Expressions.numberPath(Long.class, "recommendCount");
+                return new OrderSpecifier(order, aliasQuantity);
+            }
             return new OrderSpecifier(order, filedPath);
         }).toArray(OrderSpecifier[]::new);
     }
@@ -85,7 +94,7 @@ public class ProfileRepositoryCustom {
                 qProfile.profileIntro,
                 qProfile.profileChChk,
                 qProfile.profileCareer,
-                qProfile.profile.profileSaleChk,
+                qProfile.profileSaleChk,
                 qProfile.profileNation,
                 qProfile.profileBizSort,
                 qProfile.profileBizCerti,
@@ -174,8 +183,9 @@ public class ProfileRepositoryCustom {
                 .from(qProfile)
                 .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
                 .join(qIndus).on(qProfile.profileIndus.eq(qIndus.indusId))
+                .join(qApply).on(qProfile.profileMemId.eq(qApply.applyMemId))
                 .where(builder)
-                .orderBy(getSortedColumn(pageable.getSort(), qProfile))
+                .orderBy(getSortedColumn(pageable.getSort(), qProfile, qApply))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
