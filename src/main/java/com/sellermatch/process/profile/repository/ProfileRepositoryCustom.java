@@ -32,7 +32,7 @@ import org.springframework.stereotype.Repository;
 public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
 
-    public Page<Profile> findAllSeller(Profile profile, Pageable pageable, String keyword) {
+    public Page<Profile> findAllSeller(Profile profile, Pageable pageable, String search) {
         profile.setProfileSort("2");
         QProfile qProfile = QProfile.profile;
         // 조인
@@ -97,15 +97,32 @@ public class ProfileRepositoryCustom {
 
         // 매출규모
         if (!Util.isEmpty(profile.getProfileVolumeArr())) {
-            //if (profile.getProfileVolumeArr())
-            builder.and(qProfile.profileVolume.goe(0));
+            BooleanBuilder builder2 = new BooleanBuilder();
+            for (int i = 0; i < profile.getProfileVolumeArr().length; i++) {
+                if (profile.getProfileVolumeArr()[i].equalsIgnoreCase("1")){
+                    builder2.or(qProfile.profileVolume.lt(10000000));
+                }
+                if (profile.getProfileVolumeArr()[i].equalsIgnoreCase("2")){
+                    builder2.or(qProfile.profileVolume.goe(10000000).and(qProfile.profileVolume.lt(30000000)));
+                }
+                if (profile.getProfileVolumeArr()[i].equalsIgnoreCase("3")){
+                    builder2.or(qProfile.profileVolume.goe(30000000).and(qProfile.profileVolume.lt(50000000)));
+                }
+                if (profile.getProfileVolumeArr()[i].equalsIgnoreCase("4")){
+                    builder2.or(qProfile.profileVolume.goe(50000000).and(qProfile.profileVolume.loe(100000000)));
+                }
+                if (profile.getProfileVolumeArr()[i].equalsIgnoreCase("5")){
+                    builder2.or(qProfile.profileVolume.gt(100000000));
+                }
+            }
+            builder.and(builder2);
         }
 
         // 검색 필터
-        if (!Util.isEmpty(keyword)){
+        if (!Util.isEmpty(search)){
             builder.and(
-                    qMember.memNick.contains(keyword)
-                    .or(qProfile.profileIndus.contains(keyword))
+                    qMember.memNick.contains(search)
+                    .or(qProfile.profileIntro.contains(search))
             );
         }
 
