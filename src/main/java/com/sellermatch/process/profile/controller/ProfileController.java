@@ -1,16 +1,12 @@
 package com.sellermatch.process.profile.controller;
 
-import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
-import com.sellermatch.process.hashtag.repository.HashtagRepository;
-import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
-import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,10 +22,6 @@ public class ProfileController {
     private final ProfileRepository profileRepository;
     private final ProfileService profileService;
     private final ProfileRepositoryCustom profileRepositoryCustom;
-    private final ProjectRepository projectRepository;
-    private final ApplyRepository applyRepository;
-    private final HashtagRepository hashtagRepository;
-    private final HashtaglistRepository hashtaglistRepository;
 
     @GetMapping("/profile/{id}")
     public CommonDTO selectProfile(@PathVariable Integer id) {

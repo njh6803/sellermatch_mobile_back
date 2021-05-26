@@ -6,23 +6,24 @@ import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
+import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.project.service.ProjectService;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
 public class ProjectController {
-    @Autowired
-    public ProjectRepository projectRepository;
 
-    @Autowired
-    public ProjectService projectService;
+    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
+    private final ProjectRepositoryCustom projectRepositoryCustom;
 
     @GetMapping("/project")
     public CommonDTO selectProject() {
@@ -33,9 +34,10 @@ public class ProjectController {
     }
 
     @GetMapping("/project/list")
-    public CommonDTO selectProjectList(Pageable pageable) {
+    public CommonDTO selectProjectList(Pageable pageable, Project project, String search) {
         CommonDTO result = new CommonDTO();
-        result.setContent(projectRepository.findAll(pageable));
+        Page<Project> projectList = projectRepositoryCustom.findAllProject(project, pageable, search);
+        result.setContent(projectList);
         return result;
     }
 

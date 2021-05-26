@@ -91,4 +91,35 @@ public class Project {
 
     @Column(name = "proj_profit_chk_date")
     private Date projProfitChkDate;
+
+    /** 필터를 위한 배열 */
+    @Transient
+    private String[] projSortArr;
+    @Transient
+    private String[] projNationArr;
+    @Transient
+    private String[] projIndusArr;
+    @Transient
+    private String[] projPriceArr;
+    @Transient
+    private Integer[] projMarginArr;
+    @Transient
+    private String[] projSupplyTypeArr;
+    @Transient
+    private String[] projChannelArr;
+
+    /** 공급자검증 필터를 위한 변수*/
+    @Transient
+    private String sMemRname;
+    @Transient
+    private String sBizCerti;
+    /** 판매자검증 필터를 위한 변수*/
+    @Transient
+    private String pMemRname;
+    @Transient
+    private String pBizCerti;
+    @Transient
+    private String sellerChChk;
+    @Transient
+    private String sellerSaleChk;
 }

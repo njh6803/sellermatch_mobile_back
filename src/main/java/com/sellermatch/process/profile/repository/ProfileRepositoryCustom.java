@@ -33,7 +33,6 @@ public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
 
     public Page<Profile> findAllSeller(Profile profile, Pageable pageable, String search) {
-        profile.setProfileSort("2");
         QProfile qProfile = QProfile.profile;
         // 조인
         QMember qMember = QMember.member;
@@ -45,12 +44,10 @@ public class ProfileRepositoryCustom {
         QApply qApply = QApply.apply;
         QIndus qIndus = QIndus.indus;
 
-        pageable.getSort();
-
         BooleanBuilder builder = new BooleanBuilder();
-        BooleanBuilder orderBuilder = new BooleanBuilder();
 
-        // 판매자리스트페이지 노출 조건
+        // 판매자리스트페이지 노출 필수조건
+        profile.setProfileSort("2");
         if (!Util.isEmpty(profile.getProfileSort())){
             // 프로필 유형 - 판매자 : 2
             builder.and(qProfile.profileSort.eq(profile.getProfileSort()));
