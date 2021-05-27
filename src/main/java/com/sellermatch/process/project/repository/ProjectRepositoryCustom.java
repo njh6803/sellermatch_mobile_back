@@ -12,6 +12,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sellermatch.process.apply.domain.QApply;
+import com.sellermatch.process.file.domain.QFile;
 import com.sellermatch.process.hashtag.domain.QHashtag;
 import com.sellermatch.process.hashtag.domain.QHashtaglist;
 import com.sellermatch.process.indus.domain.QIndus;
@@ -31,20 +32,25 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProjectRepositoryCustom {
     private final JPAQueryFactory query;
+    private final QProject qProject = QProject.project;
+
+    // 조인
+    private final QMember qMember = QMember.member;
+    private final QProfile qProfile = QProfile.profile;
+    private final QFile qFile = QFile.file;
+
+    // 서브쿼리
+    private final QHashtag qHashtag = QHashtag.hashtag;
+    private final QHashtaglist qHashtaglist = QHashtaglist.hashtaglist;
+    private final QApply qApply = QApply.apply;
+    private final QIndus qIndus = QIndus.indus;
+
+    public Project findProject(Integer projectIdx) {
+        Project project = getProject(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, qFile, projectIdx);
+        return project;
+    }
 
     public Page<Project> findAllProject(Project project, Pageable pageable, String search) {
-        QProject qProject = QProject.project;
-
-        // 조인
-        QMember qMember = QMember.member;
-        QProfile qProfile = QProfile.profile;
-
-        // 서브쿼리
-        QHashtag qHashtag = QHashtag.hashtag;
-        QHashtaglist qHashtaglist = QHashtaglist.hashtaglist;
-        QApply qApply = QApply.apply;
-        QIndus qIndus = QIndus.indus;
-
         BooleanBuilder builder = new BooleanBuilder();
 
         // 거래처매칭페이지 노출 필수조건
@@ -153,6 +159,130 @@ public class ProjectRepositoryCustom {
             }
             return new OrderSpecifier(order, filedPath);
         }).toArray(OrderSpecifier[]::new);
+    }
+
+    private Project getProject(QProfile qProfile, QMember qMember,
+                                    QProject qProject, QApply qApply,
+                                    QHashtag qHashtag, QHashtaglist qHashtaglist,
+                                    QIndus qIndus, QFile qFile, Integer projectIdx) {
+
+        Project project = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projMemId,
+                qProject.projTitle,
+                qProject.projSort,
+                qProject.projIndus,
+                qProject.projPrice,
+                qProject.projMargin,
+                qProject.projNation,
+                qProject.projSupplyType,
+                qProject.projRecruitNum,
+                qProject.projDetail,
+                qProject.projThumbnailImg,
+                qProject.projProdCerti,
+                qProject.projState,
+                qProject.projRegDate,
+                qProject.projEndDate,
+                qProject.projProfit,
+                qProject.projChannel,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qFile.orginName)
+                                .from(qFile)
+                                .where(qFile.filePath.eq(qProject.projFile))
+                        ,"originName"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qIndus.indusName)
+                                .from(qIndus)
+                                .where(qIndus.indusId.eq(qProject.projIndus))
+                        ,"projIndusName"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qProject.projIdx.count())
+                                .from(qProject)
+                                .where(qProject.projMemId.eq(qProfile.profileMemId))
+                        ,"projAddCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId)
+                                        .and(qApply.applyProjState.eq("4")))
+                        ,"okeyCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId)
+                                .and(qApply.applyProjState.eq("5")))
+                        ,"contractCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag1)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProject.projId))
+                                )), "hashTag1"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag2)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProject.projId))
+                                )), "hashTag2"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag3)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProject.projId))
+                                )), "hashTag3"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag4)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProject.projId))
+                                )), "hashTag4"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qHashtaglist.hashNm)
+                                .from(qHashtaglist)
+                                .where(qHashtaglist.hashId.eq(
+                                        query.select(qHashtag.hashTag5)
+                                                .from(qHashtag)
+                                                .where(qHashtag.id.eq(qProject.projId))
+                                )), "hashTag5"
+                ),
+                qProfile.profileChChk,
+                qProfile.profileSaleChk,
+                qProfile.profileBizCerti,
+                qProfile.profilePhoto,
+                qProfile.profileIntro,
+                qMember.memNick,
+                qMember.memRname))
+                .from(qProject)
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .join(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
+                .join(qIndus).on(qProject.projIndus.eq(qIndus.indusId))
+                .where(qProject.projIdx.eq(projectIdx)).fetchOne();
+
+        return project;
     }
 
     private JPAQuery getProjectList(QProfile qProfile, QMember qMember,

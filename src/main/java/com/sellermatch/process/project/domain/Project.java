@@ -111,4 +111,27 @@ public class Project {
     private String[] projectProjectAuthArr;
     @Transient
     private String[] sellerProjectAuthArr;
+
+    @Transient
+    private String originName;
+    @Transient
+    private String profileChChk;
+    @Transient
+    private String profileSaleChk;
+    @Transient
+    private String profileBizCerti;
+    @Transient
+    private String profilePhoto;
+    @Transient
+    private String memNick;
+    @Transient
+    private String memRname;
+    @Transient
+    private Long projAddCount;
+    @Transient
+    private Long contractCount;
+    @Transient
+    private Long applyCount;
+    @Transient
+    private Long okeyCount;
 }

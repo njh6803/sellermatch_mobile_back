@@ -32,7 +32,9 @@ import org.springframework.stereotype.Repository;
 public class ProfileRepositoryCustom {
     private final JPAQueryFactory query;
     private final QProfile qProfile = QProfile.profile;
+    //조인
     private final QMember qMember = QMember.member;
+    // 서브쿼리
     private final QHashtag qHashtag = QHashtag.hashtag;
     private final QHashtaglist qHashtaglist = QHashtaglist.hashtaglist;
     private final QProject qProject = QProject.project;
