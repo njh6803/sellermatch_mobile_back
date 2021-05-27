@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface ProjectRepository extends PagingAndSortingRepository<Project, Integer> {
 
     Page<Project> findAll(Pageable pageable);
 
-    int countByProjMemId(String profile_mem_id);
+    List<Project> findAllByProjMemId(String projMemId);
 }

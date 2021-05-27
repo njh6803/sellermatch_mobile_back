@@ -143,6 +143,8 @@ public class Profile {
     private String[] profileCareerArr;
     @Transient
     private String[] profileVolumeArr;
+    @Transient
+    private String[]  profileSellerAuthArr;
 
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){

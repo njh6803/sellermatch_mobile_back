@@ -107,19 +107,8 @@ public class Project {
     private String[] projSupplyTypeArr;
     @Transient
     private String[] projChannelArr;
-
-    /** 공급자검증 필터를 위한 변수*/
     @Transient
-    private String sMemRname;
+    private String[] projectProjectAuthArr;
     @Transient
-    private String sBizCerti;
-    /** 판매자검증 필터를 위한 변수*/
-    @Transient
-    private String pMemRname;
-    @Transient
-    private String pBizCerti;
-    @Transient
-    private String sellerChChk;
-    @Transient
-    private String sellerSaleChk;
+    private String[] sellerProjectAuthArr;
 }

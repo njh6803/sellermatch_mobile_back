@@ -82,53 +82,52 @@ public class ProjectRepositoryCustom {
             }
             builder.and(builder2);
         }
-        // 공통 필터 - 신원인증
-        if (!Util.isEmpty(project.getPMemRname()) && !Util.isEmpty(project.getSMemRname())) {
-            builder.and(qMember.memRname.eq("1"));
-        } else {
-            // 공급자검증 필터 - 신원인증
-            if (!Util.isEmpty(project.getPMemRname())) {
-                builder.and(qMember.memRname.eq(project.getPMemRname())
-                        .and(qProject.projSort.eq("1")));
-            }
-            // 판매자검증 필터 - 신원인증
-            if (!Util.isEmpty(project.getSMemRname())) {
-                builder.and(qMember.memRname.eq(project.getSMemRname())
-                        .and(qProject.projSort.eq("2")));
-            }
-        }
-        // 공통 필터 - 사업자인증
-        if (!Util.isEmpty(project.getPBizCerti()) && !Util.isEmpty(project.getSBizCerti())) {
-            builder.and(qProfile.profileBizCerti.eq("1"));
-        } else {
-            // 공급자검증 필터 - 사업자인증
-            if (!Util.isEmpty(project.getPBizCerti())) {
-                builder.and(qProfile.profileBizCerti.eq(project.getPBizCerti())
-                        .and(qProject.projSort.eq("1")));
-            }
-            // 판매자검증 필터 - 사업자인증
-            if (!Util.isEmpty(project.getSBizCerti())) {
-                builder.and(qProfile.profileBizCerti.eq(project.getSBizCerti())
-                        .and(qProject.projSort.eq("2")));
+        // 공급자검증 필터
+        if (!Util.isEmpty(project.getProjectProjectAuthArr())) {
+            for (int i=0; i < project.getProjectProjectAuthArr().length; i++){
+                // 신원인증
+                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("1")){
+                    builder.and(qMember.memRname.eq("1")
+                            .and(qProject.projSort.eq("1")));
+                }
+                // 사업자인증
+                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("2")){
+                    builder.and(qProfile.profileBizCerti.eq("1")
+                            .and(qProject.projSort.eq("1")));
+                }
+                // 상품검증
+                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("3")){
+                    builder.and(qProject.projProdCerti.eq("1"));
+                }
+                // 수익성검증
+                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("4")){
+                    builder.and(qProject.projProfit.eq("1"));
+                }
             }
         }
 
-        // 공급자검증 필터- 상품검증
-        if (!Util.isEmpty(project.getProjProdCerti())) {
-            builder.and(qProject.projProdCerti.eq(project.getProjProdCerti()));
-        }
-        // 공급자검증 필터 - 수익성검증
-        if (!Util.isEmpty(project.getProjProfit())) {
-            builder.and(qProject.projProfit.eq(project.getProjProfit()));
-        }
-
-        // 판매자검증 필터 - 매출검증
-        if (!Util.isEmpty(project.getSellerSaleChk())){
-            builder.and(qProfile.profileSaleChk.eq(project.getSellerSaleChk()));
-        }
-        // 판매자검증 필터 - 채널검증
-        if (!Util.isEmpty(project.getSellerChChk())) {
-            builder.and(qProfile.profileChChk.eq(project.getSellerChChk()));
+        // 판매자검증 필터
+        if (!Util.isEmpty(project.getSellerProjectAuthArr())) {
+            for (int i=0; i < project.getSellerProjectAuthArr().length; i++){
+                // 신원인증
+                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("1")){
+                    builder.and(qMember.memRname.eq("1")
+                            .and(qProject.projSort.eq("2")));
+                }
+                // 사업자인증
+                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("2")){
+                    builder.and(qProfile.profileBizCerti.eq("1")
+                            .and(qProject.projSort.eq("2")));
+                }
+                // 매출검증
+                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("3")){
+                    builder.and(qProfile.profileSaleChk.eq("1"));
+                }
+                // 채널검증
+                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("4")){
+                    builder.and(qProfile.profileChChk.eq("1"));
+                }
+            }
         }
 
         // 검색 필터
