@@ -89,48 +89,48 @@ public class ProjectRepositoryCustom {
             builder.and(builder2);
         }
         // 공급자검증 필터
-        if (!Util.isEmpty(project.getProjectProjectAuthArr())) {
-            for (int i=0; i < project.getProjectProjectAuthArr().length; i++){
+        if (!Util.isEmpty(project.getProjectSupplyAuthArr())) {
+            for (int i=0; i < project.getProjectSupplyAuthArr().length; i++){
                 // 신원인증
-                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("1")){
+                if (project.getProjectSupplyAuthArr()[i].equalsIgnoreCase("1")){
                     builder.and(qMember.memRname.eq("1")
                             .and(qProject.projSort.eq("1")));
                 }
                 // 사업자인증
-                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("2")){
+                if (project.getProjectSupplyAuthArr()[i].equalsIgnoreCase("2")){
                     builder.and(qProfile.profileBizCerti.eq("1")
                             .and(qProject.projSort.eq("1")));
                 }
                 // 상품검증
-                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("3")){
+                if (project.getProjectSupplyAuthArr()[i].equalsIgnoreCase("3")){
                     builder.and(qProject.projProdCerti.eq("1"));
                 }
                 // 수익성검증
-                if (project.getProjectProjectAuthArr()[i].equalsIgnoreCase("4")){
+                if (project.getProjectSupplyAuthArr()[i].equalsIgnoreCase("4")){
                     builder.and(qProject.projProfit.eq("1"));
                 }
             }
         }
 
         // 판매자검증 필터
-        if (!Util.isEmpty(project.getSellerProjectAuthArr())) {
-            for (int i=0; i < project.getSellerProjectAuthArr().length; i++){
+        if (!Util.isEmpty(project.getProjectSellerAuthArr())) {
+            for (int i=0; i < project.getProjectSellerAuthArr().length; i++){
                 // 신원인증
-                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("1")){
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("1")){
                     builder.and(qMember.memRname.eq("1")
                             .and(qProject.projSort.eq("2")));
                 }
                 // 사업자인증
-                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("2")){
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("2")){
                     builder.and(qProfile.profileBizCerti.eq("1")
                             .and(qProject.projSort.eq("2")));
                 }
                 // 매출검증
-                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("3")){
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("3")){
                     builder.and(qProfile.profileSaleChk.eq("1"));
                 }
                 // 채널검증
-                if (project.getSellerProjectAuthArr()[i].equalsIgnoreCase("4")){
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("4")){
                     builder.and(qProfile.profileChChk.eq("1"));
                 }
             }

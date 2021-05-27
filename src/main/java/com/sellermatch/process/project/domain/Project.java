@@ -108,9 +108,9 @@ public class Project {
     @Transient
     private String[] projChannelArr;
     @Transient
-    private String[] projectProjectAuthArr;
+    private String[] projectSupplyAuthArr;
     @Transient
-    private String[] sellerProjectAuthArr;
+    private String[] projectSellerAuthArr;
 
     @Transient
     private String originName;

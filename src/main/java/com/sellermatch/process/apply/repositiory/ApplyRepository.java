@@ -9,4 +9,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integer> {
 
     Page<Apply> findAll(Pageable pageable);
+
 }

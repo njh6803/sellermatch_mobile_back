@@ -1,5 +1,7 @@
 package com.sellermatch.process.project.controller;
 
+import com.sellermatch.process.apply.domain.Apply;
+import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
@@ -29,21 +31,31 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final ReplyRepositoryCustom replyRepositoryCustom;
+    private final ApplyRepositoryCustom applyRepositoryCustom;
 
     @GetMapping("/project/{id}")
     public List<CommonDTO> selectProject(@PathVariable Integer id, Pageable pageable) {
         List<CommonDTO> result = new ArrayList<>();
         CommonDTO commonDTO1 = new CommonDTO();
         CommonDTO commonDTO2 = new CommonDTO();
+        CommonDTO commonDTO3 = new CommonDTO();
         Project project = projectRepositoryCustom.findProject(id);
         if (project != null) {
+            // 프로젝트
             commonDTO1.setContent(project);
             result.add(commonDTO1);
+            // 댓글리스트
             Reply reply = new Reply();
             reply.setReplyProjId(project.getProjId());
             Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
             commonDTO2.setContent(replyList);
             result.add(commonDTO2);
+            // 지원자리스트
+            Apply apply = new Apply();
+            apply.setApplyProjId(project.getProjId());
+            Page<Apply> applyList = applyRepositoryCustom.getApplyList(apply, pageable);
+            commonDTO3.setContent(applyList);
+            result.add(commonDTO3);
         } else {
             commonDTO1.setResult("ERROR");
             commonDTO1.setStatus(CommonConstant.ERROR_998);
