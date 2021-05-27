@@ -9,8 +9,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integer> {
 
     Page<Apply> findAll(Pageable pageable);
-
-    int countByApplyMemIdAndApplyType(String memId, String applyType);
-
-    int countByApplyMemIdAndApplyProjState(String memId, String applyProjState);
 }

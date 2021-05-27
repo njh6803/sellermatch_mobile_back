@@ -8,13 +8,17 @@ import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.project.service.ProjectService;
+import com.sellermatch.process.reply.domain.Reply;
+import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,12 +28,28 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
+    private final ReplyRepositoryCustom replyRepositoryCustom;
 
-    @GetMapping("/project")
-    public CommonDTO selectProject() {
-        CommonDTO result = new CommonDTO();
-        Pageable pageable = PageRequest.of(0,1);
-        result.setContent(projectRepository.findAll(pageable));
+    @GetMapping("/project/{id}")
+    public List<CommonDTO> selectProject(@PathVariable Integer id, Pageable pageable) {
+        List<CommonDTO> result = new ArrayList<>();
+        CommonDTO commonDTO1 = new CommonDTO();
+        CommonDTO commonDTO2 = new CommonDTO();
+        Project project = projectRepositoryCustom.findProject(id);
+        if (project != null) {
+            commonDTO1.setContent(project);
+            result.add(commonDTO1);
+            Reply reply = new Reply();
+            reply.setReplyProjId(project.getProjId());
+            Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
+            commonDTO2.setContent(replyList);
+            result.add(commonDTO2);
+        } else {
+            commonDTO1.setResult("ERROR");
+            commonDTO1.setStatus(CommonConstant.ERROR_998);
+            commonDTO1.setContent(new Profile());
+            result.add(commonDTO1);
+        }
         return result;
     }
 

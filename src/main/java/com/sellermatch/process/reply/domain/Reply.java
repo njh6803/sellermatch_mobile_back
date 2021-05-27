@@ -20,6 +20,9 @@ public class Reply {
     @Column(name = "reply_parent")
     private Integer replyParent;
 
+    @Column(name = "reply_writer")
+    private String replyWriter;
+
     @Column(name = "reply_contents")
     private String replyContents;
 
@@ -43,4 +46,7 @@ public class Reply {
 
     @Column(name = "reply_parent_mem_id")
     private String replyParentMemId;
+
+    @Transient
+    private String replyParentNick;
 }
