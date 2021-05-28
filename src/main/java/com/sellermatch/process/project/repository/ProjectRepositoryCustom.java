@@ -186,6 +186,7 @@ public class ProjectRepositoryCustom {
                 qProject.projEndDate,
                 qProject.projProfit,
                 qProject.projChannel,
+                qProject.projFile,
                 ExpressionUtils.as(
                         JPAExpressions.select(qFile.orginName)
                                 .from(qFile)
