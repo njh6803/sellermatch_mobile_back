@@ -1,5 +1,7 @@
 package com.sellermatch.process.project.domain;
 
+import com.sellermatch.util.Util;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -134,4 +136,42 @@ public class Project {
     private Long applyCount;
     @Transient
     private Long okeyCount;
+
+    @Transient
+    private String hashTag1;
+
+    @Transient
+    private String hashTag2;
+
+    @Transient
+    private String hashTag3;
+
+    @Transient
+    private String hashTag4;
+
+    @Transient
+    private String hashTag5;
+
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private String hashtaglist;
+
+    public String getHashtaglist() {
+        if (!Util.isEmpty(this.hashTag1)){
+            hashtaglist = this.hashTag1;
+        }
+        if (!Util.isEmpty(this.hashTag2)){
+            hashtaglist += "," + this.hashTag2;
+        }
+        if (!Util.isEmpty(this.hashTag3)){
+            hashtaglist += "," + this.hashTag3;
+        }
+        if (!Util.isEmpty(this.hashTag4)){
+            hashtaglist += "," + this.hashTag4;
+        }
+        if (!Util.isEmpty(this.hashTag5)){
+            hashtaglist += "," + this.hashTag5;
+        }
+        return hashtaglist;
+    }
 }
