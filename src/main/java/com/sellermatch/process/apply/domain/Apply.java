@@ -40,4 +40,37 @@ public class Apply {
 
     @Column(name = "apply_update_date")
     private Date applyUpdateDate;
+
+    @Transient
+    private Integer memIdx;
+    @Transient
+    private String memSort;
+    @Transient
+    private String memTel;
+    @Transient
+    private String profilePhoto;
+    @Transient
+    private String profileIntro;
+    @Transient
+    private String profileBizSort;
+    @Transient
+    private Integer profileVolume;
+    @Transient
+    private String projId;
+    @Transient
+    private String projTitle;
+    @Transient
+    private String projState;
+    @Transient
+    private Date projRegDate;
+    @Transient
+    private Date projEndDate;
+    @Transient
+    private String profileCh;
+    @Transient
+    private String profileCareer;
+    @Transient
+    private String memNick;
+    @Transient
+    private String applyMemNick;
 }

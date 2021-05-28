@@ -68,12 +68,12 @@ public class ProfileRepositoryCustom {
                 // 신원인증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("1")){
                     builder.and(qMember.memRname.eq("1")
-                            .and(qProject.projSort.eq("2")));
+                            .and(qProfile.profileSort.eq("2")));
                 }
                 // 사업자인증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("2")){
                     builder.and(qProfile.profileBizCerti.eq("1")
-                            .and(qProject.projSort.eq("2")));
+                            .and(qProfile.profileSort.eq("2")));
                 }
                 // 매출검증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("3")){
