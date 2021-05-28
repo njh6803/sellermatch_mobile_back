@@ -75,13 +75,13 @@ public class ProfileRepositoryCustom {
                     builder.and(qProfile.profileBizCerti.eq("1")
                             .and(qProfile.profileSort.eq("2")));
                 }
-                // 매출검증
-                if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("3")){
-                    builder.and(qProfile.profileSaleChk.eq("1"));
-                }
                 // 채널검증
-                if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("4")){
+                if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("3")){
                     builder.and(qProfile.profileChChk.eq("1"));
+                }
+                // 매출검증
+                if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("4")){
+                    builder.and(qProfile.profileSaleChk.eq("1"));
                 }
             }
         }

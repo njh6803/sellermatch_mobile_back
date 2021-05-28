@@ -4,21 +4,25 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
+import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api-v1")
 public class ReplyController {
 
-    @Autowired
-    public ReplyRepository replyRepository;
+    private final ReplyRepository replyRepository;
+    private final ReplyRepositoryCustom replyRepositoryCustom;
 
     @GetMapping("/reply/{id}")
     public CommonDTO selectReply(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
+
         replyRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
@@ -26,6 +30,16 @@ public class ReplyController {
             result.setStatus(CommonConstant.ERROR_998);
             result.setContent(new Reply());
         });
+        return result;
+    }
+
+    @GetMapping("/reply/list/{projId}")
+    public CommonDTO selectReplyList(@PathVariable String projId, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Reply reply = new Reply();
+        reply.setReplyProjId(projId);
+        Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
+        result.setContent(replyList);
         return result;
     }
 

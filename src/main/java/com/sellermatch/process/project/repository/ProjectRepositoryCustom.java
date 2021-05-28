@@ -125,13 +125,13 @@ public class ProjectRepositoryCustom {
                     builder.and(qProfile.profileBizCerti.eq("1")
                             .and(qProject.projSort.eq("2")));
                 }
-                // 매출검증
-                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("3")){
-                    builder.and(qProfile.profileSaleChk.eq("1"));
-                }
                 // 채널검증
-                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("4")){
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("3")){
                     builder.and(qProfile.profileChChk.eq("1"));
+                }
+                // 매출검증
+                if (project.getProjectSellerAuthArr()[i].equalsIgnoreCase("4")){
+                    builder.and(qProfile.profileSaleChk.eq("1"));
                 }
             }
         }

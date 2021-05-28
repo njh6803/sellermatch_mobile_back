@@ -1,7 +1,5 @@
 package com.sellermatch.process.project.controller;
 
-import com.sellermatch.process.apply.domain.Apply;
-import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
@@ -10,17 +8,12 @@ import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.project.service.ProjectService;
-import com.sellermatch.process.reply.domain.Reply;
-import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,38 +23,27 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
-    private final ReplyRepositoryCustom replyRepositoryCustom;
-    private final ApplyRepositoryCustom applyRepositoryCustom;
 
     @GetMapping("/project/{id}")
-    public List<CommonDTO> selectProject(@PathVariable Integer id, Pageable pageable) {
-        List<CommonDTO> result = new ArrayList<>();
-        CommonDTO commonDTO1 = new CommonDTO();
-        CommonDTO commonDTO2 = new CommonDTO();
-        CommonDTO commonDTO3 = new CommonDTO();
+    public CommonDTO selectProject(@PathVariable Integer id, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
         Project project = projectRepositoryCustom.findProject(id);
         if (project != null) {
-            // 프로젝트
-            commonDTO1.setContent(project);
-            result.add(commonDTO1);
-            // 댓글리스트
-            Reply reply = new Reply();
-            reply.setReplyProjId(project.getProjId());
-            Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
-            commonDTO2.setContent(replyList);
-            result.add(commonDTO2);
-            // 지원자리스트
-            Apply apply = new Apply();
-            apply.setApplyProjId(project.getProjId());
-            Page<Apply> applyList = applyRepositoryCustom.getApplyList(apply, pageable);
-            commonDTO3.setContent(applyList);
-            result.add(commonDTO3);
+            result.setContent(project);
         } else {
-            commonDTO1.setResult("ERROR");
-            commonDTO1.setStatus(CommonConstant.ERROR_998);
-            commonDTO1.setContent(new Profile());
-            result.add(commonDTO1);
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Profile());
         }
+        return result;
+    }
+
+    @GetMapping("/project/list/{profileMemId}")
+    public CommonDTO getProject(@PathVariable String profileMemId, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        // 판매이력리스트 - 추후에 페이징처리가 필요할 수 있음
+        Page<Project> project = projectRepository.findAllByProjMemId(profileMemId, pageable);
+        result.setContent(project);
         return result;
     }
 
