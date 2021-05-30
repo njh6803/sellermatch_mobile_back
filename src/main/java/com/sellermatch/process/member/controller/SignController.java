@@ -37,7 +37,7 @@ public class SignController {
             jwt.put("expires", "");
             result.setContent(jwt);
             result.setResult("ERROR");
-            result.setStatus(0);
+            result.setStatus(CommonConstant.ERROR_MISMATCH_102);
         });
         return result;
     }
@@ -74,7 +74,6 @@ public class SignController {
             result.setStatus(CommonConstant.ERROR_LENGTH_109);
             return result;
         }
-
         //ID: 중복체크
         if(!memberRepository.findByMemId(member.getMemId()).isEmpty()){
             result.setResult(CommonConstant.ERROR);
@@ -96,10 +95,16 @@ public class SignController {
                 result.setStatus(CommonConstant.ERROR_FORMAT_111);
                 return result;
             }
+            //비밀번호확인 : NULL체크
+            if(Util.isEmpty(member.getMemPwChk())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_213);
+                return result;
+            }
             //비밀번호: 비밀번호확인 일치 체크
             if(!member.getMemPwChk().equals(member.getMemPw())){
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_111);
+                result.setStatus(CommonConstant.ERROR_MISMATCH_102);
                 return result;
             }
         }
