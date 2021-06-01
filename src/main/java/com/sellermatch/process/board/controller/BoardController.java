@@ -5,22 +5,19 @@ import com.sellermatch.process.board.repository.BoardRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.util.MailUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
 public class BoardController {
 
-    @Autowired
-    public BoardRepository boardRepository;
-
-    @Autowired
-    public MailUtil mailUtil;
+    private final BoardRepository boardRepository;
+    private final MailUtil mailUtil;
 
     @GetMapping("/board/{id}")
     public CommonDTO selectBoard(@PathVariable Integer id){
