@@ -30,17 +30,32 @@ public class SignController {
     @PostMapping("/signin")
     public CommonDTO signin(@RequestBody Member member) {
         CommonDTO result = new CommonDTO();
-        memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {
-            Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
-            result.setContent(jwt);
-        }, () -> {
-            Map<String, Object> jwt = new HashMap<>();
-            jwt.put("token", "");
-            jwt.put("expires", "");
-            result.setContent(jwt);
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_MISMATCH_102);
-        });
+        if(Util.isEmpty(member.getMemSnsCh())) { // 일반회원 로그인
+            memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {
+                Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
+                result.setContent(jwt);
+            }, () -> {
+                Map<String, Object> jwt = new HashMap<>();
+                jwt.put("token", "");
+                jwt.put("expires", "");
+                result.setContent(jwt);
+                result.setResult("ERROR");
+                result.setStatus(CommonConstant.ERROR_MISMATCH_102);
+            });
+        } else { // SNS 로그인
+            memberRepository.findTop1ByMemIdAndMemSnsCh(member.getMemId(), member.getMemSnsCh()).ifPresentOrElse(temp -> {
+                Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
+                result.setContent(jwt);
+            }, () -> {
+                Map<String, Object> jwt = new HashMap<>();
+                jwt.put("token", "");
+                jwt.put("expires", "");
+                result.setContent(jwt);
+                result.setResult("ERROR");
+                result.setStatus(CommonConstant.ERROR_MISMATCH_103);
+            });
+        }
+
         return result;
     }
 
@@ -77,7 +92,7 @@ public class SignController {
             return result;
         }
         //ID: 중복체크
-        if(!memberRepository.findByMemId(member.getMemId()).isEmpty()){
+        if(!memberRepository.findTop1ByMemId(member.getMemId()).isEmpty()){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_108);
             return result;

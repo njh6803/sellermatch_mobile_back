@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api-v1")
 public class MemberController {
 
-
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
@@ -27,8 +26,8 @@ public class MemberController {
     public CommonDTO selectMember(String token) {
         CommonDTO result = new CommonDTO();
         if(token != null) {
-            memberRepository.findByMemId(jwtUtil.getUserMemId(token)).ifPresentOrElse(temp -> {
-                temp.setProfile(profileRepository.findByProfileMemId(temp.getMemId()));
+            memberRepository.findTop1ByMemId(jwtUtil.getUserMemId(token)).ifPresentOrElse(temp -> {
+                temp.setProfile(profileRepository.findTop1ByProfileMemId(temp.getMemId()));
                 result.setContent(temp);
             }, () -> {
                 result.setResult("ERROR");
