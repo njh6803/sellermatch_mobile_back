@@ -33,17 +33,21 @@ public class ReplyController {
         return result;
     }
 
-    @GetMapping("/reply/list/{projId}/{boardId}")
-    public CommonDTO selectReplyList(@PathVariable(required = false) String projId, @PathVariable(required = false) String boardId, Pageable pageable) {
+    @GetMapping("/reply/project/list/{projId}")
+    public CommonDTO selectProjectReplyList(@PathVariable String projId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Reply reply = new Reply();
-        if (!Util.isEmpty(projId)) {
-            reply.setReplyProjId(projId);
-        }
-        if (!Util.isEmpty(boardId)) {
-            reply.setReplyBoardId(boardId);
-        }
+        reply.setReplyProjId(projId);
+        Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
+        result.setContent(replyList);
+        return result;
+    }
 
+    @GetMapping("/reply/board/list/{boardId}")
+    public CommonDTO selectBoardReplyList(@PathVariable String boardId, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Reply reply = new Reply();
+        reply.setReplyBoardId(boardId);
         Page<Reply> replyList = replyRepositoryCustom.getReplyList(reply, pageable);
         result.setContent(replyList);
         return result;
