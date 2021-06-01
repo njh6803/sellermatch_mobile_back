@@ -5,6 +5,7 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
+import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
 import com.sellermatch.util.Util;
@@ -24,6 +25,7 @@ public class SignController {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final ProfileRepository profileRepository;
 
     @PostMapping("/signin")
     public CommonDTO signin(@RequestBody Member member) {

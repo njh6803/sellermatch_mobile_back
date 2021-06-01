@@ -7,7 +7,6 @@ import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
-import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,6 @@ public class ProfileController {
     private final ProfileRepository profileRepository;
     private final ProfileService profileService;
     private final ProfileRepositoryCustom profileRepositoryCustom;
-    private final ProjectRepository projectRepository;
 
     @GetMapping("/profile/{id}")
     public CommonDTO  selectProfile(@PathVariable Integer id) {

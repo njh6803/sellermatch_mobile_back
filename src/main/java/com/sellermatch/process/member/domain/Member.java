@@ -1,6 +1,7 @@
 package com.sellermatch.process.member.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sellermatch.process.profile.domain.Profile;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -163,4 +164,7 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+    @Transient
+    public Profile profile;
 }

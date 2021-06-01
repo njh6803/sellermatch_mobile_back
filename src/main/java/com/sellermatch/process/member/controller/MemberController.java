@@ -5,30 +5,30 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
+import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.util.JWTUtil;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
 public class MemberController {
 
-    @Autowired
-    public MemberRepository memberRepository;
 
-    @Autowired
-    public MemberService memberService;
-
-    @Autowired
-    public JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final JWTUtil jwtUtil;
+    private final ProfileRepository profileRepository;
 
     @GetMapping("/member")
     public CommonDTO selectMember(String token) {
         CommonDTO result = new CommonDTO();
         if(token != null) {
             memberRepository.findByMemId(jwtUtil.getUserMemId(token)).ifPresentOrElse(temp -> {
+                temp.setProfile(profileRepository.findByProfileMemId(temp.getMemId()));
                 result.setContent(temp);
             }, () -> {
                 result.setResult("ERROR");

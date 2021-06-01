@@ -9,4 +9,6 @@ public interface ProfileRepository extends PagingAndSortingRepository<Profile, I
 
     Page<Profile> findAll(Pageable pageable);
 
+    Profile findByProfileMemId(String profileMemId);
+
 }
