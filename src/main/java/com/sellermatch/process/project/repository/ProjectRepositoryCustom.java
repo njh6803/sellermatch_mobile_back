@@ -45,6 +45,11 @@ public class ProjectRepositoryCustom {
     private final QApply qApply = QApply.apply;
     private final QIndus qIndus = QIndus.indus;
 
+    public Page<Project> getpRegistedProjectList(String projMemId, Pageable pageable) {
+        JPAQuery jpaQuery = selectpRegistedProjectList(qProfile, qMember, qProject, qApply, projMemId, pageable);
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
+    }
+
     public Project findProject(Integer projectIdx) {
         Project project = getProject(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, qFile, projectIdx);
         return project;
@@ -386,6 +391,33 @@ public class ProjectRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
+        return jpaQuery;
+    }
+
+    private JPAQuery selectpRegistedProjectList(QProfile qProfile, QMember qMember, QProject qProject, QApply qApply, String projMemId, Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projRegDate,
+                qProject.projTitle,
+                qProject.projEndDate,
+                qProject.projRecruitNum,
+                qProject.projState,
+                qProject.projSort,
+                qProject.projNation,
+                qProject.projChannel,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                )))
+                .from(qProject)
+                .join(qProject).on(qMember.memId.eq(qProject.projMemId))
+                .join(qProject).on(qProfile.profileMemId.eq(qProject.projMemId))
+                .where(qProject.projState.eq("1").and(qProject.projMemId.eq(projMemId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());;
         return jpaQuery;
     }
 }

@@ -146,6 +146,21 @@ public class Profile {
     @Transient
     private String[]  profileSellerAuthArr;
 
+    @Transient
+    private Long scrapCount;
+    @Transient
+    private Long pRecommandCount;
+    @Transient
+    private Long sRecommandCount;
+    @Transient
+    private Long projectEndCount;
+    @Transient
+    private Long appliedCount;
+    @Transient
+    private String memSort;
+    @Transient
+    private Integer memIdx;
+
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){
             hashtaglist = this.hashTag1;

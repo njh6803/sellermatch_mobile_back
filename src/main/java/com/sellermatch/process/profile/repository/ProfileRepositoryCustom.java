@@ -19,6 +19,7 @@ import com.sellermatch.process.member.domain.QMember;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.domain.QProfile;
 import com.sellermatch.process.project.domain.QProject;
+import com.sellermatch.process.scrap.domain.QScrap;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,13 @@ public class ProfileRepositoryCustom {
     private final QProject qProject = QProject.project;
     private final QApply qApply = QApply.apply;
     private final QIndus qIndus = QIndus.indus;
+    private final QScrap qScrap = QScrap.scrap;
+
+
+    public Profile getMyProjectCount(String projMemId) {
+        Profile profile = selectpMyProjectCount(qProject, qMember, qProfile, qApply, qScrap, projMemId);
+        return profile;
+    }
 
     public Profile findSeller(Integer profileIdx) {
         Profile profile = getProfile(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, profileIdx);
@@ -364,5 +372,54 @@ public class ProfileRepositoryCustom {
                 .limit(pageable.getPageSize());
 
         return jpaQuery;
+    }
+
+    private Profile selectpMyProjectCount(QProject qProject, QMember qMember, QProfile qProfile, QApply qApply, QScrap qScrap, String projMemId) {
+        Profile profile = query.select(Projections.fields(Profile.class,
+                qProfile.profileMemId,
+                qMember.memSort,
+                qMember.memIdx,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qProject.projIdx.count())
+                                .from(qProject)
+                                .where(qProject.projMemId.eq(qProfile.profileMemId).and(qProject.projState.eq("1")))
+                        , "projAddCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId).and(qApply.applyType.eq("1")))
+                        , "appliedCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qScrap.scrapNo.count())
+                                .from(qScrap)
+                                .where(qScrap.memIdx.eq(qMember.memIdx))
+                        , "scrapCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .join(qProject).on(qApply.applyProjId.eq(qProject.projId))
+                                .where(qProject.projMemId.eq(qApply.applyMemId).and(qApply.applyType.eq("2")))
+                        , "pRecommandCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyMemId.eq(qMember.memId).and(qApply.applyType.eq("2")))
+                        , "sRecommandCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qProject.projIdx.count())
+                                .from(qProject)
+                                .where(qProject.projMemId.eq(qProfile.profileMemId).and(qProject.projState.eq("2")))
+                        , "projectEndCount"
+                )))
+                .from(qProfile)
+                .join(qMember).on(qProfile.profileMemId.eq(qMember.memId))
+                .where(qProfile.profileMemId.eq(projMemId)).fetchOne();
+
+        return profile;
     }
 }

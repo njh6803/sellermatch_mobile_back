@@ -139,16 +139,12 @@ public class Project {
 
     @Transient
     private String hashTag1;
-
     @Transient
     private String hashTag2;
-
     @Transient
     private String hashTag3;
-
     @Transient
     private String hashTag4;
-
     @Transient
     private String hashTag5;
 
