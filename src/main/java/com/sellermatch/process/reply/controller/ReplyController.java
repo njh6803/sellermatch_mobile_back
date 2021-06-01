@@ -34,7 +34,7 @@ public class ReplyController {
     }
 
     @GetMapping("/reply/list/{projId}/{boardId}")
-    public CommonDTO selectReplyList(@PathVariable String projId, @PathVariable String boardId, Pageable pageable) {
+    public CommonDTO selectReplyList(@PathVariable(required = false) String projId, @PathVariable(required = false) String boardId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Reply reply = new Reply();
         if (!Util.isEmpty(projId)) {

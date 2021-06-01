@@ -25,7 +25,6 @@ public class ReplyRepositoryCustom {
 
     public Page<Reply> getReplyList(Reply reply, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
-        JPAQuery jpaQuery = getReplyList(qReply, reply, pageable, builder);
 
         if (!Util.isEmpty(reply.getReplyProjId())) {
             builder.and(qReply.replyProjId.eq(reply.getReplyProjId()));
@@ -33,7 +32,7 @@ public class ReplyRepositoryCustom {
         if (!Util.isEmpty(reply.getReplyBoardId())) {
             builder.and(qReply.replyBoardId.eq(reply.getReplyBoardId()));
         }
-
+        JPAQuery jpaQuery = getReplyList(qReply, reply, pageable, builder);
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
