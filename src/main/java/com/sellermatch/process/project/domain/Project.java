@@ -127,7 +127,17 @@ public class Project {
     @Transient
     private String memNick;
     @Transient
+    private String memTel;
+    @Transient
+    private String memId;
+    @Transient
     private String memRname;
+    @Transient
+    private String applyProjState;
+    @Transient
+    private String applyId;
+    @Transient
+    private String applyProjId;
     @Transient
     private Long projAddCount;
     @Transient

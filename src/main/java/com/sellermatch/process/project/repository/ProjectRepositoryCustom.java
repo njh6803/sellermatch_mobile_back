@@ -45,8 +45,28 @@ public class ProjectRepositoryCustom {
     private final QApply qApply = QApply.apply;
     private final QIndus qIndus = QIndus.indus;
 
-    public Page<Project> getpRegistedProjectList(String projMemId, Pageable pageable) {
-        JPAQuery jpaQuery = selectpRegistedProjectList(qProfile, qMember, qProject, qApply, projMemId, pageable);
+    public Page<Project> getProjectEndList(String memId, Pageable pageable){
+        JPAQuery jpaQuery = selectProjectEndList(qMember, qProject, qApply, memId, pageable);
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
+    }
+
+    public Page<Project> getMyApplyList(String memId, Pageable pageable){
+        JPAQuery jpaQuery = selectMyApplyList(qMember, qProject, qApply, memId, pageable);
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
+    }
+
+    public Page<Project> getRecommandListForPro(String memId, Pageable pageable){
+        JPAQuery jpaQuery = selectRecommandListForPro(qMember, qProject, qApply, memId, pageable);
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
+    }
+
+    public Page<Project> getRecommandListForSell(String memId, Pageable pageable){
+        JPAQuery jpaQuery = selectRecommandListForSell(qMember, qProject, qApply, memId, pageable);
+        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
+    }
+
+    public Page<Project> getpRegistedProjectList(String memId, Pageable pageable) {
+        JPAQuery jpaQuery = selectpRegistedProjectList(qProfile, qMember, qProject, qApply, memId, pageable);
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
@@ -394,7 +414,7 @@ public class ProjectRepositoryCustom {
         return jpaQuery;
     }
 
-    private JPAQuery selectpRegistedProjectList(QProfile qProfile, QMember qMember, QProject qProject, QApply qApply, String projMemId, Pageable pageable) {
+    private JPAQuery selectpRegistedProjectList(QProfile qProfile, QMember qMember, QProject qProject, QApply qApply, String memId, Pageable pageable) {
         JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
                 qProject.projIdx,
                 qProject.projId,
@@ -415,9 +435,134 @@ public class ProjectRepositoryCustom {
                 .from(qProject)
                 .join(qProject).on(qMember.memId.eq(qProject.projMemId))
                 .join(qProject).on(qProfile.profileMemId.eq(qProject.projMemId))
-                .where(qProject.projState.eq("1").and(qProject.projMemId.eq(projMemId)))
+                .where(qProject.projState.eq("1").and(qProject.projMemId.eq(memId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+        return jpaQuery;
+    }
+
+    private JPAQuery selectRecommandListForPro(QMember qMember, QProject qProject, QApply qApply, String memId, Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projRegDate,
+                qProject.projTitle,
+                qProject.projEndDate,
+                qProject.projRecruitNum,
+                qProject.projSort,
+                qProject.projNation,
+                qProject.projSupplyType,
+                qProject.projChannel,
+                qProject.projState,
+                qMember.memNick,
+                qMember.memTel,
+                qMember.memId,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                )))
+                .from(qProject)
+                .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
+                .join(qMember).on(qApply.applyMemId.eq(qMember.memId))
+                .where(qApply.applyType.eq("2").and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());;
+        return jpaQuery;
+    }
+
+    private JPAQuery selectRecommandListForSell(QMember qMember, QProject qProject, QApply qApply, String memId, Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projRegDate,
+                qProject.projTitle,
+                qProject.projEndDate,
+                qProject.projRecruitNum,
+                qProject.projState,
+                qProject.projSort,
+                qProject.projNation,
+                qProject.projSupplyType,
+                qProject.projChannel,
+                qApply.applyProjState,
+                qApply.applyId,
+                qApply.applyProjId,
+                qMember.memNick,
+                qMember.memTel,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                )))
+                .from(qProject)
+                .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .where(qApply.applyType.eq("2").and(qApply.applyMemId.eq(memId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+        return jpaQuery;
+    }
+
+    private JPAQuery selectMyApplyList(QMember qMember, QProject qProject, QApply qApply, String memId, Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projRegDate,
+                qProject.projTitle,
+                qProject.projEndDate,
+                qProject.projRecruitNum,
+                qProject.projState,
+                qProject.projSort,
+                qProject.projNation,
+                qProject.projSupplyType,
+                qProject.projChannel,
+                qApply.applyProjState,
+                qMember.memNick,
+                qMember.memTel,
+                qMember.memId,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                )))
+                .from(qProject)
+                .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .where(qApply.applyType.eq("1").and(qApply.applyMemId.eq(memId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+        return jpaQuery;
+    }
+
+    private JPAQuery selectProjectEndList(QMember qMember, QProject qProject, QApply qApply, String memId, Pageable pageable) {
+        JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
+                qProject.projIdx,
+                qProject.projId,
+                qProject.projRegDate,
+                qProject.projTitle,
+                qProject.projEndDate,
+                qProject.projRecruitNum,
+                qProject.projState,
+                qProject.projSort,
+                qProject.projNation,
+                qProject.projSupplyType,
+                qProject.projChannel,
+                qMember.memNick,
+                qMember.memTel,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qApply.applyIdx.count())
+                                .from(qApply)
+                                .where(qApply.applyProjId.eq(qProject.projId))
+                        ,"applyCount"
+                )))
+                .from(qProject)
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .where(qProject.projState.eq("2").and(qProject.projMemId.eq(memId)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
         return jpaQuery;
     }
 }

@@ -40,10 +40,60 @@ public class MypageController {
         return result;
     }
 
-    @GetMapping("/myPage/registDelng/{projMemId}")
-    public CommonDTO selectRegistDelng(@PathVariable String projMemId, Pageable pageable) {
+    @GetMapping("/myPage/registDelng/{memId}")
+    public CommonDTO selectRegistDelng(@PathVariable String memId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
-        Page<Project> project = projectRepositoryCustom.getpRegistedProjectList(projMemId, pageable);
+        Page<Project> project = projectRepositoryCustom.getpRegistedProjectList(memId, pageable);
+        if (project != null) {
+            result.setContent(project);
+        } else {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Project());
+        }
+        return result;
+    }
+
+    @GetMapping("/myPage/recommandList/{memId}/{memSort}")
+    public CommonDTO selectRecommandList(@PathVariable String memId, @PathVariable String memSort, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Page<Project> project;
+        if (memSort.equalsIgnoreCase("1")){
+            project = projectRepositoryCustom.getRecommandListForPro(memId, pageable);
+        } else {
+            project = projectRepositoryCustom.getRecommandListForSell(memId, pageable);
+        }
+
+        if (project != null) {
+            result.setContent(project);
+        } else {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Project());
+        }
+        return result;
+    }
+
+    @GetMapping("/myPage/myApplyList/{memId}")
+    public CommonDTO selectMyApplyList(@PathVariable String memId, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Page<Project> project = projectRepositoryCustom.getMyApplyList(memId, pageable);
+
+        if (project != null) {
+            result.setContent(project);
+        } else {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Project());
+        }
+        return result;
+    }
+
+    @GetMapping("/myPage/projectEndList/{memId}")
+    public CommonDTO selectProjectEndList(@PathVariable String memId, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Page<Project> project = projectRepositoryCustom.getProjectEndList(memId, pageable);
+
         if (project != null) {
             result.setContent(project);
         } else {
