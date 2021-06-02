@@ -103,4 +103,20 @@ public class MypageController {
         }
         return result;
     }
+
+    @GetMapping("/myPage/registDelng/project/{projId}")
+    public CommonDTO selectRegistDelngProject(@PathVariable String projId) {
+        CommonDTO result = new CommonDTO();
+        projectRepository.findByIdProjId(projId).ifPresent(temp -> {
+            Project project = projectRepositoryCustom.findProject(temp.getProjIdx());
+            if (project != null) {
+                result.setContent(project);
+            } else {
+                result.setResult("ERROR");
+                result.setStatus(CommonConstant.ERROR_998);
+                result.setContent(new Profile());
+            }
+        });
+        return result;
+    }
 }
