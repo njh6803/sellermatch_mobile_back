@@ -112,6 +112,8 @@ public class ApplyRepositoryCustom {
                 .join(qProfile).on(qApply.applyMemId.eq(qProfile.profileMemId))
                 .join(qProject).on(qApply.applyProjId.eq(qProject.projId))
                 .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .orderBy(qProject.projRegDate.desc());
 
         return jpaQuery;

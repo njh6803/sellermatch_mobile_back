@@ -76,6 +76,7 @@ public class CommonConstant {
     /* 정보 불일치 */
     public final static int ERROR_MISMATCH_102 = -102;  // 아이디 혹은 비밀번호 미일치
     public final static int ERROR_MISMATCH_103 = -103;  // SNS 가입 미일치
+    public final static int ERROR_MISMATCH_214 = -214;  // SNS 계정정보 불일치
     public final static int ERROR_MISMATCH_112 = -112;  // 비밀번호 확인 미일치
     public final static int ERROR_MISMATCH_148 = -148;  // 탈퇴 인증 코드 미일치
 
