@@ -490,6 +490,7 @@ public class ProjectRepositoryCustom {
                 qApply.applyProjId,
                 qMember.memNick,
                 qMember.memTel,
+                qMember.memId,
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
