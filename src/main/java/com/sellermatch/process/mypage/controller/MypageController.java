@@ -107,7 +107,7 @@ public class MypageController {
     @GetMapping("/myPage/registDelng/project/{projId}")
     public CommonDTO selectRegistDelngProject(@PathVariable String projId) {
         CommonDTO result = new CommonDTO();
-        projectRepository.findByIdProjId(projId).ifPresent(temp -> {
+        projectRepository.findByProjId(projId).ifPresent(temp -> {
             Project project = projectRepositoryCustom.findProject(temp.getProjIdx());
             if (project != null) {
                 result.setContent(project);

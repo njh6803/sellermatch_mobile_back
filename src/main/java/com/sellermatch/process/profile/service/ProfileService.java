@@ -33,7 +33,8 @@ public class ProfileService {
         if(!Util.isEmpty(projectDto.getProfileImgFile())) {
             File file = new File();
             file.setProfileId(profile.getProfileId());
-            fileService.insertFile(projectDto.getProfileImgFile(),file);
+            file = fileService.insertFile(projectDto.getProfileImgFile(),file);
+            profile.setProfilePhoto(file.getFilePath());
         }
         if(!Util.isEmpty(projectDto.getProfileHashtag())) {
             projectDto.getProjHashtag().setId(profile.getProfileId());
