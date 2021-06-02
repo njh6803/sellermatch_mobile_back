@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
@@ -133,11 +135,18 @@ public class ProjectController {
         }
 
         ProjectDto projectDto = new ProjectDto();
+        project.setProjId(Util.getUniqueId("P-", Integer.parseInt(project.getProjSort())));
+        project.setProjRegDate(new Date());
+        project.setProjState("1");
+        //현재 썸네일 이미지로 바꾸주는 기능이 없음
+        project.setProjThumbnailImg("none");
+
         projectDto.setProject(project);
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
+
 
         result.setContent(projectService.insertAndUpdateProject(projectDto));
         return result;

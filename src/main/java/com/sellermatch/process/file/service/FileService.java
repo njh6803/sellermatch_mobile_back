@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class FileService {
 
     public File insertFile(MultipartFile file,File FileInfo) throws Exception{
         File fileDto  = fileUtil.saveMultipartFile(file);
+        fileDto.setFileRegDate(new Date());
         if(!Util.isEmpty(FileInfo.getProfileId())) {
             fileDto.setProfileId(FileInfo.getProfileId());
         }

@@ -24,7 +24,7 @@ public class JWTUtil {
     private String secretKey = "sellermatchTest";
 
     // 토큰 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime = 1800 * 60 * 1000L;
 
     private final SecurityMemberService securityMemberService;
 
