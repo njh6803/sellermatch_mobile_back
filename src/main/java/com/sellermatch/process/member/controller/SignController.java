@@ -53,7 +53,6 @@ public class SignController {
                 result.setResult("ERROR");
                 result.setStatus(CommonConstant.ERROR_MISMATCH_102);
             });
-
         } else { // SNS 로그인
             memberRepository.findTop1ByMemIdAndMemSnsCh(member.getMemId(), member.getMemSnsCh()).ifPresentOrElse(temp -> {
                 Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
