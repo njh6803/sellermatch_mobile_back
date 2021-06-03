@@ -7,7 +7,6 @@ import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
-import com.sellermatch.process.project.service.ProjectService;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MypageController {
 
     private final ProjectRepository projectRepository;
-    private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final ProfileRepositoryCustom profileRepositoryCustom;
     private final ScrapRepository scrapRepository;
@@ -32,6 +30,12 @@ public class MypageController {
     public CommonDTO selectProject(@PathVariable String projMemId) {
         CommonDTO result = new CommonDTO();
         Profile profile = profileRepositoryCustom.getMyProjectCount(projMemId);
+        if (projectRepository.countByProjMemIdAndProjProdCerti(projMemId, "1") > 0) {
+            profile.setProjProdCerti("1");
+        }
+        if (projectRepository.countByProjMemIdAndProjProfit(projMemId, "1") > 0) {
+            profile.setProjProfit("1");
+        }
         if (profile != null) {
             result.setContent(profile);
         } else {

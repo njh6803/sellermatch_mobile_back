@@ -14,4 +14,8 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, I
     Optional<Project> findByProjId(String projId);
 
     Page<Project> findAllByProjMemId(String projMemId, Pageable pageable);
+
+    int countByProjMemIdAndProjProdCerti(String projMemId, String ProjProdCerti);
+
+    int countByProjMemIdAndProjProfit(String projMemId, String ProjProfit);
 }

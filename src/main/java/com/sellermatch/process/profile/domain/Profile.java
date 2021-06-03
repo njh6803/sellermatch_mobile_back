@@ -160,6 +160,11 @@ public class Profile {
     private String memSort;
     @Transient
     private Integer memIdx;
+    @Transient
+    private String projProdCerti;
+    @Transient
+    private String projProfit;
+
 
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){
