@@ -14,7 +14,7 @@ public class ScrapController {
     @Autowired
     private ScrapRepository scrapRepository;
 
-    @GetMapping("/scrap/{ip}")
+    @GetMapping("/scrap/{id}")
     public CommonDTO selectScrap(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
         scrapRepository.findById(id).ifPresentOrElse(temp -> {

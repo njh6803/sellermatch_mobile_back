@@ -8,6 +8,7 @@ import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.project.service.ProjectService;
+import com.sellermatch.process.scrap.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class MypageController {
     private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final ProfileRepositoryCustom profileRepositoryCustom;
+    private final ScrapRepository scrapRepository;
 
     @GetMapping("/myPage/myHome/{projMemId}")
     public CommonDTO selectProject(@PathVariable String projMemId) {
@@ -117,6 +119,13 @@ public class MypageController {
                 result.setContent(new Profile());
             }
         });
+        return result;
+    }
+
+    @GetMapping("/myPage/scrap/list/{memIdx}")
+    public CommonDTO selectScrapList(@PathVariable Integer memIdx, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        result.setContent(scrapRepository.findAllByMemIdx(pageable, memIdx));
         return result;
     }
 }

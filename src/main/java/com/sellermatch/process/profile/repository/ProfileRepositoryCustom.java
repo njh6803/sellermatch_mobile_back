@@ -379,6 +379,9 @@ public class ProfileRepositoryCustom {
                 qProfile.profileMemId,
                 qMember.memSort,
                 qMember.memIdx,
+                qMember.memRname,
+                qProfile.profileChChk,
+                qProfile.profileSaleChk,
                 ExpressionUtils.as(
                         JPAExpressions.select(qProject.projIdx.count())
                                 .from(qProject)

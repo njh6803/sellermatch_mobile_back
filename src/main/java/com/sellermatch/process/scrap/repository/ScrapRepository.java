@@ -8,4 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ScrapRepository extends PagingAndSortingRepository<Scrap, Integer> {
 
     Page<Scrap> findAll(Pageable pageable);
+
+    Page<Scrap> findAllByMemIdx(Pageable pageable, int memIdx);
 }
