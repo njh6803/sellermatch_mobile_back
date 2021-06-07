@@ -53,10 +53,10 @@ public class ApplyController {
                 return result;
         }
 
-        @PostMapping("/apply/{memIdx}")
-        public CommonDTO insertApply(@PathVariable Integer memIdx, Apply apply) {
+        @PostMapping("/apply")
+        public CommonDTO insertApply(Apply apply) {
                 CommonDTO result = new CommonDTO();
-                memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
+                memberRepository.findTop1ByMemId(apply.getApplyMemId()).ifPresentOrElse(temp -> {
                         apply.setApplyId(Util.getUniqueId("A-", temp.getMemIdx()));
                         apply.setApplyRegDate(new Date());
                         apply.setApplyProfile(temp.getMemSort());

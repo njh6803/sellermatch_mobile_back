@@ -165,7 +165,6 @@ public class ProjectController {
             projectDto.setProfileHashtag(tagProfile);
         }
 
-
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
