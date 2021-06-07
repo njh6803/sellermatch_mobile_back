@@ -3,13 +3,13 @@ package com.sellermatch.process.project.service;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.service.FileService;
 import com.sellermatch.process.hashtag.service.HashtagService;
+import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,17 +20,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ProjectService {
 
-    @Autowired
-    FileService fileService;
+    private final FileService fileService;
+    private final HashtagService hashtagService;
+    private final ProfileService profileService;
+    private final ProjectRepository projectRepository;
+    private final ProfileRepository profileRepository;
 
-    @Autowired
-    HashtagService hashtagService;
 
-    @Autowired
-    ProfileService profileService;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Project insertAndUpdateProject(ProjectDto projectDto) throws Exception {
@@ -60,8 +56,14 @@ public class ProjectService {
             hashtagService.insertAndUpdateHashtag(projectDto.getProjHashtag());
         }
         //프로필 있을 경우 프로필 첨부
-        if(!Util.isEmpty(projectDto.getProfile())) {
-            profileService.insertAndUpdateProfile(projectDto);
+        if (!Util.isEmpty(projectDto.getProfile())){
+            profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp -> {
+                try {
+                    profileService.insertAndUpdateProfile(projectDto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, () ->{});
         }
         return projectDto.getProject();
     }
