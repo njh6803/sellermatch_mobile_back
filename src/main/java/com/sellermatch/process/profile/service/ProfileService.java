@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class ProfileService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Profile insertAndUpdateProfile(ProjectDto projectDto) throws Exception {
         Profile profile= profileRepository.save(projectDto.getProfile());
+        profile.setProfileRegDate(new Date());
 
         if(!Util.isEmpty(projectDto.getProfileImgFile())) {
             File file = new File();
