@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.Arrays;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +31,6 @@ public class ProfileService {
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Profile insertAndUpdateProfile(ProjectDto projectDto) throws Exception {
         Profile profile= profileRepository.save(projectDto.getProfile());
-        profile.setProfileRegDate(new Date());
 
         if(!Util.isEmpty(projectDto.getProfileImgFile())) {
             File file = new File();
@@ -40,7 +39,8 @@ public class ProfileService {
             profile.setProfilePhoto(file.getFilePath());
         }
         if(!Util.isEmpty(projectDto.getProfileHashtag())) {
-            projectDto.getProjHashtag().setId(profile.getProfileId());
+            projectDto.getProfileHashtag().setId(profile.getProfileId());
+            projectDto.getProfileHashtag().setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
             hashtagService.insertAndUpdateHashtag(projectDto.getProfileHashtag());
         }
         return projectDto.getProfile();

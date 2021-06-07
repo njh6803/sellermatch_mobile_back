@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -142,6 +143,9 @@ public class ProjectController {
         project.setProjThumbnailImg("none");
 
         projectDto.setProject(project);
+        // 프로젝트 해시태그
+        projectDto.getProjHashtag().setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
