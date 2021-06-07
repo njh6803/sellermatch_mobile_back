@@ -54,15 +54,19 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(Apply apply) {
+        public CommonDTO insertApply(@RequestBody Apply apply) {
                 CommonDTO result = new CommonDTO();
                 memberRepository.findTop1ByMemId(apply.getApplyMemId()).ifPresentOrElse(temp -> {
                         apply.setApplyId(Util.getUniqueId("A-", temp.getMemIdx()));
                         apply.setApplyRegDate(new Date());
                         apply.setApplyProfile(temp.getMemSort());
                         apply.setApplyMemId(temp.getMemId());
-                }, ()->{});
-                result.setContent(applyRepository.save(apply));
+                        result.setContent(applyRepository.save(apply));
+                }, ()->{
+                        result.setContent("ERROR");
+                        result.setStatus(CommonConstant.ERROR_999);
+                        result.setContent(new Apply());
+                });
                 return result;
         }
 
