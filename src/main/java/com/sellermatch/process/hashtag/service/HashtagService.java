@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -36,6 +37,8 @@ public class HashtagService {
             }, ()->{
                 Hashtaglist hashtaglist = new Hashtaglist();
                 hashtaglist.setHashNm(s);
+                hashtaglist.setFrstRegistDt(new Date());
+                hashtaglist.setFrstRegistMngr(hashtag.getFrstRegistMngr());
                 hashtaglistRepository.save(hashtaglist);
                 tagSwitch(hashtag, index, hashtaglist);
             });

@@ -72,7 +72,6 @@ public class Profile {
     private String profileState;
 
     @Column(name = "profile_reg_date")
-    @CreatedDate
     private Date profileRegDate;
 
     @Column(name = "profile_edit_date")

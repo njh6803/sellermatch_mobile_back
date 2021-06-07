@@ -142,23 +142,31 @@ public class ProjectController {
         project.setProjState("1");
         //현재 썸네일 이미지로 바꾸주는 기능이 없음
         project.setProjThumbnailImg("none");
-
         projectDto.setProject(project);
+
         // 프로젝트 해시태그
-        projectDto.setProjHashtag(new Hashtag());
-        projectDto.getProjHashtag().setFrstRegistDt(new Date());
-        projectDto.getProjHashtag().setFrstRegistMngr(project.getProjMemId());
-        projectDto.getProfileHashtag().setFrstRegistDt(new Date());
-        projectDto.getProfileHashtag().setFrstRegistMngr(project.getProjMemId());
+        Hashtag tagProject = new Hashtag();
+        tagProject.setFrstRegistDt(new Date());
+        tagProject.setFrstRegistMngr(project.getProjMemId());
+        tagProject.setHashType("1");
+        tagProject.setId(project.getProjId());
         if (!Util.isEmpty(project.getProjKeyword())) {
-            projectDto.getProjHashtag().setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+            tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
         }
+        projectDto.setProjHashtag(tagProject);
+
+        // 프로필 해시태그
+        Hashtag tagProfile = new Hashtag();
+        tagProfile.setFrstRegistDt(new Date());
+        tagProfile.setFrstRegistMngr(profile.getProfileMemId());
+        tagProfile.setHashType("2");
+        tagProfile.setId(profile.getProfileId());
+        projectDto.setProfileHashtag(tagProfile);
 
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
-
 
         result.setContent(projectService.insertAndUpdateProject(projectDto));
         return result;
