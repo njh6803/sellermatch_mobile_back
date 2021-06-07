@@ -185,7 +185,7 @@ public class ProfileRepositoryCustom {
                 qProfile.profileSort,
                 qProfile.profileVolume,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qIndus.indusName)
+                        JPAExpressions.select(qIndus.indusName).distinct()
                                 .from(qIndus)
                                 .where(qIndus.indusId.eq(qProfile.profileIndus))
                         ,"profileIndusName"
@@ -211,7 +211,7 @@ public class ProfileRepositoryCustom {
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag1)
@@ -220,7 +220,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag1"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag2)
@@ -229,7 +229,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag2"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag3)
@@ -238,7 +238,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag3"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag4)
@@ -247,7 +247,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag4"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag5)
@@ -290,7 +290,7 @@ public class ProfileRepositoryCustom {
                 qProfile.profileSort,
                 qProfile.profileVolume,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qIndus.indusName)
+                        JPAExpressions.select(qIndus.indusName).distinct()
                                 .from(qIndus)
                                 .where(qIndus.indusId.eq(qProfile.profileIndus))
                         ,"profileIndusName"
@@ -316,7 +316,7 @@ public class ProfileRepositoryCustom {
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag1)
@@ -325,7 +325,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag1"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag2)
@@ -334,7 +334,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag2"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag3)
@@ -343,7 +343,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag3"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag4)
@@ -352,7 +352,7 @@ public class ProfileRepositoryCustom {
                                 )), "hashTag4"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag5)

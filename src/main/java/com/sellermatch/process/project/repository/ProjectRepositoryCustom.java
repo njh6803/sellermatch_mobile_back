@@ -213,13 +213,13 @@ public class ProjectRepositoryCustom {
                 qProject.projChannel,
                 qProject.projFile,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qFile.orginName)
+                        JPAExpressions.select(qFile.orginName).distinct()
                                 .from(qFile)
                                 .where(qFile.filePath.eq(qProject.projFile))
                         ,"originName"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qIndus.indusName)
+                        JPAExpressions.select(qIndus.indusName).distinct()
                                 .from(qIndus)
                                 .where(qIndus.indusId.eq(qProject.projIndus))
                         ,"projIndusName"
@@ -251,7 +251,7 @@ public class ProjectRepositoryCustom {
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag1)
@@ -260,7 +260,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag1"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag2)
@@ -269,7 +269,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag2"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag3)
@@ -278,7 +278,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag3"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag4)
@@ -287,7 +287,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag4"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag5)
@@ -336,7 +336,7 @@ public class ProjectRepositoryCustom {
                 qProject.projProfit,
                 qProject.projChannel,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qIndus.indusName)
+                        JPAExpressions.select(qIndus.indusName).distinct()
                                 .from(qIndus)
                                 .where(qIndus.indusId.eq(qProject.projIndus))
                         ,"projIndusName"
@@ -354,7 +354,7 @@ public class ProjectRepositoryCustom {
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag1)
@@ -363,7 +363,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag1"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag2)
@@ -372,7 +372,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag2"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag3)
@@ -381,7 +381,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag3"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag4)
@@ -390,7 +390,7 @@ public class ProjectRepositoryCustom {
                                 )), "hashTag4"
                 ),
                 ExpressionUtils.as(
-                        JPAExpressions.select(qHashtaglist.hashNm)
+                        JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
                                         query.select(qHashtag.hashTag5)
