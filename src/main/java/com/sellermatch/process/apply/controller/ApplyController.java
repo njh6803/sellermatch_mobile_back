@@ -5,10 +5,14 @@ import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,6 +21,7 @@ public class ApplyController {
 
         private final ApplyRepository applyRepository;
         private final ApplyRepositoryCustom applyRepositoryCustom;
+        private final MemberRepository memberRepository;
 
         @GetMapping("/apply/{id}")
         public CommonDTO selectApply(@PathVariable Integer id) {
@@ -48,9 +53,15 @@ public class ApplyController {
                 return result;
         }
 
-        @PostMapping("/apply")
-        public CommonDTO insertApply(@RequestBody Apply apply) {
+        @PostMapping("/apply/{memIdx}")
+        public CommonDTO insertApply(@PathVariable Integer memIdx, Apply apply) {
                 CommonDTO result = new CommonDTO();
+                memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
+                        apply.setApplyId(Util.getUniqueId("A-", temp.getMemIdx()));
+                        apply.setApplyRegDate(new Date());
+                        apply.setApplyProfile(temp.getMemSort());
+                        apply.setApplyMemId(temp.getMemId());
+                }, ()->{});
                 result.setContent(applyRepository.save(apply));
                 return result;
         }

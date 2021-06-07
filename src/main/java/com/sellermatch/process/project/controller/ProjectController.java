@@ -145,23 +145,26 @@ public class ProjectController {
         projectDto.setProject(project);
 
         // 프로젝트 해시태그
-        Hashtag tagProject = new Hashtag();
-        tagProject.setFrstRegistDt(new Date());
-        tagProject.setFrstRegistMngr(project.getProjMemId());
-        tagProject.setHashType("1");
-        tagProject.setId(project.getProjId());
         if (!Util.isEmpty(project.getProjKeyword())) {
+            Hashtag tagProject = new Hashtag();
+            tagProject.setFrstRegistDt(new Date());
+            tagProject.setFrstRegistMngr(project.getProjMemId());
+            tagProject.setHashType("1");
+            tagProject.setId(project.getProjId());
             tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
-        }
-        projectDto.setProjHashtag(tagProject);
 
+            projectDto.setProjHashtag(tagProject);
+        }
         // 프로필 해시태그
-        Hashtag tagProfile = new Hashtag();
-        tagProfile.setFrstRegistDt(new Date());
-        tagProfile.setFrstRegistMngr(profile.getProfileMemId());
-        tagProfile.setHashType("2");
-        tagProfile.setId(profile.getProfileId());
-        projectDto.setProfileHashtag(tagProfile);
+        if (!Util.isEmpty(profile.getProfileHashtag())) {
+            Hashtag tagProfile = new Hashtag();
+            tagProfile.setFrstRegistDt(new Date());
+            tagProfile.setFrstRegistMngr(profile.getProfileMemId());
+            tagProfile.setHashType("2");
+            tagProfile.setId(profile.getProfileId());
+            projectDto.setProfileHashtag(tagProfile);
+        }
+
 
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
