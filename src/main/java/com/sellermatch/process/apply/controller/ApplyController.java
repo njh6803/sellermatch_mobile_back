@@ -29,7 +29,7 @@ public class ApplyController {
                 applyRepository.findById(id).ifPresentOrElse(temp -> {
                         result.setContent(temp);
                 } , () -> {
-                        result.setContent("ERROR");
+                        result.setResult("ERROR");
                         result.setStatus(CommonConstant.ERROR_998);
                         result.setContent(new Apply());
                 });
@@ -60,7 +60,7 @@ public class ApplyController {
                 // 중복검사
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
-                        result.setContent("ERROR");
+                        result.setResult("ERROR");
                         if (apply.getApplyType().equalsIgnoreCase("1")) {
                                 result.setStatus(CommonConstant.ERROR_DUPLICATE_202);
                         }
@@ -74,7 +74,7 @@ public class ApplyController {
 
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
-                        result.setContent("ERROR");
+                        result.setResult("ERROR");
                         if (apply.getApplyType().equalsIgnoreCase("1")) {
                                 result.setStatus(CommonConstant.ERROR_TYPE_203);
                         }
@@ -89,7 +89,7 @@ public class ApplyController {
 
                 // 자신의 게시물에 자신이 지원, 제안
                 if (apply.getProjMemId().equalsIgnoreCase(apply.getApplyMemId())) {
-                        result.setContent("ERROR");
+                        result.setResult("ERROR");
                         result.setStatus(CommonConstant.ERROR_ACCESS_215);
                         result.setContent(new Apply());
 
@@ -103,7 +103,7 @@ public class ApplyController {
                         apply.setApplyMemId(temp.getMemId());
                         result.setContent(applyRepository.save(apply));
                 }, ()->{
-                        result.setContent("ERROR");
+                        result.setResult("ERROR");
                         result.setStatus(CommonConstant.ERROR_999);
                         result.setContent(new Apply());
                 });
