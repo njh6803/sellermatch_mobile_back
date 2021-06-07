@@ -54,7 +54,7 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(Apply apply) {
+        public CommonDTO insertApply(@RequestBody Apply apply) {
                 CommonDTO result = new CommonDTO();
 
                 // 중복검사
@@ -67,9 +67,23 @@ public class ApplyController {
                         return result;
                 }
 
-                // projMemSort == memSort 타입미일치
+                // 타입미일치
+                if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
+                        result.setContent("ERROR");
+                        result.setStatus(CommonConstant.ERROR_TYPE_203);
+                        result.setContent(new Apply());
 
-                // projMemId == applyMemId 본인게시물에 지원
+                        return result;
+                }
+
+                // 자신의 게시물에 자신이 지원
+                if (apply.getApplyMemId().equalsIgnoreCase(apply.getApplyMemId())) {
+                        result.setContent("ERROR");
+                        result.setStatus(CommonConstant.ERROR_ACCESS_215);
+                        result.setContent(new Apply());
+
+                        return result;
+                }
 
                 memberRepository.findTop1ByMemId(apply.getApplyMemId()).ifPresentOrElse(temp -> {
                         apply.setApplyId(Util.getUniqueId("A-", temp.getMemIdx()));

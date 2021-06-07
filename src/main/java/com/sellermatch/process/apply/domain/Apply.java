@@ -56,6 +56,10 @@ public class Apply {
     @Transient
     private Integer profileVolume;
     @Transient
+    private String projMemId;
+    @Transient
+    private String projSort;
+    @Transient
     private String projId;
     @Transient
     private String projTitle;
