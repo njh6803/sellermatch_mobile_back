@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
@@ -111,6 +113,7 @@ public class ProfileController {
         }
         profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp ->{
             projectDto.setProfileImgFile(profileImg);
+            projectDto.getProfile().setProfileEditDate(new Date());
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {
