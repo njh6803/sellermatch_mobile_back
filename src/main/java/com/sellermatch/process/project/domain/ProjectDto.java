@@ -13,7 +13,7 @@ public class ProjectDto {
     private Profile profile;
     private Hashtag profileHashtag;         //프로필 해시태그
 
-    private MultipartFile projImgFile;    //프로젝트 이미지 파일
+    private MultipartFile projImgFile;      //프로젝트 이미지 파일
     private Project project;
     private MultipartFile projAttFile;      //프로젝트 첨부 파일
     private Hashtag projHashtag;            //프로젝트 해시태그
