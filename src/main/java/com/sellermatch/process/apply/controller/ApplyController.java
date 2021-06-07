@@ -61,7 +61,12 @@ public class ApplyController {
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
                         result.setContent("ERROR");
-                        result.setStatus(CommonConstant.ERROR_DUPLICATE_202);
+                        if (apply.getApplyType().equalsIgnoreCase("1")) {
+                                result.setStatus(CommonConstant.ERROR_DUPLICATE_202);
+                        }
+                        if (apply.getApplyType().equalsIgnoreCase("2")) {
+                                result.setStatus(CommonConstant.ERROR_DUPLICATE_207);
+                        }
                         result.setContent(new Apply());
 
                         return result;
@@ -70,13 +75,19 @@ public class ApplyController {
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
                         result.setContent("ERROR");
-                        result.setStatus(CommonConstant.ERROR_TYPE_203);
+                        if (apply.getApplyType().equalsIgnoreCase("1")) {
+                                result.setStatus(CommonConstant.ERROR_TYPE_203);
+                        }
+                        if (apply.getApplyType().equalsIgnoreCase("2")) {
+                                result.setStatus(CommonConstant.ERROR_TYPE_206);
+                        }
+
                         result.setContent(new Apply());
 
                         return result;
                 }
 
-                // 자신의 게시물에 자신이 지원
+                // 자신의 게시물에 자신이 지원, 제안
                 if (apply.getApplyMemId().equalsIgnoreCase(apply.getApplyMemId())) {
                         result.setContent("ERROR");
                         result.setStatus(CommonConstant.ERROR_ACCESS_215);
