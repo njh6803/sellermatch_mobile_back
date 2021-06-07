@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -53,6 +55,8 @@ public class ProjectService {
         //프로젝트 해시태그 있을 경우 첨부
         if(!Util.isEmpty(projectDto.getProjHashtag())) {
             projectDto.getProjHashtag().setId(project.getProjId());
+            projectDto.getProjHashtag().setLastRegistDt(new Date());
+            projectDto.getProjHashtag().setLastRegistMngr(project.getProjMemId());
             hashtagService.insertAndUpdateHashtag(projectDto.getProjHashtag());
         }
         //프로필 있을 경우 프로필 첨부

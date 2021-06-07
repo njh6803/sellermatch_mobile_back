@@ -2,6 +2,7 @@ package com.sellermatch.process.project.controller;
 
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
@@ -144,7 +145,14 @@ public class ProjectController {
 
         projectDto.setProject(project);
         // 프로젝트 해시태그
-        projectDto.getProjHashtag().setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+        projectDto.setProjHashtag(new Hashtag());
+        projectDto.getProjHashtag().setFrstRegistDt(new Date());
+        projectDto.getProjHashtag().setFrstRegistMngr(project.getProjMemId());
+        projectDto.getProfileHashtag().setFrstRegistDt(new Date());
+        projectDto.getProfileHashtag().setFrstRegistMngr(project.getProjMemId());
+        if (!Util.isEmpty(project.getProjKeyword())) {
+            projectDto.getProjHashtag().setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+        }
 
         if(isExistProfile) projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
