@@ -88,7 +88,7 @@ public class ApplyController {
                 }
 
                 // 자신의 게시물에 자신이 지원, 제안
-                if (apply.getApplyMemId().equalsIgnoreCase(apply.getApplyMemId())) {
+                if (apply.getProjMemId().equalsIgnoreCase(apply.getApplyMemId())) {
                         result.setContent("ERROR");
                         result.setStatus(CommonConstant.ERROR_ACCESS_215);
                         result.setContent(new Apply());
@@ -108,14 +108,14 @@ public class ApplyController {
                         result.setContent(new Apply());
                 });
 
-// 지원
-                if (apply.getApplyType().equalsIgnoreCase("1")){
+                // 지원
+                if (apply.getApplyType().equalsIgnoreCase("1")) {
 
-        }
-        // 제안
+                }
+                // 제안
                 if (apply.getApplyType().equalsIgnoreCase("2")) {
 
-        }
+                }
                 return result;
         }
 
