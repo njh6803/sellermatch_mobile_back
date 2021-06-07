@@ -10,4 +10,5 @@ public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integ
 
     Page<Apply> findAll(Pageable pageable);
 
+    int countByApplyMemIdAndApplyProjIdAndApplyType(String applyMemId, String applyProjId, String applyType);
 }

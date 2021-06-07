@@ -54,8 +54,23 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(@RequestBody Apply apply) {
+        public CommonDTO insertApply(Apply apply) {
                 CommonDTO result = new CommonDTO();
+
+                // 중복검사
+                int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
+                if (count > 0) {
+                        result.setContent("ERROR");
+                        result.setStatus(CommonConstant.ERROR_DUPLICATE_202);
+                        result.setContent(new Apply());
+
+                        return result;
+                }
+
+                // projMemSort == memSort 타입미일치
+
+                // projMemId == applyMemId 본인게시물에 지원
+
                 memberRepository.findTop1ByMemId(apply.getApplyMemId()).ifPresentOrElse(temp -> {
                         apply.setApplyId(Util.getUniqueId("A-", temp.getMemIdx()));
                         apply.setApplyRegDate(new Date());
@@ -67,6 +82,15 @@ public class ApplyController {
                         result.setStatus(CommonConstant.ERROR_999);
                         result.setContent(new Apply());
                 });
+
+// 지원
+                if (apply.getApplyType().equalsIgnoreCase("1")){
+
+        }
+        // 제안
+                if (apply.getApplyType().equalsIgnoreCase("2")) {
+
+        }
                 return result;
         }
 
