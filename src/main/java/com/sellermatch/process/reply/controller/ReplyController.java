@@ -72,7 +72,7 @@ public class ReplyController {
             return result;
         }
         //댓글내용: 길이 체크 (100자)
-        if(Util.isLengthChk(reply.getReplyContents(),0,100)){
+        if(!Util.isLengthChk(reply.getReplyContents(),0,100)){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_151);
             return result;
