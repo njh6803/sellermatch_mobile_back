@@ -37,6 +37,7 @@ public class CommonConstant {
     public final static int ERROR_NULL_150 = -150; // 검색어 공백/null, 2글자 미만
     public final static int ERROR_NULL_152 = -152; // 매칭 대표이미지 null
     public final static int ERROR_NULL_213 = -213; // 비밀번호확인 null
+    public final static int ERROR_NULL_216 = -216; // 제안할 프로제트 조회결과 null
 
     /* 중복 */
     public final static int ERROR_DUPLICATE_108 = -108; // 이메일 중복

@@ -81,6 +81,11 @@ public class ProjectRepositoryCustom {
         // 거래처매칭페이지 노출 필수조건
         builder.and(qProject.projState.ne("0")); // 프로젝트 상태 != 0
 
+        // 마감이 안된것만 조회
+        if (!Util.isEmpty(project.getRecommandProjectFlag())){
+            builder.and(qProject.projState.eq("1"));
+        }
+
         // 찾기유형(공급자,판매자) 필터
         if (!Util.isEmpty(project.getProjSortArr())){
             builder.and(qProject.projSort.in(project.getProjSortArr()));

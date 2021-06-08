@@ -4,7 +4,6 @@ import com.sellermatch.util.Util;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -151,6 +150,8 @@ public class Profile {
     private Long pRecommandCount;
     @Transient
     private Long sRecommandCount;
+    @Transient
+    private Long RecommandCount;
     @Transient
     private Long projectEndCount;
     @Transient

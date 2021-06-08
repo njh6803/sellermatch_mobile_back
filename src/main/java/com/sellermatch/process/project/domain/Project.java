@@ -146,6 +146,8 @@ public class Project {
     private Long applyCount;
     @Transient
     private Long okeyCount;
+    @Transient
+    private String recommandProjectFlag;
 
     @Transient
     private String hashTag1;

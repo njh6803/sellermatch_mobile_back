@@ -199,15 +199,13 @@ public class ProfileRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                .where(qApply.applyType.eq("2"))
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId).and(qApply.applyType.eq("2")))
                         ,"recommendCount"
                 ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                .where(qApply.applyProjState.eq("5"))
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId).and(qApply.applyProjState.eq("5")))
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(
@@ -304,15 +302,13 @@ public class ProfileRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                .where(qApply.applyType.eq("2"))
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId).and(qApply.applyType.eq("2")))
                         ,"recommendCount"
                 ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qProfile.profileMemId))
-                                .where(qApply.applyProjState.eq("5"))
+                                .where(qApply.applyMemId.eq(qProfile.profileMemId).and(qApply.applyProjState.eq("5")))
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(

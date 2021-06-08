@@ -6,6 +6,8 @@ import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.process.project.domain.Project;
+import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ public class ApplyController {
         private final ApplyRepository applyRepository;
         private final ApplyRepositoryCustom applyRepositoryCustom;
         private final MemberRepository memberRepository;
+        private final ProjectRepositoryCustom projectRepositoryCustom;
 
         @GetMapping("/apply/{id}")
         public CommonDTO selectApply(@PathVariable Integer id) {
@@ -32,6 +35,26 @@ public class ApplyController {
                         result.setResult("ERROR");
                         result.setStatus(CommonConstant.ERROR_998);
                         result.setContent(new Apply());
+                });
+                return result;
+        }
+
+        @GetMapping("/recommend/project/{memIdx}")
+        public CommonDTO selectRecommendProject(@PathVariable Integer memIdx, Pageable pageable) {
+                CommonDTO result = new CommonDTO();
+                Project project = new Project();
+
+                //프로젝트 제안하기 마감거래는 조회되지 않도록 하기위한 플래그 "Y"면 마감거래 조회 안하기
+                String recommandProjectFlag = "Y";
+
+                memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
+                        project.setProjMemId(temp.getMemId());
+                        project.setRecommandProjectFlag(recommandProjectFlag);
+                        result.setContent(projectRepositoryCustom.findAllProject(project, pageable, null));
+                }, ()->{
+                        result.setResult("ERROR");
+                        result.setStatus(CommonConstant.ERROR_NULL_216);
+                        result.setContent(new Project());
                 });
                 return result;
         }
