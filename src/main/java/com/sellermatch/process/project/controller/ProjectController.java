@@ -69,7 +69,6 @@ public class ProjectController {
             if (!Util.isEmpty(projectList)) {
                 result.setResult("ERROR");
                 result.setStatus(CommonConstant.ERROR_NULL_216);
-                result.setContent(new Project());
             }
         }, ()->{});
         return result;
