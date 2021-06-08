@@ -84,7 +84,7 @@ public class ReplyController {
             reply.setReplyParentMemId(reply.getReplyWriter());
         }
 
-        if (reply.getReplyParent() != 0) {
+        if (!Util.isEmpty(reply.getReplyParent()) && reply.getReplyParent() != 0) {
             reply.setReplyParent(reply.getReplyParent());
             reply.setReplyDepth("1");
         } else {

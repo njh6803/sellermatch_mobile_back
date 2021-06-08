@@ -9,6 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ReplyRepository extends PagingAndSortingRepository<Reply, Integer> {
     Page<Reply> findAll(Pageable pageable);
 
-    @Query(value = "SELECT max(Reply.replyId) FROM Reply", nativeQuery = true)
+    @Query(value = "SELECT max(Reply_id) FROM ReplyList", nativeQuery = true)
     Integer getSeq();
 }
