@@ -31,7 +31,7 @@ public class ProjectController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/project/{id}")
-    public CommonDTO selectProject(@PathVariable Integer id, Pageable pageable) {
+    public CommonDTO selectProject(@PathVariable Integer id) {
         CommonDTO result = new CommonDTO();
         Project project = projectRepositoryCustom.findProject(id);
         if (project != null) {

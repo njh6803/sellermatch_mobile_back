@@ -75,7 +75,6 @@ public class MypageController {
         } else {
             result.setResult("ERROR");
             result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Project());
         }
         return result;
     }
