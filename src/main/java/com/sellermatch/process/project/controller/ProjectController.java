@@ -3,6 +3,7 @@ package com.sellermatch.process.project.controller;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.hashtag.domain.Hashtag;
+import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.ProjectDto;
@@ -27,6 +28,7 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final ProjectService projectService;
     private final ProjectRepositoryCustom projectRepositoryCustom;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/project/{id}")
     public CommonDTO selectProject(@PathVariable Integer id, Pageable pageable) {
@@ -48,6 +50,25 @@ public class ProjectController {
         // 판매이력리스트(등록한 거래) - 추후에 페이징처리가 필요할 수 있음
         Page<Project> project = projectRepository.findAllByProjMemId(profileMemId, pageable);
         result.setContent(project);
+        return result;
+    }
+
+    @GetMapping("/project/list/recommend/{memIdx}")
+    public CommonDTO selectRecommendProject(@PathVariable Integer memIdx, Pageable pageable) {
+        CommonDTO result = new CommonDTO();
+        Project project = new Project();
+
+        //프로젝트 제안하기 마감거래는 조회되지 않도록 하기위한 플래그 "Y"면 마감거래 조회 안하기
+        String recommandProjectFlag = "Y";
+        memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
+            project.setProjMemId(temp.getMemId());
+            project.setRecommandProjectFlag(recommandProjectFlag);
+            result.setContent(projectRepositoryCustom.findAllProject(project, pageable, null));
+        }, ()->{
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_NULL_216);
+            result.setContent(new Project());
+        });
         return result;
     }
 
