@@ -47,6 +47,7 @@ public class ReplyRepositoryCustom {
                 qReply.replyRegDate,
                 qReply.replyDepth,
                 qReply.replyParentMemId,
+                qReply.replyWriter,
                 ExpressionUtils.as(
                         JPAExpressions.select(qMember.memNick)
                                 .from(qMember)
