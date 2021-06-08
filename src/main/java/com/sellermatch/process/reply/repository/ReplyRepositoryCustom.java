@@ -57,7 +57,7 @@ public class ReplyRepositoryCustom {
                         JPAExpressions.select(qMember.memNick)
                                 .from(qMember)
                                 .where(qMember.memId.eq(qReply.replyWriter))
-                        ,"replyWriter"
+                        ,"replyWriterNick"
                 )))
                 .from(qReply)
                 .where(builder)

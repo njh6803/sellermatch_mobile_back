@@ -49,4 +49,6 @@ public class Reply {
 
     @Transient
     private String replyParentNick;
+    @Transient
+    private String replyWriterNick;
 }
