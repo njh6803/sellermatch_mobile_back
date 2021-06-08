@@ -1,5 +1,7 @@
 package com.sellermatch.process.mypage.controller;
 
+import com.sellermatch.process.apply.domain.Apply;
+import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
@@ -11,10 +13,7 @@ import com.sellermatch.process.scrap.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,6 +24,7 @@ public class MypageController {
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final ProfileRepositoryCustom profileRepositoryCustom;
     private final ScrapRepository scrapRepository;
+    private final ApplyRepository applyRepository;
 
     @GetMapping("/myPage/myHome/{projMemId}")
     public CommonDTO selectProject(@PathVariable String projMemId) {
@@ -129,6 +129,16 @@ public class MypageController {
     public CommonDTO selectScrapList(@PathVariable Integer memIdx, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         result.setContent(scrapRepository.findAllByMemIdx(pageable, memIdx));
+        return result;
+    }
+
+    @PutMapping("/myPage/accept")
+    public CommonDTO recommand(@RequestBody Apply apply) {
+        CommonDTO result = new CommonDTO();
+        applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
+            applyRepository.updateApply(apply.getApplyId(), apply.getApplyProjState(), apply.getProjId(), apply.getApplyType());
+            result.setContent(new Apply());
+        }, () -> {});
         return result;
     }
 }
