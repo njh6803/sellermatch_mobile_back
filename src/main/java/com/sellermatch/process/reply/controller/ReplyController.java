@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
@@ -89,6 +91,7 @@ public class ReplyController {
             reply.setReplyParent(replyRepository.getSeq()+1);
             reply.setReplyDepth("0");
         }
+        reply.setReplyRegDate(new Date());
 
         result.setContent(replyRepository.save(reply));
         return result;
