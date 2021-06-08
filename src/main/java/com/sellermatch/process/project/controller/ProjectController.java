@@ -63,12 +63,15 @@ public class ProjectController {
         memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
             project.setProjMemId(temp.getMemId());
             project.setRecommandProjectFlag(recommandProjectFlag);
-            result.setContent(projectRepositoryCustom.findAllProject(project, pageable, null));
-        }, ()->{
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_NULL_216);
-            result.setContent(new Project());
-        });
+            Page<Project> projectList = projectRepositoryCustom.findAllProject(project, pageable, null);
+            result.setContent(projectList);
+
+            if (!Util.isEmpty(projectList)) {
+                result.setResult("ERROR");
+                result.setStatus(CommonConstant.ERROR_NULL_216);
+                result.setContent(new Project());
+            }
+        }, ()->{});
         return result;
     }
 
