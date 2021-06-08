@@ -51,4 +51,6 @@ public class Reply {
     private String replyParentNick;
     @Transient
     private String replyWriterNick;
+    @Transient
+    private String projMemId;
 }

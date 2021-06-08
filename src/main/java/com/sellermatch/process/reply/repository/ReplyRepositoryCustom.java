@@ -7,6 +7,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sellermatch.process.member.domain.QMember;
+import com.sellermatch.process.project.domain.QProject;
 import com.sellermatch.process.reply.domain.QReply;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.util.Util;
@@ -22,6 +23,7 @@ public class ReplyRepositoryCustom {
     private final JPAQueryFactory query;
     private final QReply qReply = QReply.reply;
     private final QMember qMember = QMember.member;
+    private final QProject qProject = QProject.project;
 
     public Page<Reply> getReplyList(Reply reply, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
@@ -48,6 +50,12 @@ public class ReplyRepositoryCustom {
                 qReply.replyDepth,
                 qReply.replyParentMemId,
                 qReply.replyWriter,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qProject.projMemId)
+                                .from(qProject)
+                                .where(qProject.projId.eq(qReply.replyProjId))
+                        ,"projMemId"
+                ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qMember.memNick)
                                 .from(qMember)
