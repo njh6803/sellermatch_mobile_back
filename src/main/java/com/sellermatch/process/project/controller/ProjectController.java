@@ -66,7 +66,7 @@ public class ProjectController {
             Page<Project> projectList = projectRepositoryCustom.findAllProject(project, pageable, null);
             result.setContent(projectList);
 
-            if (!Util.isEmpty(projectList)) {
+            if (Util.isEmpty(projectList)) {
                 result.setResult("ERROR");
                 result.setStatus(CommonConstant.ERROR_NULL_216);
             }
