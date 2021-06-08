@@ -44,6 +44,8 @@ public class Apply {
     @Transient
     private Integer memIdx;
     @Transient
+    private String memId;
+    @Transient
     private String memSort;
     @Transient
     private String memTel;

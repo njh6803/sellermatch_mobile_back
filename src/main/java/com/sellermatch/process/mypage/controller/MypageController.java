@@ -136,8 +136,10 @@ public class MypageController {
     public CommonDTO recommand(@RequestBody Apply apply) {
         CommonDTO result = new CommonDTO();
         applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
-            applyRepository.updateApply(temp.getApplyIdx(), apply.getApplyProjState(), apply.getApplyType());
+            applyRepository.updateApply(apply.getApplyIdx(), apply.getApplyProjState(), apply.getApplyType());
             result.setContent(new Apply());
+            Apply apply2 = applyRepository.getAcceptedOwner(temp.getApplyId(), temp.getApplyProjId());
+            System.out.println(apply2);
         }, () -> {});
         return result;
     }

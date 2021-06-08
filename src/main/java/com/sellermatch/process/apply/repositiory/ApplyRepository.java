@@ -22,4 +22,19 @@ public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integ
             "SET Apply_proj_state = :applyProjState, Apply_update_date = now() " +
             "WHERE Apply_idx = :ApplyIdx AND Apply_type = :ApplyType", nativeQuery = true)
     int updateApply(@Param("ApplyIdx") Integer ApplyIdx, @Param("applyProjState") String applyProjState, @Param("ApplyType") String ApplyType);
+
+    @Query(value = "SELECT " +
+            "apply_idx" +
+            ",Mem_id" +
+            ",Mem_tel" +
+            ",Mem_sort" +
+            ",Mem_nick" +
+            ",Proj_title" +
+            ",Proj_id " +
+            "FROM ApplyList al, ProjectList pl, MemList ml " +
+            "WHERE ml.Mem_id  = pl.Proj_mem_id " +
+            "AND pl.Proj_id = :applyProjId " +
+            "AND al.Apply_id = :applyId"
+            , nativeQuery = true)
+    Apply getAcceptedOwner(@Param("applyProjId") String applyProjId, @Param("applyId") String applyId);
 }
