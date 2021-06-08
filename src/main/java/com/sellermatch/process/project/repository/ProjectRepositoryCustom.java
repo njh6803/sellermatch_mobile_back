@@ -174,6 +174,11 @@ public class ProjectRepositoryCustom {
             );
         }
 
+
+        if (!Util.isEmpty(project.getProjMemId())){
+            builder.and(qProject.projMemId.eq(project.getProjMemId()));
+        }
+
         JPAQuery jpaQuery = getProjectList(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, builder, pageable);
 
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
