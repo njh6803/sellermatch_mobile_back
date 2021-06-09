@@ -321,7 +321,7 @@ public class ProjectController {
             temp.setProjState("2");
             temp.setProjEndDate(new Date());
             temp.setProjEditDate(new Date());
-            projectRepository.save(temp);
+            result.setContent(projectRepository.save(temp));
         });
         return result;
     }
