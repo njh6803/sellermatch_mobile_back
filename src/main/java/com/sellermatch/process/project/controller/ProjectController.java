@@ -204,11 +204,11 @@ public class ProjectController {
         CommonDTO result = new CommonDTO();
 
         //대표이미지: NULL 체크
-        if(Util.isEmpty(projectImg)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_152);
-            return result;
-        }
+//        if(Util.isEmpty(projectImg)) {
+//            result.setResult(CommonConstant.ERROR);
+//            result.setStatus(CommonConstant.ERROR_NULL_152);
+//            return result;
+//        }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
             result.setResult(CommonConstant.ERROR);
