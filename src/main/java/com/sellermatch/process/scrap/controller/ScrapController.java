@@ -5,6 +5,7 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.scrap.domain.Scrap;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
+import com.sellermatch.process.scrap.repository.ScrapRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class ScrapController {
 
     private final ScrapRepository scrapRepository;
     private final MemberRepository memberRepository;
+    private final ScrapRepositoryCustom scrapRepositoryCustom;
 
     @GetMapping("/scrap/{id}")
     public CommonDTO selectScrap(@PathVariable Integer id) {
@@ -32,10 +34,10 @@ public class ScrapController {
         return result;
     }
 
-    @GetMapping("/scrap/list")
-    public CommonDTO selectScrapList(Pageable pageable) {
+    @GetMapping("/scrap/list/{memIdx}")
+    public CommonDTO selectScrapList(@PathVariable Integer memIdx, Pageable pageable) {
         CommonDTO result = new CommonDTO();
-        result.setContent(scrapRepository.findAll(pageable));
+        result.setContent(scrapRepositoryCustom.getScrapList(memIdx, pageable));
         return result;
     }
 

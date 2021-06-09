@@ -35,5 +35,35 @@ public class Scrap {
     @Column(name = "last_regist_dt")
     private Date lastRegistDt;
 
+    @Transient
+    private String projId;
+    @Transient
+    private Date projRegDate;
+    @Transient
+    private String projTitle;
+    @Transient
+    private Date projEndDate;
+    @Transient
+    private Integer projRecruitNum;
+    @Transient
+    private String projState;
+    @Transient
+    private String projSort;
+    @Transient
+    private String projNation;
+    @Transient
+    private String projSupplyType;
+    @Transient
+    private Long applyCount;
+    @Transient
+    private String memNick;
+    @Transient
+    private String applyProjState;
+    @Transient
+    private String applyType;
+
+
+
+
 }
 
