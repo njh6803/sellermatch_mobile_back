@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -48,9 +49,12 @@ public class BoardController {
     @PutMapping("/board")
     public CommonDTO updateBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
-        boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
-            result.setContent(boardRepository.save(board));
-        }, () -> {});
+        boardRepository.findById(board.getBoardIdx()).ifPresent(temp -> {
+            temp.setBoardTitle(board.getBoardTitle());
+            temp.setBoardContents(board.getBoardContents());
+            temp.setBoardEditDate(new Date());
+            result.setContent(boardRepository.save(temp));
+        });
         return result;
     }
 
