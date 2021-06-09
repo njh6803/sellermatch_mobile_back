@@ -59,4 +59,7 @@ public class Board {
 
     @Formula("(SELECT A.Mem_sort FROM MemList AS A WHERE board_writer = A.Mem_Id)")
     private String memSort;
+
+    @Transient
+    private Long replyCount;
 }

@@ -2,6 +2,7 @@ package com.sellermatch.process.board.controller;
 
 import com.sellermatch.process.board.domain.Board;
 import com.sellermatch.process.board.repository.BoardRepository;
+import com.sellermatch.process.board.repository.BoardRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.util.MailUtil;
@@ -19,6 +20,7 @@ public class BoardController {
 
     private final BoardRepository boardRepository;
     private final MailUtil mailUtil;
+    private final BoardRepositoryCustom boardRepositoryCustom;
 
     @GetMapping("/board/{id}")
     public CommonDTO selectBoard(@PathVariable Integer id){
@@ -33,9 +35,16 @@ public class BoardController {
         return result;
     }
     @GetMapping("/board/list")
-    public CommonDTO selectBoardList(Pageable pageable, @RequestParam List<String> boardType){
+    public CommonDTO selectBoardList(Pageable pageable, @RequestParam List<String> boardType, @RequestParam(required = false) String boardQaType){
         CommonDTO result = new CommonDTO();
-        result.setContent(boardRepository.findByBoardTypeIn(pageable, boardType));
+        result.setContent(boardRepositoryCustom.getBoardList(boardType, boardQaType, pageable));
+        return result;
+    }
+
+    @GetMapping("/board/list/noticeTop")
+    public CommonDTO selectBoardNoticeTopList(Pageable pageable){
+        CommonDTO result = new CommonDTO();
+        result.setContent(boardRepositoryCustom.getBoardNoticeTopList(pageable));
         return result;
     }
 
