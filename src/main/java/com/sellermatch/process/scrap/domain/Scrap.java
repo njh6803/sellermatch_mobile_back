@@ -54,6 +54,8 @@ public class Scrap {
     @Transient
     private String projSupplyType;
     @Transient
+    private String projMemId;
+    @Transient
     private Long applyCount;
     @Transient
     private String memNick;

@@ -61,6 +61,7 @@ public class ScrapRepositoryCustom {
                 qProject.projNation,
                 qProject.projSupplyType,
                 qProject.projChannel,
+                qProject.projMemId,
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
