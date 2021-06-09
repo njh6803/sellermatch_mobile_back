@@ -5,12 +5,14 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
-import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -25,7 +27,6 @@ public class SignController {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
-    private final ProfileRepository profileRepository;
 
     @PostMapping("/signin")
     public CommonDTO signin(@RequestBody Member member) {
@@ -170,6 +171,7 @@ public class SignController {
         //IP 입력
         member.setMemIp(Util.getClientIP(request));
         result.setContent(memberService.insertMember(member));
+
         return result;
     }
 
