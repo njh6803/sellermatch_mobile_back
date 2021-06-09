@@ -60,7 +60,8 @@ public class MemberController {
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
-            if(!member.getMemPwChk().equals(member.getMemPw())){
+            if(!member.getMemPw().equalsIgnoreCase(member.getMemPwChk())){
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_FORMAT_111);
                 return result;

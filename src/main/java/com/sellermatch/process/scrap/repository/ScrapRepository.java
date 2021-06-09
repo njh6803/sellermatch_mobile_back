@@ -10,4 +10,6 @@ public interface ScrapRepository extends PagingAndSortingRepository<Scrap, Integ
     Page<Scrap> findAll(Pageable pageable);
 
     Page<Scrap> findAllByMemIdx(Pageable pageable, int memIdx);
+
+    int countByMemIdxAndProjIdx(Integer memIdx, Integer projIdx);
 }
