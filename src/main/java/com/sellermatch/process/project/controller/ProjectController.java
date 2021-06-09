@@ -188,8 +188,10 @@ public class ProjectController {
             projectDto.setProfileHashtag(tagProfile);
         }
 
-        if(isExistProfile) projectDto.setProfile(profile);
-        projectDto.setProfileImgFile(profileImg);
+        if(isExistProfile) {
+            projectDto.setProfile(profile);
+            projectDto.setProfileImgFile(profileImg);
+        }
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
 
@@ -198,18 +200,129 @@ public class ProjectController {
     }
 
     @PutMapping("/project")
-    public CommonDTO updateProject(ProjectDto projectDto, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) {
+    public CommonDTO updateProject(Project project, MultipartFile projectImg, MultipartFile projectAttFile) {
         CommonDTO result = new CommonDTO();
-        projectRepository.findById(projectDto.getProject().getProjIdx()).ifPresentOrElse(temp -> {
-            projectDto.setProfileImgFile(profileImg);
+
+        //대표이미지: NULL 체크
+        if(Util.isEmpty(projectImg)) {
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_152);
+            return result;
+        }
+        //제목: NULL체크
+        if(Util.isEmpty(project.getProjTitle())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_132);
+            return result;
+        }
+        //제목: 길이 제한 체크
+        if(!Util.isLengthChk(project.getProjTitle(),0,100)){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_132);
+            return result;
+        }
+        //상품분류: NULL체크
+        if(Util.isEmpty(project.getProjIndus())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_127);
+            return result;
+        }
+        //상품단가: NULL체크
+        if(Util.isEmpty(project.getProjPrice())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_134);
+            return result;
+        }
+        //판매마진: NULL체크
+        if(Util.isEmpty(project.getProjMargin())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_135);
+            return result;
+        }
+        //등록지역: NULL체크
+        if(Util.isEmpty(project.getProjNation())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_136);
+            return result;
+        }
+        //공급방법: NULL체크
+        if(Util.isEmpty(project.getProjSupplyType())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_137);
+            return result;
+        }
+        //모집마감일: NULL체크
+        if(Util.isEmpty(project.getProjEndDate())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_139);
+            return result;
+        }
+        //모집인원: NULL체크
+        if(Util.isEmpty(project.getProjRecruitNum())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_140);
+            return result;
+        }
+        //모집인원: 숫자 형식 체크
+        if(!Util.isNumeric(project.getProjRecruitNum().toString())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_FORMAT_142);
+            return result;
+        }
+        //상세설명: NULL체크
+        if(Util.isEmpty(project.getProjDetail())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_143);
+            return result;
+        }
+
+        projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
+            ProjectDto projectDto = new ProjectDto();
+
+            temp.setProjTitle(project.getProjTitle());
+            temp.setProjIndus(project.getProjIndus());
+            temp.setProjPrice(project.getProjPrice());
+            temp.setProjMargin(project.getProjMargin());
+            temp.setProjChannel(project.getProjChannel());
+            temp.setProjSupplyType(project.getProjSupplyType());
+            temp.setProjNation(project.getProjNation());
+            temp.setProjRecruitNum(project.getProjRecruitNum());
+            temp.setProjEndDate(project.getProjEndDate());
+            temp.setProjDetail(project.getProjDetail());
+            temp.setProjRequire(project.getProjRequire());
+            projectDto.setProject(temp);
+
+            // 프로젝트 해시태그
+            if (!Util.isEmpty(project.getProjKeyword())) {
+                Hashtag tagProject = new Hashtag();
+                tagProject.setFrstRegistDt(new Date());
+                tagProject.setFrstRegistMngr(project.getProjMemId());
+                tagProject.setHashType("1");
+                tagProject.setId(project.getProjId());
+                tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+                projectDto.setProjHashtag(tagProject);
+            }
+
             projectDto.setProjImgFile(projectImg);
             projectDto.setProjAttFile(projectAttFile);
             try {
-                result.setContent(projectService.insertAndUpdateProject(projectDto));
+                result.setContent(projectService.updateAndUpdateProject(projectDto));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }, () -> {});
+        return result;
+    }
+
+    @PutMapping("/project/close")
+    public CommonDTO updateProjectStatus(@RequestBody Project project) {
+        CommonDTO result = new CommonDTO();
+        projectRepository.findById(project.getProjIdx()).ifPresent(temp -> {
+            temp.setProjState("2");
+            temp.setProjEndDate(new Date());
+            temp.setProjEditDate(new Date());
+            projectRepository.save(temp);
+        });
         return result;
     }
 
