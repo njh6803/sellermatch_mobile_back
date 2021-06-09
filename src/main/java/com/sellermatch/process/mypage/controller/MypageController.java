@@ -69,7 +69,6 @@ public class MypageController {
         } else {
             project = projectRepositoryCustom.getRecommandListForSell(memId, pageable);
         }
-
         if (project != null) {
             result.setContent(project);
         } else {
@@ -83,7 +82,6 @@ public class MypageController {
     public CommonDTO selectMyApplyList(@PathVariable String memId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Page<Project> project = projectRepositoryCustom.getMyApplyList(memId, pageable);
-
         if (project != null) {
             result.setContent(project);
         } else {
@@ -98,7 +96,6 @@ public class MypageController {
     public CommonDTO selectProjectEndList(@PathVariable String memId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Page<Project> project = projectRepositoryCustom.getProjectEndList(memId, pageable);
-
         if (project != null) {
             result.setContent(project);
         } else {

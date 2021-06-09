@@ -199,7 +199,7 @@ public class ProjectController {
         return result;
     }
 
-    @PutMapping("/project")
+    @PutMapping("/project/modify")
     public CommonDTO updateProject(Project project, MultipartFile projectImg, MultipartFile projectAttFile) {
         CommonDTO result = new CommonDTO();
 
