@@ -27,7 +27,7 @@ public class MailUtil{
      * @param to - 수신자 메일 주소
      * @param subject  - 제목
      * @param nickName  - 닉네임
-     * @param type  - join, auth, withdraw, pwFind
+     * @param type  - accept, recommand, welcomeMail
      */
     public void sendMail(String to, String subject, String nickName, String type) throws Exception{
 

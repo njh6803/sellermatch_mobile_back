@@ -6,9 +6,9 @@ import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.util.EncryptionUtils;
+import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +19,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    ProfileService profileService;
+    private final MemberRepository memberRepository;
+    private final ProfileService profileService;
+    private final MailUtil mailUtil;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Member insertMember(Member member) throws Exception{
@@ -51,6 +49,12 @@ public class MemberService {
         profile.setProfileRegDate(new Date());
         projectDto.setProfile(profile);
         profileService.insertAndUpdateProfile(projectDto);
+
+        String subject = "셀러매치 가입을 환영합니다.";
+        String type = "welcomeMail";
+
+        mailUtil.sendMail(member.getMemId(), subject,member.getMemNick(), type);
+
         return member;
     }
 }
