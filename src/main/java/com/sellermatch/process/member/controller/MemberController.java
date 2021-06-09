@@ -6,6 +6,7 @@ import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.process.profile.repository.ProfileRepository;
+import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class MemberController {
         //비밀번호 존재 시 체크
         if(!Util.isEmpty(member.getMemPw())){
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
-            if(Util.isPassword(member.getMemPw())) {
+            if(!Util.isPassword(member.getMemPw())) {
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_FORMAT_104);
                 return result;
@@ -68,32 +69,32 @@ public class MemberController {
         //이름 존재 시 체크
         if(!Util.isEmpty(member.getMemName())){
             //이름: 한글+영문만 가능
-            if(Util.isKorAndEng(member.getMemName())) {
+            if(!Util.isKorAndEng(member.getMemName())) {
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_FORMAT_118);
                 return result;
             }
             //이름: 길이 체크 45자
-            if(Util.isLengthChk(member.getMemId(),0,45)) {
+            if(!Util.isLengthChk(member.getMemId(),0,45)) {
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_LENGTH_117);
                 return result;
             }
         }
         //닉네임: NULL 체크
-        if(!Util.isEmpty(member.getMemNick())){
+        if(Util.isEmpty(member.getMemNick())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_113);
             return result;
         }
         //닉네임: 길이 체크 100자
-        if(Util.isLengthChk(member.getMemNick(),0,100)) {
+        if(!Util.isLengthChk(member.getMemNick(),0,100)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_115);
             return result;
         }
         //닉네임: 중복 체크
-        if(!Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
+        if(Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_DUPLICATE_114);
             return result;
@@ -105,12 +106,20 @@ public class MemberController {
             return result;
         }
         //전화번호: 전화번호 형식 체크
-        if(Util.isTel(member.getMemTel())){
+        if(!Util.isTel(member.getMemTel())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_FORMAT_106);
             return result;
         }
 
+        memberRepository.findById(member.getMemIdx()).ifPresent(temp -> {
+            temp.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
+            temp.setMemName(member.getMemName());
+            temp.setMemCountry(member.getMemCountry());
+            temp.setMemTel(member.getMemTel());
+            temp.setMemNation(member.getMemNation());
+            result.setContent(memberRepository.save(temp));
+        });
         return result;
     }
 

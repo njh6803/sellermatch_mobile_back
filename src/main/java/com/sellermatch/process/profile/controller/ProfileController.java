@@ -56,9 +56,8 @@ public class ProfileController {
     }
 
     @PutMapping("/profile")
-    public CommonDTO updateProfile(@RequestBody ProjectDto projectDto, MultipartFile profileImg) {
+    public CommonDTO updateProfile(Profile profile, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
-        Profile profile = projectDto.getProfile();
         // 자기소개 : NULL 체크
         if (Util.isEmpty(profile.getProfileIntro())) {
             result.setResult(CommonConstant.ERROR);
@@ -111,8 +110,10 @@ public class ProfileController {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_130);
         }
-        profileRepository.findById(projectDto.getProfile().getProfileIdx()).ifPresentOrElse(temp ->{
-            projectDto.setProfileImgFile(profileImg);
+        profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp -> {
+            ProjectDto projectDto = new ProjectDto();
+            projectDto.setProfile(profile);
+            if(!Util.isEmpty(profileImg)) projectDto.setProfileImgFile(profileImg);
             projectDto.getProfile().setProfileEditDate(new Date());
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
