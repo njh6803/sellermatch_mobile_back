@@ -110,7 +110,8 @@ public class MypageController {
     public CommonDTO selectRegistDelngProject(@PathVariable String projId) {
         CommonDTO result = new CommonDTO();
         projectRepository.findByProjId(projId).ifPresent(temp -> {
-            Project project = projectRepositoryCustom.findProject(temp.getProjIdx());
+
+            Project project = projectRepositoryCustom.findProject(temp.getProjIdx(), 0);
             if (project != null) {
                 result.setContent(project);
             } else {
