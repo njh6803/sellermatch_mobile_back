@@ -76,7 +76,7 @@ public class ScrapController {
     public CommonDTO deleteScrap(Scrap scrap) {
         CommonDTO result = new CommonDTO();
         scrapRepository.findByMemIdxAndProjIdx(scrap.getMemIdx(), scrap.getProjIdx()).ifPresentOrElse(temp -> {
-            scrapRepository.delete(scrap);
+            scrapRepository.delete(temp);
         }, () -> {});
         return result;
     }
