@@ -53,7 +53,7 @@ public class MemberService {
         String subject = "셀러매치 가입을 환영합니다.";
         String type = "welcomeMail";
 
-        mailUtil.sendMail(member.getMemId(), subject,member.getMemNick(), type);
+        //mailUtil.sendMail(member.getMemId(), subject,member.getMemNick(), type);
 
         return member;
     }

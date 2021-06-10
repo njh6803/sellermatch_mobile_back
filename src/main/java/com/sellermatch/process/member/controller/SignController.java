@@ -174,8 +174,6 @@ public class SignController {
         member.setMemIp(Util.getClientIP(request));
         result.setContent(memberService.insertMember(member));
 
-        //mailUtil.sendMail(member.getMemId(), "셀러매치 가입을 환영합니다.", member.getMemNick(), "welcomeMail");
-
         return result;
     }
 
