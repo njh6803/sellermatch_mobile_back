@@ -41,12 +41,6 @@ public class BoardRepositoryCustom {
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
-    public Page<Board> getBoardNoticeTopList(Pageable pageable) {
-        JPAQuery jpaQuery = selectBoardNoticeTopList(qBoard, pageable);
-
-        return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
-    }
-
     private JPAQuery selectBoardList(QBoard qBoard, Pageable pageable, BooleanBuilder builder) {
 
         JPAQuery jpaQuery = query.select(Projections.fields(Board.class,
@@ -71,40 +65,11 @@ public class BoardRepositoryCustom {
                         ,"replyCount"
                 )))
                 .from(qBoard)
-                .where(builder.and(qBoard.boardNoticeTop.eq("N")))
+                .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(qBoard.boardRegDate.desc());
+                .orderBy(qBoard.boardNoticeTop.desc(), qBoard.boardRegDate.desc());
 
-        return jpaQuery;
-    }
-
-    private JPAQuery selectBoardNoticeTopList(QBoard qBoard, Pageable pageable) {
-
-        JPAQuery jpaQuery = query.select(Projections.fields(Board.class,
-                qBoard.boardIdx,
-                qBoard.boardId,
-                qBoard.boardTitle,
-                qBoard.boardContents,
-                qBoard.boardWriter,
-                qBoard.boardType,
-                qBoard.boardQaType,
-                qBoard.boardEmail,
-                qBoard.boardFile,
-                qBoard.boardRegDate,
-                qBoard.boardEditDate,
-                qBoard.boardNoticeTop,
-                ExpressionUtils.as(
-                        JPAExpressions.select(qReply.replyId.count())
-                                .from(qReply)
-                                .where(qReply.replyBoardId.eq(qBoard.boardId))
-                        ,"replyCount"
-                )))
-                .from(qBoard)
-                .where(qBoard.boardNoticeTop.eq("Y"))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(qBoard.boardRegDate.desc());
         return jpaQuery;
     }
 }

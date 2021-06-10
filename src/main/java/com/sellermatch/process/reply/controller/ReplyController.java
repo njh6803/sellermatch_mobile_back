@@ -71,8 +71,8 @@ public class ReplyController {
             result.setStatus(CommonConstant.ERROR_NULL_149);
             return result;
         }
-        //댓글내용: 길이 체크 (100자)
-        if(!Util.isLengthChk(reply.getReplyContents(),0,100)){
+        //댓글내용: 길이 체크 (1000자)
+        if(!Util.isLengthChk(reply.getReplyContents(),0,1000)){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_151);
             return result;

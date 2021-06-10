@@ -41,13 +41,6 @@ public class BoardController {
         return result;
     }
 
-    @GetMapping("/board/list/noticeTop")
-    public CommonDTO selectBoardNoticeTopList(Pageable pageable){
-        CommonDTO result = new CommonDTO();
-        result.setContent(boardRepositoryCustom.getBoardNoticeTopList(pageable));
-        return result;
-    }
-
     @PostMapping("/board")
     public CommonDTO insertBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
