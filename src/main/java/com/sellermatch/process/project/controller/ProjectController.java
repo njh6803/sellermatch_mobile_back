@@ -58,7 +58,7 @@ public class ProjectController {
         return result;
     }
 
-    @GetMapping("/project/list/recommend")
+    @GetMapping("/project/list/recommend/{memIdx}")
     public CommonDTO selectRecommendProject(@PathVariable Integer memIdx, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Project project = new Project();
@@ -132,16 +132,22 @@ public class ProjectController {
             result.setStatus(CommonConstant.ERROR_NULL_135);
             return result;
         }
-        //등록지역: NULL체크
-        if(Util.isEmpty(project.getProjNation())){
+        //판매채널: NULL체크
+        if (Util.isEmpty(project.getProjChannel())) {
             result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_136);
+            result.setStatus(CommonConstant.ERROR_NULL_138);
             return result;
         }
         //공급방법: NULL체크
         if(Util.isEmpty(project.getProjSupplyType())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_137);
+            return result;
+        }
+        //등록지역: NULL체크
+        if(Util.isEmpty(project.getProjNation())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_136);
             return result;
         }
         //모집마감일: NULL체크
@@ -249,16 +255,22 @@ public class ProjectController {
             result.setStatus(CommonConstant.ERROR_NULL_135);
             return result;
         }
-        //등록지역: NULL체크
-        if(Util.isEmpty(project.getProjNation())){
+        //판매채널: NULL체크
+        if (Util.isEmpty(project.getProjChannel())) {
             result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_136);
+            result.setStatus(CommonConstant.ERROR_NULL_138);
             return result;
         }
         //공급방법: NULL체크
         if(Util.isEmpty(project.getProjSupplyType())){
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_137);
+            return result;
+        }
+        //등록지역: NULL체크
+        if(Util.isEmpty(project.getProjNation())){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_136);
             return result;
         }
         //모집마감일: NULL체크
