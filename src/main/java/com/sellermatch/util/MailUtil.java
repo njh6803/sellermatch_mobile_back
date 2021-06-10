@@ -43,7 +43,6 @@ public class MailUtil{
     }
 
     private String bulid(String nickName, String type){
-        type = "mail-"+type;
         Context context = new Context();
         context.setVariable("nickName", nickName);
         return templateEngine.process(type, context);
