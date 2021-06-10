@@ -51,8 +51,10 @@ public class ScrapController {
             result.setContent(new Scrap());
         }
         scrap.setFrstRegistDt(new Date());
+        scrap.setLastRegistDt(new Date());
         memberRepository.findById(scrap.getMemIdx()).ifPresentOrElse(temp -> {
             scrap.setFrstRegistMngr(temp.getMemId());
+            scrap.setLastRegistMngr(temp.getMemId());
         }, ()->{});
 
         result.setContent(scrapRepository.save(scrap));
@@ -71,7 +73,7 @@ public class ScrapController {
     @DeleteMapping("/scrap")
     public CommonDTO deleteScrap(Scrap scrap) {
         CommonDTO result = new CommonDTO();
-        scrapRepository.findById(scrap.getScrapNo()).ifPresentOrElse(temp -> {
+        scrapRepository.findByMemIdxAndProjIdx(scrap.getMemIdx(), scrap.getProjIdx()).ifPresentOrElse(temp -> {
             scrapRepository.delete(scrap);
         }, () -> {});
         return result;
