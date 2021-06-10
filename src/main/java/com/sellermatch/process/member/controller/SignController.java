@@ -135,7 +135,7 @@ public class SignController {
             //비밀번호: 비밀번호확인 일치 체크
             if(!member.getMemPwChk().equals(member.getMemPw())){
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_MISMATCH_102);
+                result.setStatus(CommonConstant.ERROR_MISMATCH_112);
                 return result;
             }
         }
