@@ -71,8 +71,8 @@ public class CommonConstant {
     public final static int ERROR_NUMSIZE_141 = -141;  // 모집인원 숫자 제한
 
     /* 타입 미일치 */
-    public final static int ERROR_TYPE_203 = -203;  // 지원하기 회원타입 미일치
-    public final static int ERROR_TYPE_206 = -206;  // 제안하기 회원타입 미일치
+    public final static int ERROR_TYPE_203 = -203;  // 회원타입 미일치 (판매자만 이용가능)
+    public final static int ERROR_TYPE_206 = -206;  // 회원타입 미일치 (공급자만 이용가능)
 
     /* 정보 불일치 */
     public final static int ERROR_MISMATCH_102 = -102;  // 아이디 혹은 비밀번호 미일치

@@ -77,10 +77,10 @@ public class ApplyController {
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
                         result.setResult("ERROR");
-                        if (apply.getApplyType().equalsIgnoreCase("1")) {
+                        if (apply.getMemSort().equalsIgnoreCase("1")) {
                                 result.setStatus(CommonConstant.ERROR_TYPE_203);
                         }
-                        if (apply.getApplyType().equalsIgnoreCase("2")) {
+                        if (apply.getMemSort().equalsIgnoreCase("2")) {
                                 result.setStatus(CommonConstant.ERROR_TYPE_206);
                         }
 
