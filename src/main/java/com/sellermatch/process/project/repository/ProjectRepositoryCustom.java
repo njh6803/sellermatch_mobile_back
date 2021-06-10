@@ -20,6 +20,7 @@ import com.sellermatch.process.member.domain.QMember;
 import com.sellermatch.process.profile.domain.QProfile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.QProject;
+import com.sellermatch.process.scrap.domain.QScrap;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,7 @@ public class ProjectRepositoryCustom {
     private final QHashtaglist qHashtaglist = QHashtaglist.hashtaglist;
     private final QApply qApply = QApply.apply;
     private final QIndus qIndus = QIndus.indus;
+    private final QScrap qScrap = QScrap.scrap;
 
     public Page<Project> getProjectEndList(String memId, Pageable pageable){
         JPAQuery jpaQuery = selectProjectEndList(qMember, qProject, qApply, memId, pageable);
@@ -262,6 +264,12 @@ public class ProjectRepositoryCustom {
                         ,"contractCount"
                 ),
                 ExpressionUtils.as(
+                        JPAExpressions.select(qScrap.scrapNo.count())
+                                .from(qScrap)
+                                .where(qScrap.projIdx.eq(qProject.projIdx))
+                        ,"scrapCheck"
+                ),
+                ExpressionUtils.as(
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
@@ -364,6 +372,12 @@ public class ProjectRepositoryCustom {
                                 .from(qApply)
                                 .where(qApply.applyProjId.eq(qProject.projId))
                         ,"applyCount"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(qScrap.scrapNo.count())
+                                .from(qScrap)
+                                .where(qScrap.projIdx.eq(qProject.projIdx))
+                        ,"scrapCheck"
                 ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()

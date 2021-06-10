@@ -147,6 +147,8 @@ public class Project {
     @Transient
     private Long okeyCount;
     @Transient
+    private Long scrapCheck;
+    @Transient
     private String recommandProjectFlag;
 
     @Transient
