@@ -7,6 +7,7 @@ import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
+import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class SignController {
 
     private final JWTUtil jwtUtil;
+    private final MailUtil mailUtil;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
@@ -171,6 +173,8 @@ public class SignController {
         //IP 입력
         member.setMemIp(Util.getClientIP(request));
         result.setContent(memberService.insertMember(member));
+
+        mailUtil.sendMail(member.getMemId(), "셀러매치 가입을 환영합니다.", member.getMemNick(), "welcomeMail");
 
         return result;
     }
