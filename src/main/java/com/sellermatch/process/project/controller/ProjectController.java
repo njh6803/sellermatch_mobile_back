@@ -30,8 +30,8 @@ public class ProjectController {
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/project/{id}/{memIdx}")
-    public CommonDTO selectProject(@PathVariable Integer id, @PathVariable Integer memIdx) {
+    @GetMapping("/project/{id}")
+    public CommonDTO selectProject(@PathVariable Integer id, Integer memIdx) {
         CommonDTO result = new CommonDTO();
 
         if (Util.isEmpty(memIdx)) {
@@ -79,8 +79,8 @@ public class ProjectController {
         return result;
     }
 
-    @GetMapping("/project/list/{memIdx}")
-    public CommonDTO selectProjectList(@PathVariable Integer memIdx, Pageable pageable, Project project, String search) {
+    @GetMapping("/project/list")
+    public CommonDTO selectProjectList(Integer memIdx, Pageable pageable, Project project, String search) {
         CommonDTO result = new CommonDTO();
 
         if (Util.isEmpty(memIdx)) {
