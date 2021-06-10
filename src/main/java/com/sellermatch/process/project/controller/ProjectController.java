@@ -168,6 +168,12 @@ public class ProjectController {
             result.setStatus(CommonConstant.ERROR_FORMAT_142);
             return result;
         }
+        //모집인원: 숫자 형식 체크
+        if(project.getProjRecruitNum()<1 && project.getProjRecruitNum()>100){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NUMSIZE_141);
+            return result;
+        }
         //상세설명: NULL체크
         if(Util.isEmpty(project.getProjDetail())){
             result.setResult(CommonConstant.ERROR);
