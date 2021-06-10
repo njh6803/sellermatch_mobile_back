@@ -30,10 +30,10 @@ public class ProjectController {
     private final ProjectRepositoryCustom projectRepositoryCustom;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/project/{id}")
-    public CommonDTO selectProject(@PathVariable Integer id) {
+    @GetMapping("/project/{id}/{memIdx}")
+    public CommonDTO selectProject(@PathVariable Integer id, @PathVariable Integer memIdx) {
         CommonDTO result = new CommonDTO();
-        Project project = projectRepositoryCustom.findProject(id);
+        Project project = projectRepositoryCustom.findProject(id, memIdx);
         if (project != null) {
             result.setContent(project);
         } else {
@@ -63,7 +63,7 @@ public class ProjectController {
         memberRepository.findById(memIdx).ifPresentOrElse(temp -> {
             project.setProjMemId(temp.getMemId());
             project.setRecommandProjectFlag(recommandProjectFlag);
-            Page<Project> projectList = projectRepositoryCustom.findAllProject(project, pageable, null);
+            Page<Project> projectList = projectRepositoryCustom.findAllProject(project, memIdx, pageable, null);
             result.setContent(projectList);
 
             if (Util.isEmpty(projectList)) {
@@ -74,10 +74,10 @@ public class ProjectController {
         return result;
     }
 
-    @GetMapping("/project/list")
-    public CommonDTO selectProjectList(Pageable pageable, Project project, String search) {
+    @GetMapping("/project/list/{memIdx}")
+    public CommonDTO selectProjectList(@PathVariable Integer memIdx, Pageable pageable, Project project, String search) {
         CommonDTO result = new CommonDTO();
-        Page<Project> projectList = projectRepositoryCustom.findAllProject(project, pageable, search);
+        Page<Project> projectList = projectRepositoryCustom.findAllProject(project, memIdx, pageable, search);
         result.setContent(projectList);
         return result;
     }

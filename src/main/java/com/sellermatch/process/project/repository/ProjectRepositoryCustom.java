@@ -72,12 +72,12 @@ public class ProjectRepositoryCustom {
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
-    public Project findProject(Integer projectIdx) {
-        Project project = getProject(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, qFile, projectIdx);
+    public Project findProject(Integer projectIdx, Integer memIdx) {
+        Project project = getProject(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, qFile, projectIdx, memIdx);
         return project;
     }
 
-    public Page<Project> findAllProject(Project project, Pageable pageable, String search) {
+    public Page<Project> findAllProject(Project project, Integer memIdx, Pageable pageable, String search) {
         BooleanBuilder builder = new BooleanBuilder();
 
         // 거래처매칭페이지 노출 필수조건
@@ -181,7 +181,7 @@ public class ProjectRepositoryCustom {
             builder.and(qProject.projMemId.eq(project.getProjMemId()));
         }
 
-        JPAQuery jpaQuery = getProjectList(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, builder, pageable);
+        JPAQuery jpaQuery = getProjectList(qProfile, qMember, qProject, qApply, qHashtag, qHashtaglist, qIndus, memIdx, builder, pageable);
 
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
@@ -201,7 +201,7 @@ public class ProjectRepositoryCustom {
     private Project getProject(QProfile qProfile, QMember qMember,
                                     QProject qProject, QApply qApply,
                                     QHashtag qHashtag, QHashtaglist qHashtaglist,
-                                    QIndus qIndus, QFile qFile, Integer projectIdx) {
+                                    QIndus qIndus, QFile qFile, Integer projectIdx, Integer memIdx) {
 
         Project project = query.select(Projections.fields(Project.class,
                 qProject.projIdx,
@@ -266,7 +266,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qScrap.scrapNo.count())
                                 .from(qScrap)
-                                .where(qScrap.projIdx.eq(qProject.projIdx))
+                                .where(qScrap.projIdx.eq(qProject.projIdx).and(qScrap.memIdx.eq(memIdx)))
                         ,"scrapCheck"
                 ),
                 ExpressionUtils.as(
@@ -333,7 +333,7 @@ public class ProjectRepositoryCustom {
     private JPAQuery getProjectList(QProfile qProfile, QMember qMember,
                                          QProject qProject, QApply qApply,
                                          QHashtag qHashtag, QHashtaglist qHashtaglist,
-                                         QIndus qIndus, BooleanBuilder builder, Pageable pageable) {
+                                         QIndus qIndus, Integer memIdx, BooleanBuilder builder, Pageable pageable) {
         JPAQuery jpaQuery = query.select(Projections.fields(Project.class,
                 qProject.projIdx,
                 qProject.projId,
@@ -376,7 +376,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qScrap.scrapNo.count())
                                 .from(qScrap)
-                                .where(qScrap.projIdx.eq(qProject.projIdx))
+                                .where(qScrap.projIdx.eq(qProject.projIdx).and(qScrap.memIdx.eq(memIdx)))
                         ,"scrapCheck"
                 ),
                 ExpressionUtils.as(
