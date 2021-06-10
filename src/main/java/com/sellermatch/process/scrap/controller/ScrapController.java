@@ -49,6 +49,8 @@ public class ScrapController {
             result.setResult("ERROR");
             result.setStatus(CommonConstant.ERROR_DUPLICATE_205);
             result.setContent(new Scrap());
+
+            return result;
         }
         scrap.setFrstRegistDt(new Date());
         scrap.setLastRegistDt(new Date());
