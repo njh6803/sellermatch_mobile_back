@@ -463,7 +463,8 @@ public class ProjectRepositoryCustom {
                 .join(qProject).on(qProfile.profileMemId.eq(qProject.projMemId))
                 .where(qProject.projState.eq("1").and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize())
+                .orderBy(qApply.applyRegDate.desc());
         return jpaQuery;
     }
 
@@ -495,7 +496,8 @@ public class ProjectRepositoryCustom {
                 .join(qMember).on(qApply.applyMemId.eq(qMember.memId))
                 .where(qApply.applyType.eq("2").and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());;
+                .limit(pageable.getPageSize())
+                .orderBy(qApply.applyRegDate.desc());
         return jpaQuery;
     }
 
@@ -530,7 +532,8 @@ public class ProjectRepositoryCustom {
                 .join(qMember).on(qProject.projMemId.eq(qMember.memId))
                 .where(qApply.applyType.eq("2").and(qApply.applyMemId.eq(memId)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize())
+                .orderBy(qApply.applyRegDate.desc());
         return jpaQuery;
     }
 
@@ -591,7 +594,8 @@ public class ProjectRepositoryCustom {
                 .join(qMember).on(qProject.projMemId.eq(qMember.memId))
                 .where(qProject.projState.eq("2").and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize())
+                .orderBy(qProject.projRegDate.desc());
         return jpaQuery;
     }
 }
