@@ -45,6 +45,8 @@ public class CommonConstant {
     public final static int ERROR_DUPLICATE_202 = -202; // 지원하기 중복
     public final static int ERROR_DUPLICATE_205 = -205; // 스크랩 중복
     public final static int ERROR_DUPLICATE_207 = -207; // 제안하기 중복
+    public final static int ERROR_DUPLICATE_219 = -219; // 해시태그 중복
+
 
     /* 형식 미일치 */
     public final static int ERROR_FORMAT_104 = -104;  // 이메일 형식 미일치

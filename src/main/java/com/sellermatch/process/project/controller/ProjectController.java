@@ -192,13 +192,26 @@ public class ProjectController {
             result.setStatus(CommonConstant.ERROR_NULL_143);
             return result;
         }
+        // 프로젝트 해시태그 중복체크
+        if (Util.isEmpty(project.getProjKeyword())) {
+            String[] hashtagList = project.getProjKeyword().split(",");
+            for (int i = 0; i < hashtagList.length; i++) {
+                hashtagList[i].trim();
+                hashtagList[i].replace(" ","");
+                for (int j = 0; j < hashtagList.length; j++) {
+                    if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
+                        result.setResult(CommonConstant.ERROR);
+                        result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
+                        return result;
+                    }
+                }
+            }
+        }
 
         ProjectDto projectDto = new ProjectDto();
         project.setProjId(Util.getUniqueId("P-", Integer.parseInt(project.getProjSort())));
         project.setProjRegDate(new Date());
         project.setProjState("1");
-        //현재 썸네일 이미지로 바꾸주는 기능이 없음
-        project.setProjThumbnailImg("none");
         projectDto.setProject(project);
 
         // 프로젝트 해시태그
