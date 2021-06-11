@@ -200,71 +200,73 @@ public class ProjectController {
             }
         }
         // 프로필 유효성검사-----------------------------------------------------------------------------------
-        // 자기소개 : NULL 체크
-        if (Util.isEmpty(profile.getProfileIntro())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_121);
-            return result;
-        }
-        // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
-        if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_122);
-            return result;
-        }
-        // 매출규모 : NULL 체크
-        if (Util.isEmpty(profile.getProfileVolume())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_123);
-            return result;
-        }
-        // 매출규모 : 숫자형식 체크
-        if (!Util.isNum(String.valueOf(profile.getProfileVolume()))){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_124);
-            return result;
-        }
-        // 매출규모 : 길이 체크 ( 0원 부터 1조원 까지)
-        if (!Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_125);
-            return result;
-        }
-        // 등록지역 : NULL 체크
-        if (Util.isEmpty(profile.getProfileNation())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_126);
-            return result;
-        }
-        // 상품분류 : NULL 체크
-        if (Util.isEmpty(profile.getProfileIndus())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_127);
-            return result;
-        }
-        // 사업자번호 : NULL 체크
-        if (Util.isEmpty(profile.getProfileBizNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_128);
-            return result;
-        }
-        // 사업자번호 : 사업자번호형식 체크
-        if (!Util.isValid(profile.getProfileBizNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_129);
-            return result;
-        }
-        // 사업자유형 : NULL 체크
-        if (Util.isEmpty(profile.getProfileBizSort())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_130);
-            return result;
-        }
-        // 프로필 해시태그 중복체크
-        if (!Util.isEmpty(profile.getProfileHashtag())) {
-            if (profile.getProfileHashtag().trim().length() > 0) {
-                String[] hashtagList = profile.getProfileHashtag().split(",");
-                if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
+        if (isExistProfile) {
+            // 자기소개 : NULL 체크
+            if (Util.isEmpty(profile.getProfileIntro())) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_121);
+                return result;
+            }
+            // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
+            if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_LENGTH_122);
+                return result;
+            }
+            // 매출규모 : NULL 체크
+            if (Util.isEmpty(profile.getProfileVolume())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_123);
+                return result;
+            }
+            // 매출규모 : 숫자형식 체크
+            if (!Util.isNum(String.valueOf(profile.getProfileVolume()))){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_FORMAT_124);
+                return result;
+            }
+            // 매출규모 : 길이 체크 ( 0원 부터 1조원 까지)
+            if (!Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_LENGTH_125);
+                return result;
+            }
+            // 등록지역 : NULL 체크
+            if (Util.isEmpty(profile.getProfileNation())) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_126);
+                return result;
+            }
+            // 상품분류 : NULL 체크
+            if (Util.isEmpty(profile.getProfileIndus())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_127);
+                return result;
+            }
+            // 사업자번호 : NULL 체크
+            if (Util.isEmpty(profile.getProfileBizNum())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_128);
+                return result;
+            }
+            // 사업자번호 : 사업자번호형식 체크
+            if (!Util.isValid(profile.getProfileBizNum())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_FORMAT_129);
+                return result;
+            }
+            // 사업자유형 : NULL 체크
+            if (Util.isEmpty(profile.getProfileBizSort())) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_130);
+                return result;
+            }
+            // 프로필 해시태그 중복체크
+            if (!Util.isEmpty(profile.getProfileHashtag())) {
+                if (profile.getProfileHashtag().trim().length() > 0) {
+                    String[] hashtagList = profile.getProfileHashtag().split(",");
+                    if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
+                }
             }
         }
 
