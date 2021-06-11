@@ -69,6 +69,8 @@ public class CommonConstant {
 
     /* 숫자(개수) 제한 */
     public final static int ERROR_NUMSIZE_141 = -141;  // 모집인원 숫자 제한
+    public final static int ERROR_NUMSIZE_217 = -217;  // 모집인원 0이하
+    public final static int ERROR_NUMSIZE_218 = -218;  // 모집인원 최대숫자 초과
 
     /* 타입 미일치 */
     public final static int ERROR_TYPE_203 = -203;  // 회원타입 미일치 (판매자만 이용가능)

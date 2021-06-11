@@ -162,6 +162,18 @@ public class ProjectController {
             result.setStatus(CommonConstant.ERROR_NULL_140);
             return result;
         }
+        //모집인원: 최소 숫자
+        if(project.getProjRecruitNum() <= 0 ){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NUMSIZE_217);
+            return result;
+        }
+        //모집인원: 최대 숫자
+        if(project.getProjRecruitNum() > 100 ){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NUMSIZE_218);
+            return result;
+        }
         //모집인원: 숫자 형식 체크
         if(!Util.isNumeric(project.getProjRecruitNum().toString())){
             result.setResult(CommonConstant.ERROR);
