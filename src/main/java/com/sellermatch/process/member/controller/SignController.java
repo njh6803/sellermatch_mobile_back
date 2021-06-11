@@ -7,7 +7,6 @@ import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
 import com.sellermatch.util.EncryptionUtils;
 import com.sellermatch.util.JWTUtil;
-import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class SignController {
 
     private final JWTUtil jwtUtil;
-    private final MailUtil mailUtil;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
@@ -140,7 +138,7 @@ public class SignController {
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
-            if(!member.getMemPwChk().equals(member.getMemPw())){
+            if(!member.getMemPwChk().equalsIgnoreCase(member.getMemPw())){
                 result.setResult(CommonConstant.ERROR);
                 result.setStatus(CommonConstant.ERROR_MISMATCH_112);
                 return result;

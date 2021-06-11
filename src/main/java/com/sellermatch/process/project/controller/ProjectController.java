@@ -273,6 +273,7 @@ public class ProjectController {
         project.setProjRegDate(new Date());
         project.setProjState("1");
         projectDto.setProject(project);
+        project.setProjThumbnailImg("none");
 
         // 프로젝트 해시태그
         if (!Util.isEmpty(project.getProjKeyword())) {
