@@ -48,8 +48,10 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public CommonDTO insertProfile(@RequestBody ProjectDto projectDto, MultipartFile profileImg) throws Exception {
+    public CommonDTO insertProfile(Profile profile, MultipartFile profileImg) throws Exception {
         CommonDTO result = new CommonDTO();
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.setProfile(profile);
         projectDto.setProfileImgFile(profileImg);
         result.setContent(profileService.insertAndUpdateProfile(projectDto));
         return result;

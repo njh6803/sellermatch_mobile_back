@@ -39,6 +39,7 @@ public class FileService {
 
     public File insertFile(MultipartFile file,File FileInfo) throws Exception{
         File fileDto  = fileUtil.saveMultipartFile(file);
+        fileDto.setProjThumbnail("0");
         fileDto.setFileRegDate(new Date());
         if(!Util.isEmpty(FileInfo.getProfileId())) {
             fileDto.setProfileId(FileInfo.getProfileId());
@@ -46,8 +47,10 @@ public class FileService {
         if(!Util.isEmpty(FileInfo.getProjId())) {
             fileDto.setProfileId(FileInfo.getProfileId());
             fileDto.setProfileId(FileInfo.getProjThumbnail());
+            if (!Util.isEmpty(fileDto) && fileDto.getContentType().indexOf("image") > 1) {
+                fileDto.setProjThumbnail("1");
+            }
         }
-        fileDto.setThumbnailPath("none"); //모바일 썸네일 path는 이미지 서버 정리전까지 none으로 고정
         return fileRepository.save(fileDto);
     }
 }

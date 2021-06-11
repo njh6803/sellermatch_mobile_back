@@ -1,16 +1,23 @@
 package com.sellermatch.util;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.sellermatch.process.file.domain.File;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,16 +93,56 @@ public class FileUtil {
         /** 업로드 된 파일을 결정된 파일 경로로 저장 */
         this.uploadPath = this.upload(multipartFile, fileName);
 
-        /** 썸네일 이미지 생성*/
-
         // 리턴할 정보를 구성한다.
         item = new File();
+
+        if (multipartFile.getContentType().indexOf("image") > -1) {
+            String thumbnail = this.createThumbnail(multipartFile, fileName, 240, 240, true, multipartFile.getContentType());
+            item.setThumbnailPath(thumbnail);
+        } else {
+            item.setThumbnailPath("none");
+        }
         item.setContentType(multipartFile.getContentType());
         item.setFileSize((int) multipartFile.getSize());
         item.setOrginName(orginName);
         item.setFilePath(this.uploadPath);
-
         return item;
+    }
+
+    /**
+     * 리사이즈 된 썸네일 이미지를 생성하고 경로를 리턴한다.
+     *
+     * @param loadFile - 원본 파일의 경로
+     * @param width    - 최대 이미지 가로 크기
+     * @param height   - 최대 이미지 세로 크기
+     * @param crop     - 이미지 크롭 사용 여부
+     * @return 생성된 이미지의 절대 경로
+     * @throws Exception
+     */
+    public String createThumbnail(MultipartFile loadFile, String fileName, int width, int height, boolean crop, String contentType) throws Exception {
+
+        /** 저장될 썸네일 이미지의 경로 문자열 만들기 */
+        int p = fileName.lastIndexOf(".");              // 파일이름에서 마지막 점(.)의 위치
+        String name = fileName.substring(0, p);         // 파일명 분리 --> 파일이름에서 마지막 점의 위치 전까지
+        String ext = fileName.substring(p + 1);         // 확장자 분리 --> 파일이름에서 마지막 점위 위치 다음부터 끝까지
+        String prefix = crop ? "_crop_" : "_resize_";   // 크롭인지 리사이즈 인지에 대한 문자열
+
+        // 최종 파일이름을 구성한다. --> 원본이름 + 크롭여부 + 요청된 사이즈
+        // -> ex) myphoto.jpg --> myphoto_resize_320x240.jpg
+        String thumbName = name + prefix + width + "x" + height + "." + ext;
+
+        /** 썸네일 이미지 생성하고 최종 경로 리턴 */
+        // 원본 이미지 가져오기
+        BufferedImage image = ImageIO.read(loadFile.getInputStream());
+        // 이미지 크롭 여부 파라미터에 따라 크롭 옵션을 지정한다.
+        BufferedImage thumbnail_medium = Thumbnails.of(image)
+                .crop(Positions.CENTER).size(width,height)
+                .useExifOrientation(true).outputFormat(ext).asBufferedImage();
+
+        /** 업로드 된 파일을 결정된 파일 경로로 저장 */
+        this.uploadImageToAWSS3(thumbnail_medium, thumbName, contentType);
+
+        return thumbName;
     }
 
     /**
@@ -147,6 +194,31 @@ public class FileUtil {
         boolean isExistObject = awsS3Client.doesObjectExist(bucket, fileName);
         if(isExistObject) {
             awsS3Client.deleteObject(bucket, fileName);
+        }
+    }
+
+    public void uploadImageToAWSS3(BufferedImage image,String Filename, String contentType)
+            throws IllegalStateException, IOException {
+        try {
+            // outputstream에 image객체를 저장
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(image, contentType, os);
+
+            //byte[]로 변환
+            byte[] bytes = os.toByteArray();
+
+            //metadata 설정
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(bytes.length);
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, Filename, byteArrayInputStream, objMeta);
+            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+            awsS3Client.putObject(putObjectRequest);
+
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
         }
     }
 
