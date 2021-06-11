@@ -123,17 +123,7 @@ public class ProfileController {
         // 해시태그 중복체크
         if (Util.isEmpty(profile.getProfileHashtag())) {
             String[] hashtagList = profile.getProfileHashtag().split(",");
-            for (int i = 0; i < hashtagList.length; i++) {
-                hashtagList[i].trim();
-                hashtagList[i].replace(" ","");
-                for (int j = 0; j < hashtagList.length; j++) {
-                    if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
-                        result.setResult(CommonConstant.ERROR);
-                        result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
-                        return result;
-                    }
-                }
-            }
+            if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
         }
         profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp -> {
             ProjectDto projectDto = new ProjectDto();

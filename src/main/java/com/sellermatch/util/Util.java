@@ -1,5 +1,8 @@
 package com.sellermatch.util;
 
+import com.sellermatch.process.common.domain.CommonConstant;
+import com.sellermatch.process.common.domain.CommonDTO;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -204,5 +207,20 @@ public class Util {
         }
 
         return ip;
+    }
+
+    public static boolean hashtagDuplicateCheck(CommonDTO result, String[] hashtagList) {
+        for (int i = 0; i < hashtagList.length; i++) {
+            hashtagList[i].trim();
+            hashtagList[i].replace(" ","");
+            for (int j = 0; j < hashtagList.length; j++) {
+                if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
+                    result.setResult(CommonConstant.ERROR);
+                    result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
