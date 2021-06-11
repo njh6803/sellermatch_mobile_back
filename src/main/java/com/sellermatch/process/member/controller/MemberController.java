@@ -53,17 +53,28 @@ public class MemberController {
 
         //비밀번호 존재 시 체크
         if(!Util.isEmpty(member.getMemPw())){
+            //비밀번호: NULL체크
+            if(Util.isEmpty(member.getMemPw())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_101);
+                return result;
+            }
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
             if(!Util.isPassword(member.getMemPw())) {
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_104);
+                result.setStatus(CommonConstant.ERROR_FORMAT_111);
+                return result;
+            }
+            //비밀번호확인 : NULL체크
+            if(Util.isEmpty(member.getMemPwChk())){
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_213);
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
-            if(!member.getMemPw().equalsIgnoreCase(member.getMemPwChk())){
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if(!member.getMemPwChk().equals(member.getMemPw())){
                 result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_111);
+                result.setStatus(CommonConstant.ERROR_MISMATCH_112);
                 return result;
             }
         }
