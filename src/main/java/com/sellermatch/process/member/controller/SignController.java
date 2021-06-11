@@ -36,9 +36,16 @@ public class SignController {
         if(Util.isEmpty(member.getMemSnsCh())) { // 일반회원 로그인
             memberRepository.findTop1ByMemId(member.getMemId()).ifPresentOrElse(validation -> {
                 if(validation.getMemSnsCh().equalsIgnoreCase("01")) {
-                    memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresent(temp -> {
-                        Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
+                    memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {
+                        Map<String, Object> jwt = jwtUtil.createToken(temp.getMemId());
                         result.setContent(jwt);
+                    }, () -> {
+                        Map<String, Object> jwt = new HashMap<>();
+                        jwt.put("token", "");
+                        jwt.put("expires", "");
+                        result.setContent(jwt);
+                        result.setResult("ERROR");
+                        result.setStatus(CommonConstant.ERROR_MISMATCH_102);
                     });
                 } else {
                     Map<String, Object> jwt = new HashMap<>();
