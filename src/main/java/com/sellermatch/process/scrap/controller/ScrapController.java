@@ -44,6 +44,16 @@ public class ScrapController {
     @PostMapping("/scrap")
     public CommonDTO insertScrap(@RequestBody Scrap scrap) {
         CommonDTO result = new CommonDTO();
+
+        // 자신의 게시물에 자신이 스크랩
+        if (scrap.getProjMemId().equalsIgnoreCase(scrap.getMemId())) {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_ACCESS_215);
+            result.setContent(new Scrap());
+
+            return result;
+        }
+
         int count = scrapRepository.countByMemIdxAndProjIdx(scrap.getMemIdx(), scrap.getProjIdx());
         if (count > 0) {
             result.setResult("ERROR");
@@ -52,6 +62,7 @@ public class ScrapController {
 
             return result;
         }
+
         scrap.setFrstRegistDt(new Date());
         scrap.setLastRegistDt(new Date());
         memberRepository.findById(scrap.getMemIdx()).ifPresentOrElse(temp -> {

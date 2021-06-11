@@ -62,6 +62,15 @@ public class ApplyController {
         public CommonDTO insertApply(@RequestBody Apply apply) throws Exception {
                 CommonDTO result = new CommonDTO();
 
+                // 자신의 게시물에 자신이 지원, 제안
+                if (apply.getProjMemId().equalsIgnoreCase(apply.getApplyMemId())) {
+                        result.setResult("ERROR");
+                        result.setStatus(CommonConstant.ERROR_ACCESS_215);
+                        result.setContent(new Apply());
+
+                        return result;
+                }
+
                 // 중복검사
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
@@ -87,15 +96,6 @@ public class ApplyController {
                                 result.setStatus(CommonConstant.ERROR_TYPE_206);
                         }
 
-                        result.setContent(new Apply());
-
-                        return result;
-                }
-
-                // 자신의 게시물에 자신이 지원, 제안
-                if (apply.getProjMemId().equalsIgnoreCase(apply.getApplyMemId())) {
-                        result.setResult("ERROR");
-                        result.setStatus(CommonConstant.ERROR_ACCESS_215);
                         result.setContent(new Apply());
 
                         return result;

@@ -90,7 +90,7 @@ public class CommonConstant {
     public final static int ERROR_ACCESS_200 = -200;  // 미로그인 접근불가 페이지 접근
     public final static int ERROR_ACCESS_201 = -201;  // 탈퇴회원으로 로그인
     public final static int ERROR_ACCESS_204 = -204;  // 마감거래 지원
-    public final static int ERROR_ACCESS_215 = -215;  // 자신의게시물에 지원
+    public final static int ERROR_ACCESS_215 = -215;  // 자신의게시물에 지원, 제안, 스크랩 등
 
     /* 공통 에러 */
     public final static int ERROR_999 = -999;  // 알수 없는 공통 에러
