@@ -22,7 +22,7 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @RestController
-/*@RequestMapping(value = "/api-v1")*/
+@RequestMapping(value = "/api-v1")
 public class ProjectController {
 
     private final ProjectRepository projectRepository;
@@ -96,7 +96,7 @@ public class ProjectController {
     public CommonDTO inseretProject(Boolean isExistProfile, Project project, Profile profile, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
         CommonDTO result = new CommonDTO();
 
-        /*//대표이미지: NULL 체크
+        //대표이미지: NULL 체크
         if(Util.isEmpty(projectImg)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_152);
@@ -191,7 +191,7 @@ public class ProjectController {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_NULL_143);
             return result;
-        }*/
+        }
         // 프로젝트 해시태그 중복체크
         if (!Util.isEmpty(project.getProjKeyword())) {
             if (project.getProjKeyword().trim().length() > 0) {
