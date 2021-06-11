@@ -68,6 +68,7 @@ public class CommonConstant {
     public final static int ERROR_LENGTH_144 = -144;  // 필수조건 길이 제한
     public final static int ERROR_LENGTH_146 = -146;  // 탈퇴사유 내용 길이 제한
     public final static int ERROR_LENGTH_151 = -151;  // 내용 길이 제한
+    public final static int ERROR_LENGTH_220 = -220;  // 해시태그 길이 제한
 
     /* 숫자(개수) 제한 */
     public final static int ERROR_NUMSIZE_141 = -141;  // 모집인원 숫자 제한

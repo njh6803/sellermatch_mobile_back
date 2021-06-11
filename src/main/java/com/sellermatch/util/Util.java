@@ -65,7 +65,7 @@ public class Util {
     public static boolean isLengthChk(String str, int min, int max) {
         boolean result = false;
         if (isEmpty(str)){
-            return false;
+            return result;
         }
         if (str.length() < min || str.length() > max) {
             result = false;
@@ -210,14 +210,21 @@ public class Util {
     }
 
     public static boolean hashtagDuplicateCheck(CommonDTO result, String[] hashtagList) {
-        for (int i = 0; i < hashtagList.length; i++) {
-            hashtagList[i].trim();
-            hashtagList[i].replace(" ","");
-            for (int j = 0; j < hashtagList.length; j++) {
-                if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
+        if (hashtagList.length > 1) {
+            for (int i = 0; i < hashtagList.length; i++) {
+                hashtagList[i].trim();
+                hashtagList[i].replace(" ","");
+                if (!Util.isLengthChk(hashtagList[i].trim(), 1, 20)) {
                     result.setResult(CommonConstant.ERROR);
-                    result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
+                    result.setStatus(CommonConstant.ERROR_LENGTH_220);
                     return true;
+                }
+                for (int j = i+1; j < hashtagList.length; j++) {
+                    if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
+                        result.setResult(CommonConstant.ERROR);
+                        result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
+                        return true;
+                    }
                 }
             }
         }
