@@ -45,6 +45,7 @@ public class ApplyController {
                 CommonDTO result = new CommonDTO();
                 Apply apply = new Apply();
                 apply.setApplyProjId(projId);
+                apply.setApplyType("1");
                 Page<Apply> applyList = applyRepositoryCustom.getApplyList(apply, pageable);
                 result.setContent(applyList);
                 return result;

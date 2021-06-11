@@ -46,7 +46,7 @@ public class ApplyRepositoryCustom {
             builder.and(qApply.applyProjId.eq(apply.getApplyProjId()));
         }
         if (!Util.isEmpty(apply.getApplyType())) {
-            builder.and(qApply.applyType.eq(apply.getApplyType()));
+            builder.and(qApply.applyType.eq("1"));
         }
         if (!Util.isEmpty(apply.getApplyProjState())) {
             builder.and(qApply.applyProjState.eq(apply.getApplyProjState()));
