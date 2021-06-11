@@ -137,7 +137,9 @@ public class MypageController {
             applyRepository.updateApply(apply.getApplyIdx(), apply.getApplyProjState(), apply.getApplyType());
             result.setContent(new Apply());
             Apply apply2 = applyRepository.getAcceptedOwner(temp.getApplyId(), temp.getApplyProjId());
-            System.out.println(apply2);
+            String applyTypeName = "지원";
+            String projTitle = "";
+            String memSortName = "";
         }, () -> {});
         return result;
     }

@@ -29,10 +29,10 @@ public class MailUtil{
      * @param nickName  - 닉네임
      * @param type  - accept, recommand, welcomeMail
      */
-    public void sendMail(String to, String subject, String nickName, String type) throws Exception{
+    public void sendMail(String to, String subject, String nickName, String type, String applyType) {
 
         MimeMessagePreparator message = mimeMessage -> {
-            String content = bulid(nickName, type);
+            String content = bulid(nickName, type, applyType);
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
@@ -42,8 +42,11 @@ public class MailUtil{
         mailSender.send(message);
     }
 
-    private String bulid(String nickName, String type){
+    private String bulid(String nickName, String type, String applyTypeName){
         Context context = new Context();
+        if (!Util.isEmpty(applyTypeName)) {
+            context.setVariable("applyTypeName", applyTypeName);
+        }
         context.setVariable("nickName", nickName);
         return templateEngine.process(type, context);
     };

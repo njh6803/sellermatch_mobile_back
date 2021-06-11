@@ -4,6 +4,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
+import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ public class WithdrawController {
 
     @Autowired
     public WithdrawRepository withdrawRepository;
+    @Autowired
+    public MailUtil mailUtil;
 
     @GetMapping("/withdraw/{id}")
     public CommonDTO selectWithdraw(@PathVariable Integer id) {
@@ -30,7 +33,7 @@ public class WithdrawController {
     }
 
     @GetMapping("/withdraw/list")
-    public CommonDTO selectWithdrawList(Pageable pageable) {
+    public CommonDTO selectWithdrawList(Pageable pageable) throws Exception {
         CommonDTO result = new CommonDTO();
         result.setContent(withdrawRepository.findAll(pageable));
         return result;

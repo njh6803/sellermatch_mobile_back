@@ -28,7 +28,7 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class}, timeout = 1000)
     public Profile insertAndUpdateProfile(ProjectDto projectDto) throws Exception {
         Profile profile= profileRepository.save(projectDto.getProfile());
 

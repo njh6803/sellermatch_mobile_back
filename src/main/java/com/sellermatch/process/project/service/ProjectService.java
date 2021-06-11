@@ -26,7 +26,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProfileRepository profileRepository;
 
-    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class}, timeout = 1000)
     public Project insertAndUpdateProject(ProjectDto projectDto) throws Exception {
         Project project = projectRepository.save(projectDto.getProject());
         //프로젝트 이미지 있을 경우 첨부
@@ -65,7 +65,7 @@ public class ProjectService {
         return projectDto.getProject();
     }
 
-    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
+    @Transactional(rollbackFor = {RuntimeException.class, Exception.class}, timeout = 1000)
     public Project updateAndUpdateProject(ProjectDto projectDto) throws Exception {
         Project project = projectRepository.save(projectDto.getProject());
         //프로젝트 이미지 있을 경우 첨부

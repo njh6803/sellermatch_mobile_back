@@ -7,6 +7,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
+import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class ApplyController {
         private final ApplyRepositoryCustom applyRepositoryCustom;
         private final MemberRepository memberRepository;
         private final ProjectRepositoryCustom projectRepositoryCustom;
+        private final MailUtil mailUtil;
 
         @GetMapping("/apply/{id}")
         public CommonDTO selectApply(@PathVariable Integer id) {
@@ -56,7 +58,7 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(@RequestBody Apply apply) {
+        public CommonDTO insertApply(@RequestBody Apply apply) throws Exception {
                 CommonDTO result = new CommonDTO();
 
                 // 중복검사
@@ -104,20 +106,20 @@ public class ApplyController {
                         apply.setApplyProfile(temp.getMemSort());
                         apply.setApplyMemId(temp.getMemId());
                         result.setContent(applyRepository.save(apply));
+
+                        // 지원
+                        if (apply.getApplyType().equalsIgnoreCase("1")) {
+                                mailUtil.sendMail(apply.getApplyMemId(),"셀러매치 지원알림", temp.getMemNick(), "recommand", "지원");
+                        }
+                        // 제안
+                        if (apply.getApplyType().equalsIgnoreCase("2")) {
+                                mailUtil.sendMail(apply.getApplyMemId(),"셀러매치 제안알림", temp.getMemNick() , "recommand", "제안");
+                        }
                 }, ()->{
                         result.setResult("ERROR");
                         result.setStatus(CommonConstant.ERROR_999);
                         result.setContent(new Apply());
                 });
-
-                // 지원
-                if (apply.getApplyType().equalsIgnoreCase("1")) {
-
-                }
-                // 제안
-                if (apply.getApplyType().equalsIgnoreCase("2")) {
-
-                }
                 return result;
         }
 

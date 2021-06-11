@@ -146,7 +146,7 @@ public class SignController {
             return result;
         }
         //닉네임: 길이 체크 100자
-        if(!Util.isLengthChk(member.getMemNick(),1,100)) {
+        if(!Util.isLengthChk(member.getMemNick(),1,9)) {
             result.setResult(CommonConstant.ERROR);
             result.setStatus(CommonConstant.ERROR_LENGTH_115);
             return result;
