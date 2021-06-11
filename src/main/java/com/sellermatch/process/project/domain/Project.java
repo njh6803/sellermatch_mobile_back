@@ -139,6 +139,8 @@ public class Project {
     @Transient
     private String applyProjId;
     @Transient
+    private Date applyRegDate;
+    @Transient
     private Long projAddCount;
     @Transient
     private Long contractCount;
