@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -29,6 +30,7 @@ public class MailUtil{
      * @param nickName  - 닉네임
      * @param type  - accept, recommand, welcomeMail
      */
+    @Async
     public void sendMail(String to, String subject, String nickName, String type, String applyType) {
 
         MimeMessagePreparator message = mimeMessage -> {
@@ -39,7 +41,7 @@ public class MailUtil{
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
-        mailSender.send(message);
+//        mailSender.send(message);
     }
 
     private String bulid(String nickName, String type, String applyTypeName){
