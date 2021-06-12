@@ -67,11 +67,11 @@ public class ProfileController {
             return result;
         }
         // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
-        if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_122);
-            return result;
-        }
+//        if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
+//            result.setResult(CommonConstant.ERROR);
+//            result.setStatus(CommonConstant.ERROR_LENGTH_122);
+//            return result;
+//        }
         // 매출규모 : NULL 체크
         if (Util.isEmpty(profile.getProfileVolume())){
             result.setResult(CommonConstant.ERROR);

@@ -312,12 +312,6 @@ public class ProjectController {
     @PutMapping("/project/modify")
     public CommonDTO updateProject(Project project, MultipartFile projectImg, MultipartFile projectAttFile) {
         CommonDTO result = new CommonDTO();
-        //대표이미지: NULL 체크
-        if(Util.isEmpty(projectImg)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_152);
-            return result;
-        }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
             result.setResult(CommonConstant.ERROR);
@@ -410,38 +404,44 @@ public class ProjectController {
         }
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
-            ProjectDto projectDto = new ProjectDto();
+            //대표이미지: NULL 체크
+            if(Util.isEmpty(projectImg) && Util.isEmpty(temp.getProjThumbnailImg())) {
+                result.setResult(CommonConstant.ERROR);
+                result.setStatus(CommonConstant.ERROR_NULL_152);
+            } else {
+                ProjectDto projectDto = new ProjectDto();
 
-            temp.setProjTitle(project.getProjTitle());
-            temp.setProjIndus(project.getProjIndus());
-            temp.setProjPrice(project.getProjPrice());
-            temp.setProjMargin(project.getProjMargin());
-            temp.setProjChannel(project.getProjChannel());
-            temp.setProjSupplyType(project.getProjSupplyType());
-            temp.setProjNation(project.getProjNation());
-            temp.setProjRecruitNum(project.getProjRecruitNum());
-            temp.setProjEndDate(project.getProjEndDate());
-            temp.setProjDetail(project.getProjDetail());
-            temp.setProjRequire(project.getProjRequire());
-            projectDto.setProject(temp);
+                temp.setProjTitle(project.getProjTitle());
+                temp.setProjIndus(project.getProjIndus());
+                temp.setProjPrice(project.getProjPrice());
+                temp.setProjMargin(project.getProjMargin());
+                temp.setProjChannel(project.getProjChannel());
+                temp.setProjSupplyType(project.getProjSupplyType());
+                temp.setProjNation(project.getProjNation());
+                temp.setProjRecruitNum(project.getProjRecruitNum());
+                temp.setProjEndDate(project.getProjEndDate());
+                temp.setProjDetail(project.getProjDetail());
+                temp.setProjRequire(project.getProjRequire());
+                projectDto.setProject(temp);
 
-            // 프로젝트 해시태그
-            if (!Util.isEmpty(project.getProjKeyword())) {
-                Hashtag tagProject = new Hashtag();
-                tagProject.setFrstRegistDt(new Date());
-                tagProject.setFrstRegistMngr(project.getProjMemId());
-                tagProject.setHashType("1");
-                tagProject.setId(project.getProjId());
-                tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
-                projectDto.setProjHashtag(tagProject);
-            }
+                // 프로젝트 해시태그
+                if (!Util.isEmpty(project.getProjKeyword())) {
+                    Hashtag tagProject = new Hashtag();
+                    tagProject.setFrstRegistDt(new Date());
+                    tagProject.setFrstRegistMngr(project.getProjMemId());
+                    tagProject.setHashType("1");
+                    tagProject.setId(project.getProjId());
+                    tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
+                    projectDto.setProjHashtag(tagProject);
+                }
 
-            projectDto.setProjImgFile(projectImg);
-            projectDto.setProjAttFile(projectAttFile);
-            try {
-                result.setContent(projectService.updateAndUpdateProject(projectDto));
-            } catch (Exception e) {
-                e.printStackTrace();
+                projectDto.setProjImgFile(projectImg);
+                projectDto.setProjAttFile(projectAttFile);
+                try {
+                    result.setContent(projectService.updateAndUpdateProject(projectDto));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, () -> {});
         return result;
