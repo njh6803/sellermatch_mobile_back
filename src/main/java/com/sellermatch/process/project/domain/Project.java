@@ -135,6 +135,10 @@ public class Project {
     @Transient
     private String applyProjState;
     @Transient
+    private String applyIdx;
+    @Transient
+    private String applyType;
+    @Transient
     private String applyId;
     @Transient
     private String applyProjId;
