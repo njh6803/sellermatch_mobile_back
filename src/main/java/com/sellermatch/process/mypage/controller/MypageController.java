@@ -141,7 +141,11 @@ public class MypageController {
             String applyTypeName = "지원";
             String projTitle = "";
             String memSortName = "";
-        }, () -> {});
+        }, () -> {
+            result.setResult("ERROR");
+            result.setStatus(CommonConstant.ERROR_998);
+            result.setContent(new Apply());
+        });
         return result;
     }
 }
