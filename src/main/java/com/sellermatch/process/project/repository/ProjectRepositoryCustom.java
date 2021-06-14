@@ -246,7 +246,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -370,7 +370,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -429,9 +429,9 @@ public class ProjectRepositoryCustom {
                 qProfile.profileBizCerti,
                 qMember.memRname))
                 .from(qProject)
-                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
-                .join(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
-                .join(qIndus).on(qProject.projIndus.eq(qIndus.indusId))
+                .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
+                .innerJoin(qIndus).on(qProject.projIndus.eq(qIndus.indusId))
                 .where(builder)
                 .orderBy(getSortedColumn(pageable.getSort(), qProject, qApply))
                 .offset(pageable.getOffset())
