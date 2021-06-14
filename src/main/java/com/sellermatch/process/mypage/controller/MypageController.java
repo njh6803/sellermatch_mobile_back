@@ -63,10 +63,11 @@ public class MypageController {
     @GetMapping("/myPage/recommandList/{memId}/{memSort}")
     public CommonDTO selectRecommandList(@PathVariable String memId, @PathVariable String memSort, Pageable pageable) {
         CommonDTO result = new CommonDTO();
-        Page<Project> project;
+        Page<Project> project = null;
         if (memSort.equalsIgnoreCase("1")){
             project = projectRepositoryCustom.getRecommandListForPro(memId, pageable);
-        } else {
+        }
+        if (memSort.equalsIgnoreCase("2")) {
             project = projectRepositoryCustom.getRecommandListForSell(memId, pageable);
         }
         if (project != null) {
