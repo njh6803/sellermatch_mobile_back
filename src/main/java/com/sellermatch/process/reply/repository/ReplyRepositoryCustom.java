@@ -70,7 +70,9 @@ public class ReplyRepositoryCustom {
                 )))
                 .from(qReply)
                 .where(builder)
-                .orderBy(qReply.replyParent.desc(), qReply.replyDepth.asc(), qReply.replyRegDate.desc());
+                .orderBy(qReply.replyParent.desc(), qReply.replyDepth.asc(), qReply.replyRegDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
 
         return jpaQuery;
     }
