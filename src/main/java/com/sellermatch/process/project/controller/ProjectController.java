@@ -175,6 +175,11 @@ public class ProjectController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
             return result;
         }
+        //상세설명: 내용 길이 체크
+        if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
+            return result;
+        }
         // 프로젝트 해시태그 중복체크
         if (!Util.isEmpty(project.getProjKeyword())) {
             if (project.getProjKeyword().trim().length() > 0) {
@@ -189,8 +194,8 @@ public class ProjectController {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
                 return result;
             }
-            // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
-            if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
+            // 자기소개 : 길이 체크 (50자 이상 1000자 이하)
+            if (!Util.isLengthChk(profile.getProfileIntro(), 50 , 1000)) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_122);
                 return result;
             }
@@ -358,6 +363,11 @@ public class ProjectController {
         //상세설명: NULL체크
         if(Util.isEmpty(project.getProjDetail())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
+            return result;
+        }
+        //상세설명: 내용 길이 체크
+        if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
             return result;
         }
 
