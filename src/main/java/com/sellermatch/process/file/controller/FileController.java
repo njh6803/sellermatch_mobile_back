@@ -44,9 +44,8 @@ public class FileController {
     }
 
     @PostMapping("/file")
-    public CommonDTO insertFile(MultipartFile file) throws Exception {
+    public CommonDTO insertFile(MultipartFile file,File fileInfo) throws Exception {
         CommonDTO result = new CommonDTO();
-        File fileInfo = new File();
         result.setContent(fileService.insertFile(file,fileInfo));
         return result;
     }

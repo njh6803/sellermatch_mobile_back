@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +141,7 @@ public class FileUtil {
                 .useExifOrientation(true).outputFormat(ext).asBufferedImage();
 
         /** 업로드 된 파일을 결정된 파일 경로로 저장 */
-        this.uploadImageToAWSS3(thumbnail_medium, thumbName, contentType);
+        this.uploadImageToAWSS3(thumbnail_medium, thumbName, ext);
 
         return thumbName;
     }
@@ -197,15 +198,22 @@ public class FileUtil {
         }
     }
 
-    public void uploadImageToAWSS3(BufferedImage image,String Filename, String contentType)
+    public void uploadImageToAWSS3(BufferedImage image,String filename, String ext)
             throws IllegalStateException, IOException {
         try {
-            // outputstream에 image객체를 저장
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ImageIO.write(image, contentType, os);
+            int bytesRead = 0;
+            byte[] buff = new byte[1024];
+
+            java.io.File outputfile = new java.io.File(filename);
+            ImageIO.write(image, ext, outputfile);
+            FileInputStream fin = new FileInputStream(outputfile);
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            while((bytesRead = fin.read(buff)) > 0) {
+                bao.write(buff, 0, bytesRead);
+            }
 
             //byte[]로 변환
-            byte[] bytes = os.toByteArray();
+            byte[] bytes = bao.toByteArray();
 
             //metadata 설정
             ObjectMetadata objMeta = new ObjectMetadata();
@@ -213,7 +221,7 @@ public class FileUtil {
 
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, Filename, byteArrayInputStream, objMeta);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filename, byteArrayInputStream, objMeta);
             putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
             awsS3Client.putObject(putObjectRequest);
 
