@@ -5,6 +5,7 @@ import com.sellermatch.process.board.repository.BoardRepository;
 import com.sellermatch.process.board.repository.BoardRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,8 @@ public class BoardController {
         boardRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Board());
+            Board emptyContent =  new Board();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }

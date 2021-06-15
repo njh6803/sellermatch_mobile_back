@@ -5,6 +5,7 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
 import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,9 +29,8 @@ public class ReplyController {
         replyRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Reply());
+            Reply emptyContent =  new Reply();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }
@@ -67,14 +67,12 @@ public class ReplyController {
         CommonDTO result = new CommonDTO();
         //댓글내용: NULL 체크
         if(Util.isEmpty(reply.getReplyContents())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_149);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_149);
             return result;
         }
         //댓글내용: 길이 체크 (1000자)
         if(!Util.isLengthChk(reply.getReplyContents(),0,1000)){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_151);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
             return result;
         }
 

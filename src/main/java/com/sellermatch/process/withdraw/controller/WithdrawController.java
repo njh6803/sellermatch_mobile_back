@@ -4,6 +4,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,8 @@ public class WithdrawController {
         withdrawRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Withdraw());
+            Withdraw emptyContent =  new Withdraw();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }
@@ -45,14 +45,12 @@ public class WithdrawController {
 
         //탈퇴사유: NULL 체크
         if(Util.isEmpty(withdraw.getWithdrawReason())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_145);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_145);
             return result;
         }
         //탈퇴인증코드: NULL 체크
         if(Util.isEmpty(withdraw.getWidthdrawAuthCode())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_147);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_147);
             return result;
         }
 

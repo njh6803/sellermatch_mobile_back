@@ -4,6 +4,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.hashtag.domain.Hashtaglist;
 import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
+import com.sellermatch.util.ControllerResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,8 @@ public class HashtaglistController {
         hashtaglistRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Hashtaglist());
+            Hashtaglist emptyContent =  new Hashtaglist();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }

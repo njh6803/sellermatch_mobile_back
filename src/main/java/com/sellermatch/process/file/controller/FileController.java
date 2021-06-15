@@ -5,6 +5,7 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.repository.FileRepository;
 import com.sellermatch.process.file.service.FileService;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +30,8 @@ public class FileController {
         fileRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new File());
+            File emptyContent =  new File();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }

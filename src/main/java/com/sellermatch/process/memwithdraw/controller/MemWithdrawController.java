@@ -8,6 +8,7 @@ import com.sellermatch.process.memwithdraw.domain.MemWithdraw;
 import com.sellermatch.process.memwithdraw.repository.MemwithdrawRepository;
 import com.sellermatch.process.memwithdraw.service.MemwithdrawService;
 import com.sellermatch.process.withdraw.domain.Withdraw;
+import com.sellermatch.util.ControllerResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,8 @@ public class MemWithdrawController {
         memWithdrawRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new MemWithdraw());
+            MemWithdraw emptyContent =  new MemWithdraw();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }

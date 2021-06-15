@@ -209,20 +209,18 @@ public class Util {
         return ip;
     }
 
-    public static boolean hashtagDuplicateCheck(CommonDTO result, String[] hashtagList) {
+    public static boolean hashtagDuplicateCheck(CommonDTO result,String[] hashtagList) {
         if (hashtagList.length > 1) {
             for (int i = 0; i < hashtagList.length; i++) {
                 hashtagList[i].trim();
                 hashtagList[i].replace(" ","");
                 if (!Util.isLengthChk(hashtagList[i].trim(), 1, 20)) {
-                    result.setResult(CommonConstant.ERROR);
-                    result.setStatus(CommonConstant.ERROR_LENGTH_220);
+                    ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_220);
                     return true;
                 }
                 for (int j = i+1; j < hashtagList.length; j++) {
                     if (hashtagList[i].equalsIgnoreCase(hashtagList[j])) {
-                        result.setResult(CommonConstant.ERROR);
-                        result.setStatus(CommonConstant.ERROR_DUPLICATE_219);
+                        ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_219);
                         return true;
                     }
                 }

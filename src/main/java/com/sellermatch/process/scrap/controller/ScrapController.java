@@ -6,6 +6,7 @@ import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.scrap.domain.Scrap;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import com.sellermatch.process.scrap.repository.ScrapRepositoryCustom;
+import com.sellermatch.util.ControllerResultSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,8 @@ public class ScrapController {
         scrapRepository.findById(id).ifPresentOrElse(temp -> {
             result.setContent(temp);
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Scrap());
+            Scrap emptyContent =  new Scrap();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }
@@ -44,21 +44,18 @@ public class ScrapController {
     @PostMapping("/scrap")
     public CommonDTO insertScrap(@RequestBody Scrap scrap) {
         CommonDTO result = new CommonDTO();
+        Scrap emptyContent =  new Scrap();
 
         // 자신의 게시물에 자신이 스크랩
         if (scrap.getProjMemId().equalsIgnoreCase(scrap.getMemId())) {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_ACCESS_215);
-            result.setContent(new Scrap());
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_ACCESS_215,emptyContent);
 
             return result;
         }
 
         int count = scrapRepository.countByMemIdxAndProjIdx(scrap.getMemIdx(), scrap.getProjIdx());
         if (count > 0) {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_DUPLICATE_205);
-            result.setContent(new Scrap());
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_205, emptyContent);
 
             return result;
         }

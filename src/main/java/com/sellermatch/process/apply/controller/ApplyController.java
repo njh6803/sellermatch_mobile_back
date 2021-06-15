@@ -7,6 +7,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,8 @@ public class ApplyController {
                 applyRepository.findById(id).ifPresentOrElse(temp -> {
                         result.setContent(temp);
                 } , () -> {
-                        result.setResult("ERROR");
-                        result.setStatus(CommonConstant.ERROR_998);
-                        result.setContent(new Apply());
+                        Apply emptyContent =  new Apply();
+                        ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
                 });
                 return result;
         }
@@ -61,43 +61,34 @@ public class ApplyController {
         @PostMapping("/apply")
         public CommonDTO insertApply(@RequestBody Apply apply) throws Exception {
                 CommonDTO result = new CommonDTO();
+                Apply emptyContent =  new Apply();
 
                 // 자신의 게시물에 자신이 지원, 제안
                 if (apply.getProjMemId().equalsIgnoreCase(apply.getApplyMemId())) {
-                        result.setResult("ERROR");
-                        result.setStatus(CommonConstant.ERROR_ACCESS_215);
-                        result.setContent(new Apply());
-
+                        ControllerResultSet.errorCode(result, CommonConstant.ERROR_ACCESS_215, emptyContent);
                         return result;
                 }
 
                 // 중복검사
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
-                        result.setResult("ERROR");
                         if (apply.getApplyType().equalsIgnoreCase("1")) {
-                                result.setStatus(CommonConstant.ERROR_DUPLICATE_202);
+                                ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_202, emptyContent);
                         }
                         if (apply.getApplyType().equalsIgnoreCase("2")) {
-                                result.setStatus(CommonConstant.ERROR_DUPLICATE_207);
+                                ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_207, emptyContent);
                         }
-                        result.setContent(new Apply());
-
                         return result;
                 }
 
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
-                        result.setResult("ERROR");
                         if (apply.getMemSort().equalsIgnoreCase("1")) {
-                                result.setStatus(CommonConstant.ERROR_TYPE_203);
+                                ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_203, emptyContent);
                         }
                         if (apply.getMemSort().equalsIgnoreCase("2")) {
-                                result.setStatus(CommonConstant.ERROR_TYPE_206);
+                                ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_206, emptyContent);
                         }
-
-                        result.setContent(new Apply());
-
                         return result;
                 }
 
@@ -117,9 +108,7 @@ public class ApplyController {
                                 mailUtil.sendMail(apply.getApplyMemId(),"셀러매치 제안알림", temp.getMemNick() , "recommand", "제안");
                         }
                 }, ()->{
-                        result.setResult("ERROR");
-                        result.setStatus(CommonConstant.ERROR_999);
-                        result.setContent(new Apply());
+                        ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);
                 });
                 return result;
         }
@@ -129,7 +118,10 @@ public class ApplyController {
                 CommonDTO result = new CommonDTO();
                 applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
                         result.setContent(applyRepository.save(apply));
-                }, () -> {});
+                }, () -> {
+                        Apply emptyContent = new Apply();
+                        ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);
+                });
                 return result;
         }
 

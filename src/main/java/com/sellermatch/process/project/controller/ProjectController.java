@@ -10,6 +10,7 @@ import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.project.service.ProjectService;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,9 +43,8 @@ public class ProjectController {
         if (project != null) {
             result.setContent(project);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Profile());
+            Profile emptyContent =  new Profile();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -72,8 +72,7 @@ public class ProjectController {
             result.setContent(projectList);
 
             if (Util.isEmpty(projectList)) {
-                result.setResult("ERROR");
-                result.setStatus(CommonConstant.ERROR_NULL_216);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_216);
             }
         }, ()->{});
         return result;
@@ -98,98 +97,82 @@ public class ProjectController {
 
         //대표이미지: NULL 체크
         if(Util.isEmpty(projectImg)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_152);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
             return result;
         }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_132);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_132);
             return result;
         }
         //제목: 길이 제한 체크
         if(!Util.isLengthChk(project.getProjTitle(),0,100)){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_133);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_133);
             return result;
         }
         //상품분류: NULL체크
         if(Util.isEmpty(project.getProjIndus())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_127);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
             return result;
         }
         //상품단가: NULL체크
         if(Util.isEmpty(project.getProjPrice())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_134);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_134);
             return result;
         }
         //판매마진: NULL체크
         if(Util.isEmpty(project.getProjMargin()) || project.getProjMargin() == 0){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_135);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_135);
             return result;
         }
         //판매채널: NULL체크
         if (Util.isEmpty(project.getProjChannel())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_138);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_138);
             return result;
         }
         //공급방법: NULL체크
         if(Util.isEmpty(project.getProjSupplyType())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_137);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_137);
             return result;
         }
         //등록지역: NULL체크
         if(Util.isEmpty(project.getProjNation())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_136);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_136);
             return result;
         }
         //모집인원: NULL체크
         if(Util.isEmpty(project.getProjRecruitNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_140);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_140);
             return result;
         }
         //모집인원: 최소 숫자
         if(project.getProjRecruitNum() <= 0 ){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_217);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_217);
             return result;
         }
         //모집인원: 최대 숫자
         if(project.getProjRecruitNum() > 100 ){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_218);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_218);
             return result;
         }
         //모집인원: 숫자 형식 체크
         if(!Util.isNumeric(project.getProjRecruitNum().toString())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_142);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_142);
             return result;
         }
         //모집인원: 숫자 형식 체크
         if(project.getProjRecruitNum()<1 && project.getProjRecruitNum()>100){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_141);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_141);
             return result;
         }
         //모집마감일: NULL체크
         if(Util.isEmpty(project.getProjEndDate())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_139);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_139);
             return result;
         }
         //상세설명: NULL체크
         if(Util.isEmpty(project.getProjDetail())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_143);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
             return result;
         }
         // 프로젝트 해시태그 중복체크
@@ -203,62 +186,52 @@ public class ProjectController {
         if (isExistProfile) {
             // 자기소개 : NULL 체크
             if (Util.isEmpty(profile.getProfileIntro())) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_121);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
                 return result;
             }
             // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
             if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_LENGTH_122);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_122);
                 return result;
             }
             // 매출규모 : NULL 체크
             if (Util.isEmpty(profile.getProfileVolume())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_123);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_123);
                 return result;
             }
             // 매출규모 : 숫자형식 체크
             if (!Util.isNum(String.valueOf(profile.getProfileVolume()))){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_124);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_124);
                 return result;
             }
             // 매출규모 : 길이 체크 ( 0원 부터 1조원 까지)
             if (!Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_LENGTH_125);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_125);
                 return result;
             }
             // 등록지역 : NULL 체크
             if (Util.isEmpty(profile.getProfileNation())) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_126);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_126);
                 return result;
             }
             // 상품분류 : NULL 체크
             if (Util.isEmpty(profile.getProfileIndus())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_127);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
                 return result;
             }
             // 사업자번호 : NULL 체크
             if (Util.isEmpty(profile.getProfileBizNum())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_128);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_128);
                 return result;
             }
             // 사업자번호 : 사업자번호형식 체크
             if (!Util.isValid(profile.getProfileBizNum())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_129);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_129);
                 return result;
             }
             // 사업자유형 : NULL 체크
             if (Util.isEmpty(profile.getProfileBizSort())) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_130);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_130);
                 return result;
             }
             // 프로필 해시태그 중복체크
@@ -314,100 +287,84 @@ public class ProjectController {
         CommonDTO result = new CommonDTO();
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_132);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_132);
             return result;
         }
         //제목: 길이 제한 체크
         if(!Util.isLengthChk(project.getProjTitle(),0,100)){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_133);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_133);
             return result;
         }
         //상품분류: NULL체크
         if(Util.isEmpty(project.getProjIndus())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_127);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
             return result;
         }
         //상품단가: NULL체크
         if(Util.isEmpty(project.getProjPrice())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_134);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_134);
             return result;
         }
         //판매마진: NULL체크
         if(Util.isEmpty(project.getProjMargin()) || project.getProjMargin() == 0){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_135);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_135);
             return result;
         }
         //판매채널: NULL체크
         if (Util.isEmpty(project.getProjChannel())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_138);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_138);
             return result;
         }
         //공급방법: NULL체크
         if(Util.isEmpty(project.getProjSupplyType())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_137);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_137);
             return result;
         }
         //등록지역: NULL체크
         if(Util.isEmpty(project.getProjNation())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_136);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_136);
             return result;
         }
         //모집인원: NULL체크
         if(Util.isEmpty(project.getProjRecruitNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_140);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_140);
             return result;
         }
         //모집인원: 최소 숫자
         if(project.getProjRecruitNum() <= 0 ){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_217);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_217);
             return result;
         }
         //모집인원: 최대 숫자
         if(project.getProjRecruitNum() > 100 ){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_218);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_218);
             return result;
         }
         //모집인원: 숫자 형식 체크
         if(!Util.isNumeric(project.getProjRecruitNum().toString())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_142);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_142);
             return result;
         }
         //모집인원: 숫자 형식 체크
         if(project.getProjRecruitNum()<1 && project.getProjRecruitNum()>100){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NUMSIZE_141);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NUMSIZE_141);
             return result;
         }
         //모집마감일: NULL체크
         if(Util.isEmpty(project.getProjEndDate())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_139);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_139);
             return result;
         }
         //상세설명: NULL체크
         if(Util.isEmpty(project.getProjDetail())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_143);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
             return result;
         }
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
             //대표이미지: NULL 체크
             if(Util.isEmpty(projectImg) && Util.isEmpty(temp.getProjThumbnailImg())) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_152);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
             } else {
                 ProjectDto projectDto = new ProjectDto();
 

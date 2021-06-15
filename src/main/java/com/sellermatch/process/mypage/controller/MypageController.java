@@ -10,6 +10,7 @@ import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
+import com.sellermatch.util.ControllerResultSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +40,8 @@ public class MypageController {
         if (profile != null) {
             result.setContent(profile);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Profile());
+            Profile emptyContent =  new Profile();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -53,9 +53,8 @@ public class MypageController {
         if (project != null) {
             result.setContent(project);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Project());
+            Project emptyContent =  new Project();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -73,8 +72,7 @@ public class MypageController {
         if (project != null) {
             result.setContent(project);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
         }
         return result;
     }
@@ -86,9 +84,8 @@ public class MypageController {
         if (project != null) {
             result.setContent(project);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Project());
+            Project emptyContent = new Project();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -100,9 +97,8 @@ public class MypageController {
         if (project != null) {
             result.setContent(project);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Project());
+            Project emptyContent = new Project();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -116,9 +112,8 @@ public class MypageController {
             if (project != null) {
                 result.setContent(project);
             } else {
-                result.setResult("ERROR");
-                result.setStatus(CommonConstant.ERROR_998);
-                result.setContent(new Profile());
+                Project emptyContent = new Project();
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
             }
         });
         return result;
@@ -142,9 +137,8 @@ public class MypageController {
             String projTitle = "";
             String memSortName = "";
         }, () -> {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Apply());
+            Apply emptyContent = new Apply();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });
         return result;
     }

@@ -7,6 +7,7 @@ import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
+import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,8 @@ public class ProfileController {
         if (profile != null) {
             result.setContent(profile);
         } else {
-            result.setResult("ERROR");
-            result.setStatus(CommonConstant.ERROR_998);
-            result.setContent(new Profile());
+            Profile emptyContent =  new Profile();
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         }
         return result;
     }
@@ -60,68 +60,59 @@ public class ProfileController {
     @PutMapping("/profile")
     public CommonDTO updateProfile(Profile profile, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
+        Profile emptyContent =  new Profile();
         // 자기소개 : NULL 체크
         if (Util.isEmpty(profile.getProfileIntro())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_121);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
             return result;
         }
         // 자기소개 : 길이 체크 (10자 이상 1000자 이하)
 //        if (!Util.isLengthChk(profile.getProfileIntro(), 10 , 1000)) {
-//            result.setResult(CommonConstant.ERROR);
-//            result.setStatus(CommonConstant.ERROR_LENGTH_122);
+//            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_122);
 //            return result;
 //        }
 
         if (profile.getProfileSort().equalsIgnoreCase("2")) {
             // 매출규모 : NULL 체크
             if (Util.isEmpty(profile.getProfileVolume())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_123);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_123);
                 return result;
             }
             // 매출규모 : 숫자형식 체크
             if (!Util.isNum(String.valueOf(profile.getProfileVolume()))){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_124);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_124);
                 return result;
             }
             // 매출규모 : 길이 체크 ( 0원 부터 1조원 까지)
             if (!Util.isLengthChk(String.valueOf(profile.getProfileVolume()),0,13)) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_LENGTH_125);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_125);
                 return result;
             }
         }
 
         // 등록지역 : NULL 체크
         if (Util.isEmpty(profile.getProfileNation())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_126);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_126);
             return result;
         }
         // 상품분류 : NULL 체크
         if (Util.isEmpty(profile.getProfileIndus())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_127);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
             return result;
         }
         // 사업자번호 : NULL 체크
         if (Util.isEmpty(profile.getProfileBizNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_128);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_128);
             return result;
         }
         // 사업자번호 : 사업자번호형식 체크
         if (!Util.isValid(profile.getProfileBizNum())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_129);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_129);
             return result;
         }
         // 사업자유형 : NULL 체크
         if (Util.isEmpty(profile.getProfileBizSort())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_130);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_130);
             return result;
         }
         if (profile.getProfileSort().equalsIgnoreCase("2")) {
