@@ -57,6 +57,20 @@ public class ApplyRepositoryCustom {
         return new PageImpl<>(jpaQuery.fetch(), pageable, jpaQuery.fetchCount());
     }
 
+    public Apply getAcceptedRecommandOwner(Apply apply) {
+
+        Apply jpaQuery = getAcceptedRecommandOwner(qApply, apply, qMember, qProject);
+
+        return jpaQuery;
+    }
+
+    public Apply getAcceptedProjectOwner(Apply apply) {
+
+        Apply jpaQuery = getAcceptedProjectOwner(qApply, apply, qMember, qProject);
+
+        return jpaQuery;
+    }
+
     private JPAQuery getApplyList(QApply qApply, Apply apply, Pageable pageable, BooleanBuilder builder) {
         // GROUP_CONCAT(CMMN_CODE_VALUE_KO_NM)
         SimpleTemplate<String> simpleTemplate = Expressions.simpleTemplate(String.class, "group_concat({0})", qTbCmmnCode.cmmnCodeValueKoNm);
@@ -115,6 +129,44 @@ public class ApplyRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qProject.projRegDate.desc());
+
+        return jpaQuery;
+    }
+
+    private Apply getAcceptedRecommandOwner(QApply qApply, Apply apply, QMember qMember, QProject qProject) {
+
+        Apply jpaQuery = query.select(Projections.fields(Apply.class,
+                qApply.applyIdx,
+                qMember.memId,
+                qMember.memTel,
+                qMember.memSort,
+                qMember.memNick,
+                qProject.projId,
+                qProject.projTitle))
+                .from(qApply)
+                .join(qProject).on(qApply.applyProjId.eq(qProject.projId))
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .where(qProject.projId.eq(apply.getApplyProjId()).and(qApply.applyId.eq(apply.getApplyId())))
+                .fetchOne();
+
+        return jpaQuery;
+    }
+
+    private Apply getAcceptedProjectOwner(QApply qApply, Apply apply, QMember qMember, QProject qProject) {
+
+        Apply jpaQuery = query.select(Projections.fields(Apply.class,
+                qApply.applyIdx,
+                qMember.memId,
+                qMember.memTel,
+                qMember.memSort,
+                qMember.memNick,
+                qProject.projId,
+                qProject.projTitle))
+                .from(qApply)
+                .join(qProject).on(qApply.applyProjId.eq(qProject.projId))
+                .join(qMember).on(qProject.projMemId.eq(qMember.memId))
+                .where(qProject.projId.eq(qApply.applyProjId).and(qApply.applyId.eq(apply.getApplyId())))
+                .fetchOne();
 
         return jpaQuery;
     }

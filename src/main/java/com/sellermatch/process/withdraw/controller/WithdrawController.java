@@ -45,9 +45,10 @@ public class WithdrawController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_145);
             return result;
         }
-        //탈퇴인증코드: NULL 체크
-        if(Util.isEmpty(withdraw.getWidthdrawAuthCode())){
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_147);
+
+        //탈퇴사유: 길이 제한 (500자 이내)
+        if(Util.isLengthChk(withdraw.getWithdrawReason(),0,500)){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_146);
             return result;
         }
 

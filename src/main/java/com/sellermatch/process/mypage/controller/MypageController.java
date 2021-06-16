@@ -2,6 +2,7 @@ package com.sellermatch.process.mypage.controller;
 
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
+import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
@@ -27,6 +28,7 @@ public class MypageController {
     private final ProfileRepositoryCustom profileRepositoryCustom;
     private final ScrapRepository scrapRepository;
     private final ApplyRepository applyRepository;
+    private final ApplyRepositoryCustom applyRepositoryCustom;
     private final MailUtil mailUtil;
 
     @GetMapping("/myPage/myHome/{projMemId}")
@@ -140,7 +142,7 @@ public class MypageController {
             String subject = "";
             String to = "";
             if (apply.getApplyType().equalsIgnoreCase("1")) {
-                Apply apply2 = applyRepository.getAcceptedProjectOwner(temp.getApplyId());
+                Apply apply2 = applyRepositoryCustom.getAcceptedProjectOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "지원";
                 subject = "SellerMatch 거래매칭 승인 결과 발송 메일";
@@ -154,7 +156,7 @@ public class MypageController {
 
             }
             if (apply.getApplyType().equalsIgnoreCase("2")) {
-                Apply apply2 = applyRepository.getAcceptedRecommandOwner(temp.getApplyProjId(),temp.getApplyId());
+                Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "지원";
                 subject = "SellerMatch 거래제안 승인 결과 발송 메일";

@@ -22,40 +22,4 @@ public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integ
             "SET Apply_proj_state = :applyProjState, Apply_update_date = now() " +
             "WHERE Apply_idx = :ApplyIdx AND Apply_type = :ApplyType", nativeQuery = true)
     int updateApply(@Param("ApplyIdx") Integer ApplyIdx, @Param("applyProjState") String applyProjState, @Param("ApplyType") String ApplyType);
-
-    @Query(value = "SELECT " +
-            "apply_idx" +
-            ",mem_id" +
-            ",mem_tel" +
-            ",mem_sort" +
-            ",mem_nick" +
-            ",proj_title" +
-            ",proj_id " +
-            "FROM ApplyList al " +
-            "INNER JOIN ProjectList pl " +
-            "on apply_proj_id = proj_id " +
-            "INNER JOIN MemList ml " +
-            "on mem_id  = proj_mem_id " +
-            "AND proj_id = applyProjId " +
-            "AND apply_id = :applyId"
-            , nativeQuery = true)
-    Apply getAcceptedProjectOwner(@Param("applyId") String applyId);
-
-    @Query(value = "SELECT " +
-            "apply_idx" +
-            ",mem_id" +
-            ",mem_tel" +
-            ",mem_sort" +
-            ",mem_nick" +
-            ",proj_title" +
-            ",proj_id " +
-            "FROM ApplyList al" +
-            "INNER JOIN ProjectList pl " +
-            "on apply_proj_id = proj_id " +
-            "INNER JOIN MemList ml " +
-            "on mem_id  = proj_mem_id " +
-            "AND proj_id = :applyProjId " +
-            "AND apply_id = :applyId"
-            , nativeQuery = true)
-    Apply getAcceptedRecommandOwner(@Param("applyProjId") String applyProjId, @Param("applyId") String applyId);
 }
