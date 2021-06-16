@@ -32,9 +32,24 @@ public interface ApplyRepository extends PagingAndSortingRepository<Apply, Integ
             ",Proj_title" +
             ",Proj_id " +
             "FROM ApplyList al, ProjectList pl, MemList ml " +
+            "WHERE ml.Mem_id  = al.apply_mem_id " +
+            "AND pl.Proj_id = al.applyProjId " +
+            "AND al.Apply_id = :applyId"
+            , nativeQuery = true)
+    Apply getAcceptedProjectOwner(@Param("applyId") String applyId);
+
+    @Query(value = "SELECT " +
+            "apply_idx" +
+            ",Mem_id" +
+            ",Mem_tel" +
+            ",Mem_sort" +
+            ",Mem_nick" +
+            ",Proj_title" +
+            ",Proj_id " +
+            "FROM ApplyList al, ProjectList pl, MemList ml " +
             "WHERE ml.Mem_id  = pl.Proj_mem_id " +
             "AND pl.Proj_id = :applyProjId " +
             "AND al.Apply_id = :applyId"
             , nativeQuery = true)
-    Apply getAcceptedOwner(@Param("applyProjId") String applyProjId, @Param("applyId") String applyId);
+    Apply getAcceptedRecommandOwner(@Param("applyProjId") String applyProjId, @Param("applyId") String applyId);
 }

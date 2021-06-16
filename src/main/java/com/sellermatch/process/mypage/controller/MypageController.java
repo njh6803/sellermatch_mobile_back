@@ -11,6 +11,7 @@ import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import com.sellermatch.util.ControllerResultSet;
+import com.sellermatch.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class MypageController {
     private final ProfileRepositoryCustom profileRepositoryCustom;
     private final ScrapRepository scrapRepository;
     private final ApplyRepository applyRepository;
+    private final MailUtil mailUtil;
 
     @GetMapping("/myPage/myHome/{projMemId}")
     public CommonDTO selectProject(@PathVariable String projMemId) {
@@ -132,11 +134,38 @@ public class MypageController {
         applyRepository.findById(apply.getApplyIdx()).ifPresentOrElse(temp -> {
             applyRepository.updateApply(apply.getApplyIdx(), apply.getApplyProjState(), apply.getApplyType());
             result.setContent(new Apply());
-            Apply apply2 = applyRepository.getAcceptedOwner(temp.getApplyId(), temp.getApplyProjId());
-            String applyTypeName = "지원";
-            String projTitle = "";
+            String applyTypeName = "";
             String memSortName = "";
-        }, () -> {
+            String projTitle = "";
+            String subject = "";
+            String to = "";
+            if (apply.getApplyType().equalsIgnoreCase("1")) {
+                Apply apply2 = applyRepository.getAcceptedProjectOwner(temp.getApplyId());
+                projTitle = apply2.getProjTitle();
+                applyTypeName = "지원";
+                subject = "SellerMatch 거래매칭 승인 결과 발송 메일";
+                to = apply2.getMemId();
+                if (apply2.getMemSort().equalsIgnoreCase("1")) {
+                    memSortName = "판매자";
+                }
+                if (apply2.getMemSort().equalsIgnoreCase("2")) {
+                    memSortName = "공급자";
+                }
+
+            }
+            if (apply.getApplyType().equalsIgnoreCase("2")) {
+                Apply apply2 = applyRepository.getAcceptedRecommandOwner(temp.getApplyProjId(),temp.getApplyId());
+                projTitle = apply2.getProjTitle();
+                applyTypeName = "지원";
+                subject = "SellerMatch 거래제안 승인 결과 발송 메일";
+                memSortName = "판매자";
+                to = apply2.getMemId();
+            }
+
+
+
+            mailUtil.sendMail(to, subject, "", "accept", applyTypeName, projTitle, memSortName);
+       }, () -> {
             Apply emptyContent = new Apply();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
         });

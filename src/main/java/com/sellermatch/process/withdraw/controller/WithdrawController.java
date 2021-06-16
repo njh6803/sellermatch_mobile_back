@@ -5,7 +5,6 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
 import com.sellermatch.util.ControllerResultSet;
-import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +16,6 @@ public class WithdrawController {
 
     @Autowired
     public WithdrawRepository withdrawRepository;
-    @Autowired
-    public MailUtil mailUtil;
 
     @GetMapping("/withdraw/{id}")
     public CommonDTO selectWithdraw(@PathVariable Integer id) {
