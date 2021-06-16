@@ -4,18 +4,21 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
+import com.sellermatch.process.withdraw.service.WithdrawService;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 
+@RequiredArgsConstructor
 @RestController
 public class WithdrawController {
 
-    @Autowired
-    public WithdrawRepository withdrawRepository;
+    private final WithdrawRepository withdrawRepository;
+    private final WithdrawService withdrawService;
+
 
     @GetMapping("/withdraw/{id}")
     public CommonDTO selectWithdraw(@PathVariable Integer id) {
@@ -37,7 +40,7 @@ public class WithdrawController {
     }
 
     @PostMapping("/withdraw")
-    public CommonDTO insertWithdraw(@RequestBody Withdraw withdraw) {
+    public CommonDTO insertWithdraw(@RequestBody Withdraw withdraw) throws Exception {
         CommonDTO result = new CommonDTO();
 
         //탈퇴사유: NULL 체크
@@ -46,13 +49,14 @@ public class WithdrawController {
             return result;
         }
 
-        //탈퇴사유: 길이 제한 (500자 이내)
-        if(Util.isLengthChk(withdraw.getWithdrawReason(),0,500)){
+        //탈퇴사유내용: 길이 제한 (500자 이내)
+        if(!Util.isLengthChk(withdraw.getWithdrawReasonText(),0,500)){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_146);
             return result;
         }
 
-        result.setContent(withdrawRepository.save(withdraw));
+        withdrawService.insert(withdraw);
+
         return result;
     }
 

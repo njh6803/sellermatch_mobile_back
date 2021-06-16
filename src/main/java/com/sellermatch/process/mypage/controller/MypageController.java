@@ -158,7 +158,7 @@ public class MypageController {
             if (apply.getApplyType().equalsIgnoreCase("2")) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
                 projTitle = apply2.getProjTitle();
-                applyTypeName = "지원";
+                applyTypeName = "제안";
                 subject = "SellerMatch 거래제안 승인 결과 발송 메일";
                 memSortName = "판매자";
                 to = apply2.getMemId();

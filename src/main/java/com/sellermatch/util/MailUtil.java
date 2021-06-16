@@ -42,7 +42,7 @@ public class MailUtil{
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
-        //mailSender.send(message);
+        mailSender.send(message);
     }
 
     @Async
@@ -56,7 +56,7 @@ public class MailUtil{
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
-        //mailSender.send(message);
+        mailSender.send(message);
     }
 
     @Async
@@ -70,7 +70,7 @@ public class MailUtil{
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
-        //mailSender.send(message);
+        mailSender.send(message);
     }
 
     private String bulid(String nickName, String type, String applyTypeName){

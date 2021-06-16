@@ -1,14 +1,14 @@
 package com.sellermatch.process.withdraw.service;
 
-import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.withdraw.domain.Withdraw;
 import com.sellermatch.process.withdraw.repository.WithdrawRepository;
-import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,15 +23,13 @@ public class WithdrawService {
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Withdraw insert(Withdraw withdraw) throws Exception {
-        if(!Util.isEmpty(memberRepository.findByMemIdxAndWidthdrawAuthCode(withdraw.getMemIdx(),withdraw.getWidthdrawAuthCode()))) {
+        memberRepository.findById(withdraw.getMemIdx()).ifPresent( temp -> {
+            withdraw.setWithdrawDate(new Date());
+            withdraw.setMemId(temp.getMemId());
             withdrawRepository.save(withdraw);
-            Member member = new Member();
-            member.setMemIdx(withdraw.getMemIdx());
-            member.setMemId(withdraw.getMemId());
-            member.setWidthdrawAuthCode(withdraw.getWidthdrawAuthCode());
-            member.setMemState("1");
-            memberRepository.save(member);
-        }
+            String memState = "1";
+            memberRepository.withdraw(memState, withdraw.getMemId());
+        });
         return withdraw;
     }
 }
