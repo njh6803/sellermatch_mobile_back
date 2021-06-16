@@ -48,7 +48,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/find/id/{memTel}")
-    public CommonDTO findId(@PathVariable("memTel") String memTel) {
+    public CommonDTO findId(@PathVariable String memTel) {
         CommonDTO result = new CommonDTO();
 
         if (!Util.isTel(memTel)) {
@@ -72,7 +72,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/find/pw/{memId}")
-    public CommonDTO findPw(@PathVariable("memId") String memId) {
+    public CommonDTO findPw(@PathVariable String memId) {
         CommonDTO result = new CommonDTO();
 
         //ID: NULL체크
