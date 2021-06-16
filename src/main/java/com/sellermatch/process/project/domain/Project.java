@@ -172,6 +172,10 @@ public class Project {
     @Transient
     private String hashtaglist;
 
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private String tagRemoveProjDetail;
+
     public String getHashtaglist() {
         if (!Util.isEmpty(this.hashTag1)){
             hashtaglist = this.hashTag1;
@@ -189,5 +193,10 @@ public class Project {
             hashtaglist += "," + this.hashTag5;
         }
         return hashtaglist;
+    }
+
+    public String getTagRemoveProjDetail() {
+        tagRemoveProjDetail = this.projDetail.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+        return tagRemoveProjDetail.replace(System.getProperty("line.separator").toString(), "");
     }
 }
