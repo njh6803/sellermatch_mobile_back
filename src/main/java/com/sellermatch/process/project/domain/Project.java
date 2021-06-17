@@ -196,7 +196,10 @@ public class Project {
     }
 
     public String getTagRemoveProjDetail() {
-        tagRemoveProjDetail = this.projDetail.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-        return tagRemoveProjDetail.replace(System.getProperty("line.separator").toString(), "");
+        if (!Util.isEmpty(this.projDetail)) {
+            tagRemoveProjDetail = this.projDetail.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+            return tagRemoveProjDetail.replace(System.getProperty("line.separator").toString(), "");
+        }
+        return "";
     }
 }
