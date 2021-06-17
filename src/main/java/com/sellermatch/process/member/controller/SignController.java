@@ -5,18 +5,14 @@ import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.member.service.MemberService;
-import com.sellermatch.util.EncryptionUtils;
-import com.sellermatch.util.JWTUtil;
-import com.sellermatch.util.Util;
+import com.sellermatch.util.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -27,6 +23,7 @@ public class SignController {
     private final JWTUtil jwtUtil;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final MailUtil mailUtil;
 
     @PostMapping("/signin")
     public CommonDTO signin(@RequestBody Member member) {
@@ -182,4 +179,71 @@ public class SignController {
         return result;
     }
 
+    @PostMapping("/signin/find/id")
+    public CommonDTO findId(@RequestBody String memTel) {
+        CommonDTO result = new CommonDTO();
+
+        if (!Util.isTel(memTel)) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_106);
+            return result;
+        }
+
+        if (Util.isEmpty(memTel)) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_105);
+            return result;
+        }
+
+        List<String> idList = memberRepository.findId(memTel);
+        if (!Util.isEmpty(idList)) {
+            result.setContent(idList);
+        } else {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_221);
+            return result;
+        }
+        return result;
+    }
+
+    @PostMapping("/signin/find/pw")
+    public CommonDTO findPw(@RequestBody String memId) {
+        CommonDTO result = new CommonDTO();
+
+        //ID: NULL체크
+        if(Util.isEmpty(memId)){
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_NULL_100);
+            return result;
+        }
+        //ID: 이메일형식 체크
+        if(!Util.isEmail(memId)) {
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_FORMAT_104);
+            return result;
+        }
+        //ID: 길이 체크 45자
+        if(!Util.isLengthChk(memId,0,45)) {
+            result.setResult(CommonConstant.ERROR);
+            result.setStatus(CommonConstant.ERROR_LENGTH_109);
+            return result;
+        }
+
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String tempPw = "";
+
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            tempPw += charSet[idx];
+        }
+
+        memberRepository.changePw(tempPw, memId);
+
+        String subject = "SellerMatch 비밀번호 찾기 메일";
+
+        mailUtil.sendMail(memId, subject, "findPw", tempPw);
+
+
+        return result;
+    }
 }
