@@ -128,9 +128,9 @@ public class ProfileController {
 
         profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp -> {
             ProjectDto projectDto = new ProjectDto();
-            projectDto.setProfile(profile);
+
             if(!Util.isEmpty(profileImg)) projectDto.setProfileImgFile(profileImg);
-            projectDto.getProfile().setProfileEditDate(new Date());
+            profile.setProfileEditDate(new Date());
             projectDto.getProfile().setProfileIntro(profile.getProfileIntro());
             if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
                 projectDto.getProfile().setProfileVolume(profile.getProfileVolume());
@@ -147,25 +147,27 @@ public class ProfileController {
             projectDto.getProfile().setProfileIndus(profile.getProfileIndus());
             projectDto.getProfile().setProfileBizNum(profile.getProfileBizNum());
             projectDto.getProfile().setProfileBizSort(profile.getProfileBizSort());
-            projectDto.getProfile().setProfileState(temp.getProfileState());
-            projectDto.getProfile().setProfileChChk(temp.getProfileChChk());
+            profile.setProfileState(temp.getProfileState());
+            profile.setProfileChChk(temp.getProfileChChk());
             projectDto.getProfile().setProfileCh(profile.getProfileCh());
-            projectDto.getProfile().setProfileRegDate(temp.getProfileRegDate());
-            projectDto.getProfile().setProfileSaleChk(temp.getProfileSaleChk());
-            projectDto.getProfile().setProfileBizCerti(temp.getProfileBizCerti());
-            projectDto.getProfile().setProfileCareer(temp.getProfileCareer());
-            projectDto.getProfile().setProfileSort(temp.getProfileSort());
-            projectDto.getProfile().setProfileGrade(temp.getProfileGrade());
-            projectDto.getProfile().setProfileMemId(temp.getProfileMemId());
-            projectDto.getProfile().setProfileId(temp.getProfileId());
-            projectDto.getProfile().setProfileRname(temp.getMemRname());
-            projectDto.getProfile().setProfileChChkDate(temp.getProfileChChkDate());
-            projectDto.getProfile().setProfileHit(temp.getProfileHit());
+            profile.setProfileRegDate(temp.getProfileRegDate());
+            profile.setProfileSaleChk(temp.getProfileSaleChk());
+            profile.setProfileBizCerti(temp.getProfileBizCerti());
+            profile.setProfileCareer(temp.getProfileCareer());
+            profile.setProfileSort(temp.getProfileSort());
+            profile.setProfileGrade(temp.getProfileGrade());
+            profile.setProfileMemId(temp.getProfileMemId());
+            profile.setProfileId(temp.getProfileId());
+            profile.setProfileRname(temp.getMemRname());
+            profile.setProfileChChkDate(temp.getProfileChChkDate());
+            profile.setProfileHit(temp.getProfileHit());
             if (!Util.isEmpty(profile.getProfilePhoto())) {
                 projectDto.getProfile().setProfileCh(profile.getProfilePhoto());
             } else {
-                projectDto.getProfile().setProfileCh(temp.getProfilePhoto());
+                profile.setProfileCh(temp.getProfilePhoto());
             }
+
+            projectDto.setProfile(profile);
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {
