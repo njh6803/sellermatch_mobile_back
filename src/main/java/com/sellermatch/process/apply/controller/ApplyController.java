@@ -7,6 +7,7 @@ import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
@@ -114,7 +115,9 @@ public class ApplyController {
                                 type = "recommand";
                                 subject = "셀러매치 제안알림";
                                 applyTypeName = "제안";
-                                mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick() , type, applyTypeName);
+                                Member projMember = memberRepository.findByMemId(apply.getProjMemId());
+                                mailUtil.sendMail(apply.getApplyMemId(),subject, projMember.getMemNick() , type, applyTypeName);
+
                         }
                 }, ()->{
                         ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);

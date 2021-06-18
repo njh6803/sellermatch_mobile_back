@@ -20,6 +20,8 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Int
 
     Optional<Member> findTop1ByMemId(String memId);
 
+    Member findByMemId(String memId);
+
     Optional<Member> findTop1ByMemIdAndMemSnsCh(String memId, String memSnsCh);
 
     Optional<Member> findByMemIdAndMemPw(String memId, String memPw);
