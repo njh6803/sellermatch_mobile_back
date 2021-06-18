@@ -248,7 +248,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -372,7 +372,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -458,7 +458,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq("1")))
                         ,"applyCount"
                 )))
                 .from(qProject)
@@ -497,7 +497,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq("1")))
                         ,"applyCount"
                 )))
                 .from(qProject)
@@ -535,7 +535,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
@@ -572,7 +572,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
@@ -602,7 +602,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
