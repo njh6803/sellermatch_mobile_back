@@ -200,11 +200,12 @@ public class FileUtil {
 
     public void uploadImageToAWSS3(BufferedImage image,String filename, String ext)
             throws IllegalStateException, IOException {
+        java.io.File outputfile = null;
         try {
             int bytesRead = 0;
             byte[] buff = new byte[1024];
 
-            java.io.File outputfile = new java.io.File(filename);
+            outputfile = new java.io.File(filename);
             ImageIO.write(image, ext, outputfile);
             FileInputStream fin = new FileInputStream(outputfile);
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -227,6 +228,12 @@ public class FileUtil {
 
         } catch (AmazonServiceException e) {
             e.printStackTrace();
+        } finally {
+            if (!Util.isEmpty(outputfile)) {
+                if (outputfile.exists()) {
+                    outputfile.delete();
+                }
+            }
         }
     }
 
