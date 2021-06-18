@@ -92,7 +92,7 @@ public class MailUtil{
         if (type.equalsIgnoreCase("findPw")) {
             context.setVariable("tempPw", text);
         }
-        if (type.equalsIgnoreCase("welcomeMail")) {
+        if (type.equalsIgnoreCase("welcomeMail") || type.equalsIgnoreCase("apply")) {
             context.setVariable("nickName", text);
         }
 
