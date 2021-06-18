@@ -358,18 +358,6 @@ public class ProjectRepositoryCustom {
                 qProject.projProfit,
                 qProject.projChannel,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qIndus.indusName).distinct()
-                                .from(qIndus)
-                                .where(qIndus.indusId.eq(qProject.projIndus))
-                        ,"projIndusName"
-                ),
-                ExpressionUtils.as(
-                        JPAExpressions.select(qProject.projIdx.count())
-                                .from(qProject)
-                                .where(qProject.projMemId.eq(qProfile.profileMemId))
-                        ,"projAddCount"
-                ),
-                ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
                                 .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
@@ -433,7 +421,6 @@ public class ProjectRepositoryCustom {
                 .from(qProject)
                 .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
                 .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
-                .innerJoin(qIndus).on(qProject.projIndus.eq(qIndus.indusId))
                 .where(builder)
                 .orderBy(getSortedColumn(pageable.getSort(), qProject, qApply))
                 .offset(pageable.getOffset())
