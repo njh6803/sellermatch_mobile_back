@@ -414,13 +414,14 @@ public class ProjectRepositoryCustom {
                                                 .where(qHashtag.id.eq(qProject.projId))
                                 )), "hashTag5"
                 ),
-                qProfile.profileChChk,
-                qProfile.profileSaleChk,
-                qProfile.profileBizCerti,
-                qMember.memRname))
+//                qProfile.profileChChk,
+//                qProfile.profileSaleChk,
+//                qProfile.profileBizCerti
+                qMember.memRname
+                ))
                 .from(qProject)
                 .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
-                .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
+//                .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
                 .where(builder)
                 .orderBy(getSortedColumn(pageable.getSort(), qProject, qApply))
                 .offset(pageable.getOffset())
