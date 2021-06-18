@@ -108,10 +108,10 @@ public class ProjectController {
             return result;
         }
         //제목: 길이 제한 체크
-        if(!Util.isLengthChk(project.getProjTitle(),0,100)){
+        /*if(!Util.isLengthChk(project.getProjTitle(),0,100)){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_133);
             return result;
-        }
+        }*/
         //상품분류: NULL체크
         if(Util.isEmpty(project.getProjIndus())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
@@ -178,10 +178,10 @@ public class ProjectController {
             return result;
         }
         //상세설명: 내용 길이 체크
-        if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
+        /*if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
             return result;
-        }
+        }*/
         // 프로젝트 해시태그 중복체크
         if (!Util.isEmpty(project.getProjKeyword())) {
             if (project.getProjKeyword().trim().length() > 0) {
@@ -197,10 +197,10 @@ public class ProjectController {
                 return result;
             }
             // 자기소개 : 길이 체크 (50자 이상 1000자 이하)
-            if (Util.isLengthChk(profile.getProfileIntro(), 50 , 1000)) {
+            /*if (Util.isLengthChk(profile.getProfileIntro(), 50 , 1000)) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_122);
                 return result;
-            }
+            }*/
             // 매출규모 : NULL 체크
             if (Util.isEmpty(profile.getProfileVolume())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_123);
@@ -298,10 +298,10 @@ public class ProjectController {
             return result;
         }
         //제목: 길이 제한 체크
-        if(!Util.isLengthChk(project.getProjTitle(),0,100)){
+        /*if(!Util.isLengthChk(project.getProjTitle(),0,100)){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_133);
             return result;
-        }
+        }*/
         //상품분류: NULL체크
         if(Util.isEmpty(project.getProjIndus())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_127);
@@ -368,10 +368,10 @@ public class ProjectController {
             return result;
         }
         //상세설명: 내용 길이 체크
-        if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
+        /*if(Util.isLengthChk(project.getProjDetail(), 50, 1000)){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
             return result;
-        }
+        }*/
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
             //대표이미지: NULL 체크
