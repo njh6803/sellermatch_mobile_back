@@ -197,7 +197,7 @@ public class ProjectController {
                 return result;
             }
             // 자기소개 : 길이 체크 (50자 이상 1000자 이하)
-            if (!Util.isLengthChk(profile.getProfileIntro(), 50 , 1000)) {
+            if (Util.isLengthChk(profile.getProfileIntro(), 50 , 1000)) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_122);
                 return result;
             }

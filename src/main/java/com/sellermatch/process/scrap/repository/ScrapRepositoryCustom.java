@@ -9,6 +9,7 @@ import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sellermatch.config.constant.ApplyType;
 import com.sellermatch.process.apply.domain.QApply;
 import com.sellermatch.process.member.domain.QMember;
 import com.sellermatch.process.profile.domain.QProfile;
@@ -65,7 +66,7 @@ public class ScrapRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -77,13 +78,13 @@ public class ScrapRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyProjState)
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qMember.memId).and(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq("1"))))
+                                .where(qApply.applyMemId.eq(qMember.memId).and(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label))))
                         ,"applyProjState"
                 ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyType)
                                 .from(qApply)
-                                .where(qApply.applyMemId.eq(qMember.memId).and(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq("1"))))
+                                .where(qApply.applyMemId.eq(qMember.memId).and(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label))))
                         ,"applyType"
                 )))
                 .from(qScrap)

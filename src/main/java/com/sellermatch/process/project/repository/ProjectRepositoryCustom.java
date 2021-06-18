@@ -11,6 +11,8 @@ import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sellermatch.config.constant.ApplyType;
+import com.sellermatch.config.constant.ProjectStateType;
 import com.sellermatch.process.apply.domain.QApply;
 import com.sellermatch.process.file.domain.QFile;
 import com.sellermatch.process.hashtag.domain.QHashtag;
@@ -81,11 +83,11 @@ public class ProjectRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
 
         // 거래처매칭페이지 노출 필수조건
-        builder.and(qProject.projState.ne("0")); // 프로젝트 상태 != 0
+        builder.and(qProject.projState.ne(ProjectStateType.STOP.label)); // 프로젝트 상태 != 0
 
         // 마감이 안된것만 조회
         if (!Util.isEmpty(project.getRecommandProjectFlag())){
-            builder.and(qProject.projState.eq("1"));
+            builder.and(qProject.projState.eq(ProjectStateType.END.label));
         }
 
         // 찾기유형(공급자,판매자) 필터
@@ -246,7 +248,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -370,7 +372,7 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 ),
                 ExpressionUtils.as(
@@ -463,7 +465,7 @@ public class ProjectRepositoryCustom {
                 .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
                 .join(qProject).on(qMember.memId.eq(qProject.projMemId))
                 .join(qProject).on(qProfile.profileMemId.eq(qProject.projMemId))
-                .where(qProject.projState.eq("1").and(qProject.projMemId.eq(memId)))
+                .where(qProject.projState.eq(ProjectStateType.NORMAL.label).and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qApply.applyRegDate.desc());
@@ -501,7 +503,7 @@ public class ProjectRepositoryCustom {
                 .from(qProject)
                 .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
                 .join(qMember).on(qApply.applyMemId.eq(qMember.memId))
-                .where(qApply.applyType.eq("2").and(qProject.projMemId.eq(memId)))
+                .where(qApply.applyType.eq(ApplyType.RECOMMEND.label).and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qApply.applyRegDate.desc());
@@ -533,13 +535,13 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
                 .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
                 .join(qMember).on(qProject.projMemId.eq(qMember.memId))
-                .where(qApply.applyType.eq("2").and(qApply.applyMemId.eq(memId)))
+                .where(qApply.applyType.eq(ApplyType.RECOMMEND.label).and(qApply.applyMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qApply.applyRegDate.desc());
@@ -570,13 +572,13 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
                 .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
                 .join(qMember).on(qProject.projMemId.eq(qMember.memId))
-                .where(qApply.applyType.eq("1").and(qApply.applyMemId.eq(memId)))
+                .where(qApply.applyType.eq(ApplyType.APPLY.label).and(qApply.applyMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
         return jpaQuery;
@@ -600,12 +602,12 @@ public class ProjectRepositoryCustom {
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
-                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase("1")))
+                                .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.equalsIgnoreCase(ApplyType.APPLY.label)))
                         ,"applyCount"
                 )))
                 .from(qProject)
                 .join(qMember).on(qProject.projMemId.eq(qMember.memId))
-                .where(qProject.projState.eq("2").and(qProject.projMemId.eq(memId)))
+                .where(qProject.projState.eq(ProjectStateType.END.label).and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(qProject.projRegDate.desc());

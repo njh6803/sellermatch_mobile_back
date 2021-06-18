@@ -1,8 +1,8 @@
 package com.sellermatch.config.constant;
 
 public enum MemberType {
-    SELLER("1"),
-    PROVIDER("2"),
+    PROVIDER("1"),
+    SELLER("2"),
     ADMIN("3");
 
     public final String label;

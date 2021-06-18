@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sellermatch.config.constant.MemberType;
 import com.sellermatch.process.apply.domain.QApply;
 import com.sellermatch.process.hashtag.domain.QHashtag;
 import com.sellermatch.process.hashtag.domain.QHashtaglist;
@@ -58,7 +59,7 @@ public class ProfileRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
 
         // 판매자리스트페이지 노출 필수조건
-        profile.setProfileSort("2");
+        profile.setProfileSort(MemberType.SELLER.label);
         if (!Util.isEmpty(profile.getProfileSort())){
             // 프로필 유형 - 판매자 : 2
             builder.and(qProfile.profileSort.eq(profile.getProfileSort()));
@@ -76,12 +77,12 @@ public class ProfileRepositoryCustom {
                 // 신원인증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("1")){
                     builder.and(qMember.memRname.eq("1")
-                            .and(qProfile.profileSort.eq("2")));
+                            .and(qProfile.profileSort.eq(MemberType.SELLER.label)));
                 }
                 // 사업자인증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("2")){
                     builder.and(qProfile.profileBizCerti.eq("1")
-                            .and(qProfile.profileSort.eq("2")));
+                            .and(qProfile.profileSort.eq(MemberType.SELLER.label)));
                 }
                 // 채널검증
                 if (profile.getProfileSellerAuthArr()[i].equalsIgnoreCase("3")){
