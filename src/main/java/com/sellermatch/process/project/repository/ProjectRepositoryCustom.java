@@ -454,7 +454,6 @@ public class ProjectRepositoryCustom {
                 qProject.projSort,
                 qProject.projNation,
                 qProject.projChannel,
-                qApply.applyRegDate,
                 ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
@@ -462,13 +461,12 @@ public class ProjectRepositoryCustom {
                         ,"applyCount"
                 )))
                 .from(qProject)
-                .join(qApply).on(qProject.projId.eq(qApply.applyProjId))
                 .join(qProject).on(qMember.memId.eq(qProject.projMemId))
                 .join(qProject).on(qProfile.profileMemId.eq(qProject.projMemId))
                 .where(qProject.projState.eq("1").and(qProject.projMemId.eq(memId)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(qApply.applyRegDate.desc());
+                .orderBy(qProject.projRegDate.desc());
         return jpaQuery;
     }
 
