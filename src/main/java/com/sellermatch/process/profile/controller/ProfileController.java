@@ -1,8 +1,10 @@
 package com.sellermatch.process.profile.controller;
 
+import com.sellermatch.config.constant.HashtagType;
 import com.sellermatch.config.constant.MemberType;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
@@ -129,6 +131,41 @@ public class ProfileController {
             projectDto.setProfile(profile);
             if(!Util.isEmpty(profileImg)) projectDto.setProfileImgFile(profileImg);
             projectDto.getProfile().setProfileEditDate(new Date());
+            projectDto.getProfile().setProfileIntro(profile.getProfileIntro());
+            if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
+                projectDto.getProfile().setProfileVolume(profile.getProfileVolume());
+                if (!Util.isEmpty(profile.getProfileHashtag())) {
+                    Hashtag tagProfile = new Hashtag();
+                    tagProfile.setFrstRegistDt(new Date());
+                    tagProfile.setFrstRegistMngr(temp.getProfileMemId());
+                    tagProfile.setHashType(HashtagType.PROFILE.label);
+                    tagProfile.setId(temp.getProfileId());
+                    projectDto.setProfileHashtag(tagProfile);
+                }
+            }
+            projectDto.getProfile().setProfileNation(profile.getProfileNation());
+            projectDto.getProfile().setProfileIndus(profile.getProfileIndus());
+            projectDto.getProfile().setProfileBizNum(profile.getProfileBizNum());
+            projectDto.getProfile().setProfileBizSort(profile.getProfileBizSort());
+            projectDto.getProfile().setProfileState(temp.getProfileState());
+            projectDto.getProfile().setProfileChChk(temp.getProfileChChk());
+            projectDto.getProfile().setProfileCh(profile.getProfileCh());
+            projectDto.getProfile().setProfileRegDate(temp.getProfileRegDate());
+            projectDto.getProfile().setProfileSaleChk(temp.getProfileSaleChk());
+            projectDto.getProfile().setProfileBizCerti(temp.getProfileBizCerti());
+            projectDto.getProfile().setProfileCareer(temp.getProfileCareer());
+            projectDto.getProfile().setProfileSort(temp.getProfileSort());
+            projectDto.getProfile().setProfileGrade(temp.getProfileGrade());
+            projectDto.getProfile().setProfileMemId(temp.getProfileMemId());
+            projectDto.getProfile().setProfileId(temp.getProfileId());
+            projectDto.getProfile().setProfileRname(temp.getMemRname());
+            projectDto.getProfile().setProfileChChkDate(temp.getProfileChChkDate());
+            projectDto.getProfile().setProfileHit(temp.getProfileHit());
+            if (!Util.isEmpty(profile.getProfilePhoto())) {
+                projectDto.getProfile().setProfileCh(profile.getProfilePhoto());
+            } else {
+                projectDto.getProfile().setProfileCh(temp.getProfilePhoto());
+            }
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {
