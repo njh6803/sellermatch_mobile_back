@@ -114,7 +114,7 @@ public class ApplyController {
                                 type = "recommand";
                                 subject = "셀러매치 제안알림";
                                 applyTypeName = "제안";
-                                mailUtil.sendMail(apply.getProjMemId(),subject, temp.getMemNick() , type, applyTypeName);
+                                mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick() , type, applyTypeName);
                         }
                 }, ()->{
                         ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);
