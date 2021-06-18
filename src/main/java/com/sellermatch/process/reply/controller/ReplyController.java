@@ -84,10 +84,10 @@ public class ReplyController {
 
         if (!Util.isEmpty(reply.getReplyParent()) && reply.getReplyParent() != 0) {
             reply.setReplyParent(reply.getReplyParent());
-            reply.setReplyDepth(CommonConstant.REPLY_DEPTH_CHILD);
+            reply.setReplyDepth("1");
         } else {
             reply.setReplyParent(replyRepository.getSeq()+1);
-            reply.setReplyDepth(CommonConstant.REPLY_DEPTH_PARENT);
+            reply.setReplyDepth("0");
         }
         reply.setReplyRegDate(new Date());
 

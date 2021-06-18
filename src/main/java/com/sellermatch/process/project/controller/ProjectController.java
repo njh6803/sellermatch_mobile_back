@@ -1,5 +1,7 @@
 package com.sellermatch.process.project.controller;
 
+import com.sellermatch.config.constant.HashtagType;
+import com.sellermatch.config.constant.ProjectStateType;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.hashtag.domain.Hashtag;
@@ -251,7 +253,7 @@ public class ProjectController {
         ProjectDto projectDto = new ProjectDto();
         project.setProjId(Util.getUniqueId("P-", Integer.parseInt(project.getProjSort())));
         project.setProjRegDate(new Date());
-        project.setProjState(CommonConstant.PROJECT_STATE_NORMAL);
+        project.setProjState(ProjectStateType.NORMAL.label);
         projectDto.setProject(project);
         project.setProjThumbnailImg("none");
 
@@ -260,7 +262,7 @@ public class ProjectController {
             Hashtag tagProject = new Hashtag();
             tagProject.setFrstRegistDt(new Date());
             tagProject.setFrstRegistMngr(project.getProjMemId());
-            tagProject.setHashType(CommonConstant.HASHTAG_PROJECT);
+            tagProject.setHashType(HashtagType.PROJECT.label);
             tagProject.setId(project.getProjId());
             tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
 
@@ -271,7 +273,7 @@ public class ProjectController {
             Hashtag tagProfile = new Hashtag();
             tagProfile.setFrstRegistDt(new Date());
             tagProfile.setFrstRegistMngr(profile.getProfileMemId());
-            tagProfile.setHashType(CommonConstant.HASHTAG_PROFILE);
+            tagProfile.setHashType(HashtagType.PROFILE.label);
             tagProfile.setId(profile.getProfileId());
             projectDto.setProfileHashtag(tagProfile);
         }
@@ -396,7 +398,7 @@ public class ProjectController {
                     Hashtag tagProject = new Hashtag();
                     tagProject.setFrstRegistDt(new Date());
                     tagProject.setFrstRegistMngr(project.getProjMemId());
-                    tagProject.setHashType(CommonConstant.HASHTAG_PROJECT);
+                    tagProject.setHashType(HashtagType.PROJECT.label);
                     tagProject.setId(project.getProjId());
                     tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
                     projectDto.setProjHashtag(tagProject);
@@ -418,7 +420,7 @@ public class ProjectController {
     public CommonDTO updateProjectStatus(@RequestBody Project project) {
         CommonDTO result = new CommonDTO();
         projectRepository.findById(project.getProjIdx()).ifPresent(temp -> {
-            temp.setProjState(CommonConstant.PROJECT_STATE_END);
+            temp.setProjState(ProjectStateType.END.label);
             temp.setProjEndDate(new Date());
             temp.setProjEditDate(new Date());
             result.setContent(projectRepository.save(temp));

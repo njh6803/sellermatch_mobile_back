@@ -1,5 +1,7 @@
 package com.sellermatch.process.mypage.controller;
 
+import com.sellermatch.config.constant.ApplyType;
+import com.sellermatch.config.constant.MemberType;
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
@@ -67,10 +69,10 @@ public class MypageController {
     public CommonDTO selectRecommandList(@PathVariable String memId, @PathVariable String memSort, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Page<Project> project = null;
-        if (memSort.equalsIgnoreCase(CommonConstant.PRODUCER)){
+        if (memSort.equalsIgnoreCase(MemberType.PROVIDER.label)){
             project = projectRepositoryCustom.getRecommandListForPro(memId, pageable);
         }
-        if (memSort.equalsIgnoreCase(CommonConstant.SELLER)) {
+        if (memSort.equalsIgnoreCase(MemberType.SELLER.label)) {
             project = projectRepositoryCustom.getRecommandListForSell(memId, pageable);
         }
         if (project != null) {
@@ -141,21 +143,21 @@ public class MypageController {
             String projTitle = "";
             String subject = "";
             String to = "";
-            if (apply.getApplyType().equalsIgnoreCase(CommonConstant.APPLY)) {
+            if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedProjectOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "지원";
                 subject = "SellerMatch 거래매칭 승인 결과 발송 메일";
                 to = apply2.getMemId();
-                if (apply2.getMemSort().equalsIgnoreCase(CommonConstant.PRODUCER)) {
+                if (apply2.getMemSort().equalsIgnoreCase(MemberType.PROVIDER.label)) {
                     memSortName = "판매자";
                 }
-                if (apply2.getMemSort().equalsIgnoreCase(CommonConstant.SELLER)) {
+                if (apply2.getMemSort().equalsIgnoreCase(MemberType.SELLER.label)) {
                     memSortName = "공급자";
                 }
 
             }
-            if (apply.getApplyType().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
+            if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "제안";

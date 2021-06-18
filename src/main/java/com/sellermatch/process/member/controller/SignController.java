@@ -1,5 +1,6 @@
 package com.sellermatch.process.member.controller;
 
+import com.sellermatch.config.constant.SnsChType;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
@@ -30,7 +31,7 @@ public class SignController {
         CommonDTO result = new CommonDTO();
         if(Util.isEmpty(member.getMemSnsCh())) { // 일반회원 로그인
             memberRepository.findTop1ByMemId(member.getMemId()).ifPresentOrElse(validation -> {
-                if(validation.getMemSnsCh().equalsIgnoreCase("01")) {
+                if(validation.getMemSnsCh().equalsIgnoreCase(SnsChType.EMAIL.label)) {
                     memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {
                         Map<String, Object> jwt = jwtUtil.createToken(temp.getMemId());
                         result.setContent(jwt);
@@ -63,12 +64,21 @@ public class SignController {
                 Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
                 result.setContent(jwt);
             }, () -> {
-                Map<String, Object> jwt = new HashMap<>();
-                jwt.put("token", "");
-                jwt.put("expires", "");
-                result.setContent(jwt);
-                result.setResult("ERROR");
-                result.setStatus(CommonConstant.ERROR_MISMATCH_214);
+                if (member.getMemSnsCh().equalsIgnoreCase(SnsChType.NAVER.label)){
+                    Map<String, Object> jwt = new HashMap<>();
+                    jwt.put("token", "");
+                    jwt.put("expires", "");
+                    result.setContent(jwt);
+                    result.setResult("ERROR");
+                    result.setStatus(CommonConstant.ERROR_ACCESS_223);
+                } else {
+                    Map<String, Object> jwt = new HashMap<>();
+                    jwt.put("token", "");
+                    jwt.put("expires", "");
+                    result.setContent(jwt);
+                    result.setResult("ERROR");
+                    result.setStatus(CommonConstant.ERROR_MISMATCH_214);
+                }
             });
         }
 
@@ -110,7 +120,7 @@ public class SignController {
         }
 
         //이메일 회원가입일 경우만 PW 체크
-        if(member.getMemSnsCh().equalsIgnoreCase("01")){
+        if(member.getMemSnsCh().equalsIgnoreCase(SnsChType.EMAIL.label)){
             //비밀번호: NULL체크
             if(Util.isEmpty(member.getMemPw())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_101);
@@ -210,7 +220,7 @@ public class SignController {
         }
 
         memberRepository.findTop1ByMemId(memId).ifPresentOrElse(temp -> {
-            if (!temp.getMemSnsCh().equalsIgnoreCase("01")) {
+            if (!temp.getMemSnsCh().equalsIgnoreCase(SnsChType.EMAIL.label)) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_ACCESS_222);
             } else {
                 char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',

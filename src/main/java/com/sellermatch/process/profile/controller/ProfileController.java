@@ -1,5 +1,6 @@
 package com.sellermatch.process.profile.controller;
 
+import com.sellermatch.config.constant.MemberType;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.profile.domain.Profile;
@@ -72,7 +73,7 @@ public class ProfileController {
 //            return result;
 //        }
 
-        if (profile.getProfileSort().equalsIgnoreCase(CommonConstant.SELLER)) {
+        if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
             // 매출규모 : NULL 체크
             if (Util.isEmpty(profile.getProfileVolume())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_123);
@@ -115,7 +116,7 @@ public class ProfileController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_130);
             return result;
         }
-        if (profile.getProfileSort().equalsIgnoreCase(CommonConstant.SELLER)) {
+        if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
             // 해시태그 중복체크
             if (Util.isEmpty(profile.getProfileHashtag())) {
                 String[] hashtagList = profile.getProfileHashtag().split(",");

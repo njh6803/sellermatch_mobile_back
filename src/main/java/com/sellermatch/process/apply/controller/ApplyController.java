@@ -1,5 +1,7 @@
 package com.sellermatch.process.apply.controller;
 
+import com.sellermatch.config.constant.ApplyType;
+import com.sellermatch.config.constant.MemberType;
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
@@ -43,7 +45,7 @@ public class ApplyController {
                 CommonDTO result = new CommonDTO();
                 Apply apply = new Apply();
                 apply.setApplyProjId(projId);
-                apply.setApplyType(CommonConstant.APPLY);
+                apply.setApplyType(ApplyType.APPLY.label);
                 Page<Apply> applyList = applyRepositoryCustom.getApplyList(apply, pageable);
                 result.setContent(applyList);
                 return result;
@@ -70,10 +72,10 @@ public class ApplyController {
                 // 중복검사
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
-                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.SELLER)) {
+                        if (apply.getApplyType().equalsIgnoreCase(MemberType.SELLER.label)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_202, emptyContent);
                         }
-                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.PRODUCER)) {
+                        if (apply.getApplyType().equalsIgnoreCase(MemberType.PROVIDER.label)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_207, emptyContent);
                         }
                         return result;
@@ -81,10 +83,10 @@ public class ApplyController {
 
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
-                        if (apply.getMemSort().equalsIgnoreCase(CommonConstant.APPLY)) {
+                        if (apply.getMemSort().equalsIgnoreCase(ApplyType.APPLY.label)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_203, emptyContent);
                         }
-                        if (apply.getMemSort().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
+                        if (apply.getMemSort().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_206, emptyContent);
                         }
                         return result;
@@ -102,13 +104,13 @@ public class ApplyController {
                         String applyTypeName = "";
 
                         // 지원
-                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.APPLY)) {
+                        if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
                                 subject = "셀러매치 지원알림";
                                 applyTypeName = "지원";
                                 mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick(), type, applyTypeName);
                         }
                         // 제안
-                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
+                        if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                                 subject = "셀러매치 제안알림";
                                 applyTypeName = "제안";
                                 mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick() , type, applyTypeName);
