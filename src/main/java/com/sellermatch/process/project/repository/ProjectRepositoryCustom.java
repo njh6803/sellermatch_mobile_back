@@ -87,7 +87,7 @@ public class ProjectRepositoryCustom {
 
         // 마감이 안된것만 조회
         if (!Util.isEmpty(project.getRecommandProjectFlag())){
-            builder.and(qProject.projState.eq(ProjectStateType.END.label));
+            builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label));
         }
 
         // 찾기유형(공급자,판매자) 필터
