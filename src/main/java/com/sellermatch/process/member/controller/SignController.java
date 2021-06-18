@@ -208,33 +208,27 @@ public class SignController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_109);
             return result;
         }
+
         memberRepository.findTop1ByMemId(memId).ifPresentOrElse(temp -> {
             if (!temp.getMemSnsCh().equalsIgnoreCase("01")) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_ACCESS_222);
+            } else {
+                char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                        'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+                String tempPw = "";
+                int idx = 0;
+                for (int i = 0; i < 10; i++) {
+                    idx = (int) (charSet.length * Math.random());
+                    tempPw += charSet[idx];
+                }
+                memberRepository.changePw(tempPw, memId);
+                String subject = "SellerMatch 비밀번호 찾기 메일";
+                String type = "findPw";
+                mailUtil.sendMail(memId, subject, type, tempPw);
             }
         }, ()->{
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_221);
         });
-
-        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-
-        String tempPw = "";
-
-        int idx = 0;
-        for (int i = 0; i < 10; i++) {
-            idx = (int) (charSet.length * Math.random());
-            tempPw += charSet[idx];
-        }
-
-        memberRepository.changePw(tempPw, memId);
-
-        String subject = "SellerMatch 비밀번호 찾기 메일";
-        String type = "findPw";
-
-        mailUtil.sendMail(memId, subject, type, tempPw);
-
-
         return result;
     }
 }
