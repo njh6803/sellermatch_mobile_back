@@ -256,6 +256,8 @@ public class ProjectController {
         project.setProjState(ProjectStateType.NORMAL.label);
         projectDto.setProject(project);
         project.setProjThumbnailImg("none");
+        project.setProjProdCerti("0");
+        project.setProjProfit("0");
 
         // 프로젝트 해시태그
         if (!Util.isEmpty(project.getProjKeyword())) {
