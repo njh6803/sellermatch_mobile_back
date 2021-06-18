@@ -38,7 +38,7 @@ public class CommonConstant {
     public final static int ERROR_NULL_152 = -152; // 매칭 대표이미지 null
     public final static int ERROR_NULL_213 = -213; // 비밀번호확인 null
     public final static int ERROR_NULL_216 = -216; // 제안할 프로제트 조회결과 null
-    public final static int ERROR_NULL_221 = -221; // 아이디찾기 조회결과 null
+    public final static int ERROR_NULL_221 = -221; // 아이디 조회결과 null
 
 
     /* 중복 */
@@ -93,8 +93,21 @@ public class CommonConstant {
     public final static int ERROR_ACCESS_201 = -201;  // 탈퇴회원으로 로그인
     public final static int ERROR_ACCESS_204 = -204;  // 마감거래 지원
     public final static int ERROR_ACCESS_215 = -215;  // 자신의게시물에 지원, 제안, 스크랩 등
+    public final static int ERROR_ACCESS_222 = -222;  // SNS가입계정 비밀번호찾기
 
     /* 공통 에러 */
     public final static int ERROR_999 = -999;  // 알수 없는 공통 에러
     public final static int ERROR_998 = -998;  // 컨텐츠 빈 값
+
+    public final static String PRODUCER = "1";  // 공급자
+    public final static String SELLER = "2";    // 판매자
+    public final static String APPLY = "1";  // 지원
+    public final static String RECOMMEND = "2";  // 제안
+    public final static String HASHTAG_PROJECT = "1";  // 거래처매칭 해시태그
+    public final static String HASHTAG_PROFILE = "2";  // 프로필 해시태그
+    public final static String PROJECT_STATE_STOP = "0";  // 프로젝트상태 중지
+    public final static String PROJECT_STATE_NORMAL = "1";  // 프로젝트상태 정상
+    public final static String PROJECT_STATE_END = "2";  // 프로젝트상태 마감
+    public final static String REPLY_DEPTH_PARENT = "0";  // 부모 댓글 depth
+    public final static String REPLY_DEPTH_CHILD = "1";  // 자식 댓글 depth
 }

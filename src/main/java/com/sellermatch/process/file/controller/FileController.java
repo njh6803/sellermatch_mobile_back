@@ -56,7 +56,6 @@ public class FileController {
         fileRepository.findById(fileIdx).ifPresentOrElse(file ->{
             try {
                 fileService.editFile(file, fileIdx, multipartFile);
-                // 프로필 or 프로젝트 테이블 수정 부분
             } catch (Exception e) {
                 e.printStackTrace();
             }

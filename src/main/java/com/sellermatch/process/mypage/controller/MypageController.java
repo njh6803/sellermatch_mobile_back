@@ -67,10 +67,10 @@ public class MypageController {
     public CommonDTO selectRecommandList(@PathVariable String memId, @PathVariable String memSort, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         Page<Project> project = null;
-        if (memSort.equalsIgnoreCase("1")){
+        if (memSort.equalsIgnoreCase(CommonConstant.PRODUCER)){
             project = projectRepositoryCustom.getRecommandListForPro(memId, pageable);
         }
-        if (memSort.equalsIgnoreCase("2")) {
+        if (memSort.equalsIgnoreCase(CommonConstant.SELLER)) {
             project = projectRepositoryCustom.getRecommandListForSell(memId, pageable);
         }
         if (project != null) {
@@ -141,21 +141,21 @@ public class MypageController {
             String projTitle = "";
             String subject = "";
             String to = "";
-            if (apply.getApplyType().equalsIgnoreCase("1")) {
+            if (apply.getApplyType().equalsIgnoreCase(CommonConstant.APPLY)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedProjectOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "지원";
                 subject = "SellerMatch 거래매칭 승인 결과 발송 메일";
                 to = apply2.getMemId();
-                if (apply2.getMemSort().equalsIgnoreCase("1")) {
+                if (apply2.getMemSort().equalsIgnoreCase(CommonConstant.PRODUCER)) {
                     memSortName = "판매자";
                 }
-                if (apply2.getMemSort().equalsIgnoreCase("2")) {
+                if (apply2.getMemSort().equalsIgnoreCase(CommonConstant.SELLER)) {
                     memSortName = "공급자";
                 }
 
             }
-            if (apply.getApplyType().equalsIgnoreCase("2")) {
+            if (apply.getApplyType().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "제안";
@@ -164,9 +164,9 @@ public class MypageController {
                 to = apply2.getMemId();
             }
 
+            String type = "aceeot";
 
-
-            mailUtil.sendMail(to, subject, "", "accept", applyTypeName, projTitle, memSortName);
+            mailUtil.sendMail(to, subject, "", type, applyTypeName, projTitle, memSortName);
        }, () -> {
             Apply emptyContent = new Apply();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);

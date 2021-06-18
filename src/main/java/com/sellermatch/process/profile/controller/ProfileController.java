@@ -60,7 +60,7 @@ public class ProfileController {
     @PutMapping("/profile")
     public CommonDTO updateProfile(Profile profile, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
-        Profile emptyContent =  new Profile();
+
         // 자기소개 : NULL 체크
         if (Util.isEmpty(profile.getProfileIntro())) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
@@ -72,7 +72,7 @@ public class ProfileController {
 //            return result;
 //        }
 
-        if (profile.getProfileSort().equalsIgnoreCase("2")) {
+        if (profile.getProfileSort().equalsIgnoreCase(CommonConstant.SELLER)) {
             // 매출규모 : NULL 체크
             if (Util.isEmpty(profile.getProfileVolume())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_123);
@@ -115,7 +115,7 @@ public class ProfileController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_130);
             return result;
         }
-        if (profile.getProfileSort().equalsIgnoreCase("2")) {
+        if (profile.getProfileSort().equalsIgnoreCase(CommonConstant.SELLER)) {
             // 해시태그 중복체크
             if (Util.isEmpty(profile.getProfileHashtag())) {
                 String[] hashtagList = profile.getProfileHashtag().split(",");

@@ -85,32 +85,27 @@ public class SignController {
 
         //회원유형: NULL 체크
         if(Util.isEmpty(member.getMemSort())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_107);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_107);
             return result;
         }
         //ID: NULL체크
         if(Util.isEmpty(member.getMemId())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_100);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_100);
             return result;
         }
         //ID: 이메일형식 체크
         if(!Util.isEmail(member.getMemId())) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_104);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_104);
             return result;
         }
         //ID: 길이 체크 45자
         if(!Util.isLengthChk(member.getMemId(),0,45)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_109);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_109);
             return result;
         }
         //ID: 중복체크
         if(!memberRepository.findTop1ByMemId(member.getMemId()).isEmpty()){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_DUPLICATE_108);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_108);
             return result;
         }
 
@@ -118,57 +113,48 @@ public class SignController {
         if(member.getMemSnsCh().equalsIgnoreCase("01")){
             //비밀번호: NULL체크
             if(Util.isEmpty(member.getMemPw())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_101);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_101);
                 return result;
             }
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
             if(!Util.isPassword(member.getMemPw())) {
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_FORMAT_111);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_111);
                 return result;
             }
             //비밀번호확인 : NULL체크
             if(Util.isEmpty(member.getMemPwChk())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_NULL_213);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_213);
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
             if(!member.getMemPwChk().equalsIgnoreCase(member.getMemPw())){
-                result.setResult(CommonConstant.ERROR);
-                result.setStatus(CommonConstant.ERROR_MISMATCH_112);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_MISMATCH_112);
                 return result;
             }
         }
         //닉네임: NULL 체크
         if(Util.isEmpty(member.getMemNick())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_113);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_113);
             return result;
         }
         //닉네임: 길이 체크 100자
         if(!Util.isLengthChk(member.getMemNick(),1,9)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_115);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_115);
             return result;
         }
         //닉네임: 중복 체크
         if(!memberRepository.findByMemNick(member.getMemNick()).isEmpty()){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_DUPLICATE_114);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_114);
             return result;
         }
         //전화번호: 전화번호 NULL 체크
         if(Util.isEmpty(member.getMemTel())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_105);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_105);
             return result;
         }
         //전화번호: 전화번호 형식 체크
         if(!Util.isTel(member.getMemTel())){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_106);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_106);
             return result;
         }
 
@@ -209,22 +195,26 @@ public class SignController {
 
         //ID: NULL체크
         if(Util.isEmpty(memId)){
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_NULL_100);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_100);
             return result;
         }
         //ID: 이메일형식 체크
         if(!Util.isEmail(memId)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_FORMAT_104);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_104);
             return result;
         }
         //ID: 길이 체크 45자
         if(!Util.isLengthChk(memId,0,45)) {
-            result.setResult(CommonConstant.ERROR);
-            result.setStatus(CommonConstant.ERROR_LENGTH_109);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_109);
             return result;
         }
+        memberRepository.findTop1ByMemId(memId).ifPresentOrElse(temp -> {
+            if (!temp.getMemSnsCh().equalsIgnoreCase("01")) {
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_ACCESS_222);
+            }
+        }, ()->{
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_221);
+        });
 
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -240,8 +230,9 @@ public class SignController {
         memberRepository.changePw(tempPw, memId);
 
         String subject = "SellerMatch 비밀번호 찾기 메일";
+        String type = "findPw";
 
-        mailUtil.sendMail(memId, subject, "findPw", tempPw);
+        mailUtil.sendMail(memId, subject, type, tempPw);
 
 
         return result;

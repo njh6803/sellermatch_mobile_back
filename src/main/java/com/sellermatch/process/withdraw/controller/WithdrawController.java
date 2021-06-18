@@ -33,7 +33,7 @@ public class WithdrawController {
     }
 
     @GetMapping("/withdraw/list")
-    public CommonDTO selectWithdrawList(Pageable pageable) throws Exception {
+    public CommonDTO selectWithdrawList(Pageable pageable) {
         CommonDTO result = new CommonDTO();
         result.setContent(withdrawRepository.findAll(pageable));
         return result;

@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Util {
-    /*
+    /**
      * 공백 또는 null 체크
+     * @param obj - 검사할 객체
+     * @return boolean - null일 경우 true, null이 아닐 경우 false
      */
     public static boolean isEmpty(Object obj) {
         if(obj == null) return true;

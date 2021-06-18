@@ -6,7 +6,6 @@ import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
-import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
@@ -25,7 +24,6 @@ public class ApplyController {
         private final ApplyRepository applyRepository;
         private final ApplyRepositoryCustom applyRepositoryCustom;
         private final MemberRepository memberRepository;
-        private final ProjectRepositoryCustom projectRepositoryCustom;
         private final MailUtil mailUtil;
 
         @GetMapping("/apply/{id}")
@@ -45,7 +43,7 @@ public class ApplyController {
                 CommonDTO result = new CommonDTO();
                 Apply apply = new Apply();
                 apply.setApplyProjId(projId);
-                apply.setApplyType("1");
+                apply.setApplyType(CommonConstant.APPLY);
                 Page<Apply> applyList = applyRepositoryCustom.getApplyList(apply, pageable);
                 result.setContent(applyList);
                 return result;
@@ -72,10 +70,10 @@ public class ApplyController {
                 // 중복검사
                 int count = applyRepository.countByApplyMemIdAndApplyProjIdAndApplyType(apply.getApplyMemId(), apply.getApplyProjId(), apply.getApplyType());
                 if (count > 0) {
-                        if (apply.getApplyType().equalsIgnoreCase("1")) {
+                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.SELLER)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_202, emptyContent);
                         }
-                        if (apply.getApplyType().equalsIgnoreCase("2")) {
+                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.PRODUCER)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_207, emptyContent);
                         }
                         return result;
@@ -83,10 +81,10 @@ public class ApplyController {
 
                 // 타입미일치
                 if (apply.getProjSort().equalsIgnoreCase(apply.getMemSort())) {
-                        if (apply.getMemSort().equalsIgnoreCase("1")) {
+                        if (apply.getMemSort().equalsIgnoreCase(CommonConstant.APPLY)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_203, emptyContent);
                         }
-                        if (apply.getMemSort().equalsIgnoreCase("2")) {
+                        if (apply.getMemSort().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
                                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_TYPE_206, emptyContent);
                         }
                         return result;
@@ -99,13 +97,21 @@ public class ApplyController {
                         apply.setApplyMemId(temp.getMemId());
                         result.setContent(applyRepository.save(apply));
 
+                        String subject = "";
+                        String type = "recommand";
+                        String applyTypeName = "";
+
                         // 지원
-                        if (apply.getApplyType().equalsIgnoreCase("1")) {
-                                mailUtil.sendMail(apply.getApplyMemId(),"셀러매치 지원알림", temp.getMemNick(), "recommand", "지원");
+                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.APPLY)) {
+                                subject = "셀러매치 지원알림";
+                                applyTypeName = "지원";
+                                mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick(), type, applyTypeName);
                         }
                         // 제안
-                        if (apply.getApplyType().equalsIgnoreCase("2")) {
-                                mailUtil.sendMail(apply.getApplyMemId(),"셀러매치 제안알림", temp.getMemNick() , "recommand", "제안");
+                        if (apply.getApplyType().equalsIgnoreCase(CommonConstant.RECOMMEND)) {
+                                subject = "셀러매치 제안알림";
+                                applyTypeName = "제안";
+                                mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick() , type, applyTypeName);
                         }
                 }, ()->{
                         ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);

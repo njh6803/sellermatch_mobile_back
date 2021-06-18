@@ -1,6 +1,6 @@
 package com.sellermatch.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -9,18 +9,13 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+@RequiredArgsConstructor
 @Component
 public class MailUtil{
-    @Autowired
-    private JavaMailSender mailSender;
 
-    @Autowired
-    private TemplateEngine templateEngine;
-
-    public MailUtil(JavaMailSender mailSender, TemplateEngine templateEngine){
-        this.mailSender = mailSender;
-        this.templateEngine = templateEngine;
-    }
+    private final JavaMailSender mailSender;
+    private final TemplateEngine templateEngine;
+    private final String from = "sellermatch3@daum.net";
 
     /**
      * 메일을 발송한다.
@@ -28,7 +23,7 @@ public class MailUtil{
      * @param to - 수신자 메일 주소
      * @param subject  - 제목
      * @param text  - 닉네임 또는 임시비밀번호
-     * @param type  - accept, recommand, welcomeMail, findPw
+     * @param type  - 메일유형 - accept, recommand, welcomeMail, findPw
      */
     @Async
     public void sendMail(String to, String subject, String type, String text) {
@@ -38,7 +33,7 @@ public class MailUtil{
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
-            messageHelper.setFrom("sellermatch3@daum.net");
+            messageHelper.setFrom(from);
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
@@ -52,7 +47,7 @@ public class MailUtil{
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
-            messageHelper.setFrom("sellermatch3@daum.net");
+            messageHelper.setFrom(from);
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };
@@ -66,7 +61,7 @@ public class MailUtil{
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
-            messageHelper.setFrom("sellermatch3@daum.net");
+            messageHelper.setFrom(from);
             messageHelper.setSubject(subject);
             messageHelper.setText(content, true);
         };

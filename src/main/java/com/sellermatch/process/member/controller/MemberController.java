@@ -47,27 +47,30 @@ public class MemberController {
     @PutMapping("/member")
     public CommonDTO updateMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
-        Member emptyContent =  new Member();
 
         //비밀번호 존재 시 체크
         if(!Util.isEmpty(member.getMemPw())){
             //비밀번호: NULL체크
             if(Util.isEmpty(member.getMemPw())){
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_101, emptyContent);
                 return result;
             }
             //비밀번호: 비밀번호 형식 체크(6자, 특문+영문+숫자)
             if(!Util.isPassword(member.getMemPw())) {
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_111, emptyContent);
                 return result;
             }
             //비밀번호확인 : NULL체크
             if(Util.isEmpty(member.getMemPwChk())){
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_213, emptyContent);
                 return result;
             }
             //비밀번호: 비밀번호확인 일치 체크
             if(!member.getMemPwChk().equals(member.getMemPw())){
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_MISMATCH_112, emptyContent);
                 return result;
             }
@@ -76,37 +79,44 @@ public class MemberController {
         if(!Util.isEmpty(member.getMemName())){
             //이름: 한글+영문만 가능
             if(!Util.isKorAndEng(member.getMemName())) {
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_118, emptyContent);
                 return result;
             }
             //이름: 길이 체크 45자
             if(!Util.isLengthChk(member.getMemId(),0,45)) {
+                Member emptyContent =  new Member();
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_117, emptyContent);
                 return result;
             }
         }
         //닉네임: NULL 체크
         if(Util.isEmpty(member.getMemNick())){
+            Member emptyContent =  new Member();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_113, emptyContent);
             return result;
         }
-        //닉네임: 길이 체크 100자
-        if(!Util.isLengthChk(member.getMemNick(),0,100)) {
+        //닉네임: 길이 체크 9자
+        if(!Util.isLengthChk(member.getMemNick(),1,9)) {
+            Member emptyContent =  new Member();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_115, emptyContent);
             return result;
         }
         //닉네임: 중복 체크
         if(Util.isEmpty(memberRepository.findByMemNick(member.getMemNick()))){
+            Member emptyContent =  new Member();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_DUPLICATE_114, emptyContent);
             return result;
         }
         //전화번호: 전화번호 NULL 체크
         if(Util.isEmpty(member.getMemTel())){
+            Member emptyContent =  new Member();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_105, emptyContent);
             return result;
         }
         //전화번호: 전화번호 형식 체크
         if(!Util.isTel(member.getMemTel())){
+            Member emptyContent =  new Member();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_106, emptyContent);
             return result;
         }
