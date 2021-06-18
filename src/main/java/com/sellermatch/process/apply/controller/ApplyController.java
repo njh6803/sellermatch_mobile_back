@@ -107,14 +107,14 @@ public class ApplyController {
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
                                 type = "apply";
                                 subject = "셀러매치 지원알림";
-                                mailUtil.sendMail(apply.getApplyMemId(),subject, type, temp.getMemNick());
+                                mailUtil.sendMail(apply.getProjMemId(),subject, type, temp.getMemNick());
                         }
                         // 제안
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                                 type = "recommand";
                                 subject = "셀러매치 제안알림";
                                 applyTypeName = "제안";
-                                mailUtil.sendMail(apply.getApplyMemId(),subject, temp.getMemNick() , type, applyTypeName);
+                                mailUtil.sendMail(apply.getProjMemId(),subject, temp.getMemNick() , type, applyTypeName);
                         }
                 }, ()->{
                         ControllerResultSet.errorCode(result, CommonConstant.ERROR_999, emptyContent);
