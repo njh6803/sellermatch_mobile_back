@@ -231,7 +231,7 @@ public class SignController {
                     idx = (int) (charSet.length * Math.random());
                     tempPw += charSet[idx];
                 }
-                memberRepository.changePw(tempPw, memId);
+                memberRepository.changePw(EncryptionUtils.encryptMD5(tempPw), memId);
                 String subject = "SellerMatch 비밀번호 찾기 메일";
                 String type = "findPw";
                 mailUtil.sendMail(memId, subject, type, tempPw);
