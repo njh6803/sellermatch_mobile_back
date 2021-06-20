@@ -61,7 +61,7 @@ public class ProfileController {
             // 유효성 체크 확인
             ProjectDto projectDto = new ProjectDto();
             projectDto.setProfile(profile);
-            if(!profileImg.isEmpty()) projectDto.setProfileImgFile(profileImg);
+            if(profileImg != null && !profileImg.isEmpty()) projectDto.setProfileImgFile(profileImg);
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {
