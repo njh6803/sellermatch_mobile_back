@@ -58,10 +58,14 @@ public class ProfileController {
     public CommonDTO updateProfile(Profile profile, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
         profileRepository.findById(profile.getProfileIdx()).ifPresentOrElse(temp -> {
-            // 유효성 체크 확인
+            // 유효성 체크 확인 추가 필요
             ProjectDto projectDto = new ProjectDto();
+            if(profileImg != null && !profileImg.isEmpty()) {
+                projectDto.setProfileImgFile(profileImg);
+            } else {
+                profile.setProfilePhoto(temp.getProfilePhoto());
+            }
             projectDto.setProfile(profile);
-            if(profileImg != null && !profileImg.isEmpty()) projectDto.setProfileImgFile(profileImg);
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {

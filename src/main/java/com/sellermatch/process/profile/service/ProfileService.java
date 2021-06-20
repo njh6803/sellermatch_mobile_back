@@ -30,19 +30,18 @@ public class ProfileService {
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class}, timeout = 1000)
     public Profile insertAndUpdateProfile(ProjectDto projectDto) throws Exception {
-        Profile profile= profileRepository.save(projectDto.getProfile());
-
-        if(!Util.isEmpty(projectDto.getProfileImgFile())) {
+        if(projectDto.getProfileImgFile() != null && !projectDto.getProfileImgFile().isEmpty()) {
             File file = new File();
-            file.setProfileId(profile.getProfileId());
+            file.setProfileId(projectDto.getProfile().getProfileId());
             file = fileService.insertFile(projectDto.getProfileImgFile(),file);
-            profile.setProfilePhoto(file.getFilePath());
+            projectDto.getProfile().setProfilePhoto(file.getFilePath());
         }
         if(!Util.isEmpty(projectDto.getProfileHashtag())) {
-            projectDto.getProfileHashtag().setId(profile.getProfileId());
+            projectDto.getProfileHashtag().setId(projectDto.getProfile().getProfileId());
             projectDto.getProfileHashtag().setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
             hashtagService.insertAndUpdateHashtag(projectDto.getProfileHashtag());
         }
+        profileRepository.save(projectDto.getProfile());
         return projectDto.getProfile();
     }
 }
