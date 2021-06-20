@@ -4,7 +4,6 @@ import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.hashtag.domain.Hashtaglist;
 import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
-import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +30,6 @@ public class HashtagService {
 
     public void insertAndUpdateHashtag(Hashtag hashtag) throws Exception {
         AtomicInteger ai = new AtomicInteger();
-
-        Hashtag eixstHashtag = hashtagRepository.findById(hashtag.getId());
-
-        // 기존에 해시태그를 등록했는지
-        if (!Util.isEmpty(eixstHashtag)) {
-            hashtag.setNo(eixstHashtag.getNo());
-        }
-
         hashtag.getHashNmList().forEach(s -> {
             int index = ai.getAndIncrement();
             hashtaglistRepository.findByHashNm(s).ifPresentOrElse(temp -> {
@@ -52,7 +43,12 @@ public class HashtagService {
                 tagSwitch(hashtag, index, hashtaglist);
             });
         });
-        hashtagRepository.save(hashtag);
+        hashtagRepository.findById(hashtag.getId()).ifPresentOrElse(temp -> {
+            hashtag.setNo(temp.getNo());
+            hashtagRepository.save(hashtag);
+        }, () -> {
+            hashtagRepository.save(hashtag);
+        });
     }
 
     private void tagSwitch(Hashtag hashtag, int index, Hashtaglist temp) {

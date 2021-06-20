@@ -1,18 +1,20 @@
 package com.sellermatch.process.profile.service;
 
+import com.sellermatch.config.constant.HashtagType;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.service.FileService;
+import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.hashtag.service.HashtagService;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.project.domain.ProjectDto;
-import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,10 +38,14 @@ public class ProfileService {
             file = fileService.insertFile(projectDto.getProfileImgFile(),file);
             projectDto.getProfile().setProfilePhoto(file.getFilePath());
         }
-        if(!Util.isEmpty(projectDto.getProfileHashtag())) {
-            projectDto.getProfileHashtag().setId(projectDto.getProfile().getProfileId());
-            projectDto.getProfileHashtag().setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
-            hashtagService.insertAndUpdateHashtag(projectDto.getProfileHashtag());
+        if(projectDto.getProfile().getProfileHashtag() != null) {
+            Hashtag hashtag = new Hashtag();
+            hashtag.setFrstRegistDt(new Date());
+            hashtag.setFrstRegistMngr(projectDto.getProfile().getProfileMemId());
+            hashtag.setHashType(HashtagType.PROFILE.label);
+            hashtag.setId(projectDto.getProfile().getProfileId());
+            hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
+            hashtagService.insertAndUpdateHashtag(hashtag);
         }
         profileRepository.save(projectDto.getProfile());
         return projectDto.getProfile();

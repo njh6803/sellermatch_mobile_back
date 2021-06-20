@@ -213,7 +213,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag1)
+                                        query.select(qHashtag.hashTag1).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag1"
@@ -222,7 +222,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag2)
+                                        query.select(qHashtag.hashTag2).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag2"
@@ -231,7 +231,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag3)
+                                        query.select(qHashtag.hashTag3).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag3"
@@ -240,7 +240,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag4)
+                                        query.select(qHashtag.hashTag4).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag4"
@@ -249,7 +249,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag5)
+                                        query.select(qHashtag.hashTag5).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag5"
@@ -316,7 +316,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag1)
+                                        query.select(qHashtag.hashTag1).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag1"
@@ -325,7 +325,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag2)
+                                        query.select(qHashtag.hashTag2).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag2"
@@ -334,7 +334,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag3)
+                                        query.select(qHashtag.hashTag3).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag3"
@@ -343,7 +343,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag4)
+                                        query.select(qHashtag.hashTag4).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag4"
@@ -352,7 +352,7 @@ public class ProfileRepositoryCustom {
                         JPAExpressions.select(qHashtaglist.hashNm).distinct()
                                 .from(qHashtaglist)
                                 .where(qHashtaglist.hashId.eq(
-                                        query.select(qHashtag.hashTag5)
+                                        query.select(qHashtag.hashTag5).distinct()
                                                 .from(qHashtag)
                                                 .where(qHashtag.id.eq(qProfile.profileId))
                                 )), "hashTag5"
