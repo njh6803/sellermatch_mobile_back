@@ -8,7 +8,6 @@ import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.profile.service.ProfileService;
 import com.sellermatch.process.project.domain.ProjectDto;
 import com.sellermatch.util.ControllerResultSet;
-import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +61,7 @@ public class ProfileController {
             // 유효성 체크 확인
             ProjectDto projectDto = new ProjectDto();
             projectDto.setProfile(profile);
-            if(!Util.isEmpty(profileImg)) projectDto.setProfileImgFile(profileImg);
+            if(!profileImg.isEmpty()) projectDto.setProfileImgFile(profileImg);
             try {
                 result.setContent(profileService.insertAndUpdateProfile(projectDto));
             } catch (Exception e) {
