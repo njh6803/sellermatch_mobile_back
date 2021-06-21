@@ -29,6 +29,9 @@ public class BoardController {
     public CommonDTO selectBoard(@PathVariable Integer id){
         CommonDTO result = new CommonDTO();
         boardRepository.findById(id).ifPresentOrElse(temp -> {
+            if (Util.isEmpty(temp.getMemNick())) {
+                temp.setMemNick("관리자");
+            }
             result.setContent(temp);
         }, () -> {
             Board emptyContent =  new Board();
