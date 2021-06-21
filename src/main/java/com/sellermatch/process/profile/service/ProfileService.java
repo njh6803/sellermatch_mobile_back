@@ -4,12 +4,12 @@ import com.sellermatch.config.constant.HashtagType;
 import com.sellermatch.process.file.domain.File;
 import com.sellermatch.process.file.service.FileService;
 import com.sellermatch.process.hashtag.domain.Hashtag;
+import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import com.sellermatch.process.hashtag.service.HashtagService;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.project.domain.ProjectDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,14 +21,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ProfileService {
 
-    @Autowired
-    FileService fileService;
-
-    @Autowired
-    HashtagService hashtagService;
-
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final FileService fileService;
+    private final HashtagService hashtagService;
+    private final ProfileRepository profileRepository;
+    private final HashtagRepository hashtagRepository;
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class}, timeout = 1000)
     public Profile insertAndUpdateProfile(ProjectDto projectDto) throws Exception {
@@ -40,11 +36,22 @@ public class ProfileService {
         }
         if(projectDto.getProfile().getProfileHashtag() != null) {
             Hashtag hashtag = new Hashtag();
-            hashtag.setFrstRegistDt(new Date());
-            hashtag.setFrstRegistMngr(projectDto.getProfile().getProfileMemId());
-            hashtag.setHashType(HashtagType.PROFILE.label);
-            hashtag.setId(projectDto.getProfile().getProfileId());
-            hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
+            hashtagRepository.findById(projectDto.getProfile().getProfileId()).ifPresentOrElse(temp -> {
+                hashtag.setFrstRegistDt(temp.getFrstRegistDt());
+                hashtag.setFrstRegistMngr(temp.getFrstRegistMngr());
+                hashtag.setLastRegistDt(new Date());
+                hashtag.setLastRegistMngr(projectDto.getProfile().getProfileId());
+                hashtag.setHashType(temp.getHashType());
+                hashtag.setId(temp.getId());
+                hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
+            }, ()->{
+                hashtag.setFrstRegistDt(new Date());
+                hashtag.setFrstRegistMngr(projectDto.getProfile().getProfileMemId());
+                hashtag.setHashType(HashtagType.PROFILE.label);
+                hashtag.setId(projectDto.getProfile().getProfileId());
+                hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
+            });
+
             hashtagService.insertAndUpdateHashtag(hashtag);
         }
         profileRepository.save(projectDto.getProfile());

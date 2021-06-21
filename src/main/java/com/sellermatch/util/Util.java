@@ -214,9 +214,7 @@ public class Util {
     public static boolean hashtagDuplicateCheck(CommonDTO result,String[] hashtagList) {
         if (hashtagList.length > 1) {
             for (int i = 0; i < hashtagList.length; i++) {
-                hashtagList[i].trim();
-                hashtagList[i].replace(" ","");
-                if (!Util.isLengthChk(hashtagList[i].trim(), 1, 20)) {
+                if (!Util.isLengthChk(hashtagList[i], 1, 20)) {
                     ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_220);
                     return true;
                 }
