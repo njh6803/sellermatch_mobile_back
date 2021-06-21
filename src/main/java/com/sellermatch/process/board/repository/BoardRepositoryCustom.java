@@ -57,6 +57,7 @@ public class BoardRepositoryCustom {
                 qBoard.boardRegDate,
                 qBoard.boardEditDate,
                 qBoard.boardNoticeTop,
+                qBoard.boardWriter,
                 qBoard.memNick,
                 qBoard.memSort,
                 ExpressionUtils.as(
