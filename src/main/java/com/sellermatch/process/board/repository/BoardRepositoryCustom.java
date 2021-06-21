@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sellermatch.process.board.domain.Board;
 import com.sellermatch.process.board.domain.QBoard;
+import com.sellermatch.process.member.domain.QMember;
 import com.sellermatch.process.reply.domain.QReply;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class BoardRepositoryCustom {
     private final JPAQueryFactory query;
     private final QBoard qBoard = QBoard.board;
     private final QReply qReply = QReply.reply;
+    private final QMember qMember = QMember.member;
 
     public Page<Board> getBoardList(List<String> boardType, String boardQaType, Pageable pageable) {
 
@@ -48,7 +50,6 @@ public class BoardRepositoryCustom {
                 qBoard.boardId,
                 qBoard.boardTitle,
                 qBoard.boardContents,
-                qBoard.boardWriter,
                 qBoard.boardType,
                 qBoard.boardQaType,
                 qBoard.boardEmail,
@@ -58,6 +59,12 @@ public class BoardRepositoryCustom {
                 qBoard.boardNoticeTop,
                 qBoard.memNick,
                 qBoard.memSort,
+                ExpressionUtils.as(
+                        JPAExpressions.select(qBoard.memNick)
+                                .from(qMember)
+                                .where(qMember.memId.eq(qBoard.boardWriter))
+                        ,"boardWriter"
+                ),
                 ExpressionUtils.as(
                         JPAExpressions.select(qReply.replyId.count())
                                 .from(qReply)

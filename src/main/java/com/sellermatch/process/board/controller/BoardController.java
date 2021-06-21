@@ -7,7 +7,9 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +39,13 @@ public class BoardController {
     @GetMapping("/board/list")
     public CommonDTO selectBoardList(Pageable pageable, @RequestParam List<String> boardType, @RequestParam(required = false) String boardQaType){
         CommonDTO result = new CommonDTO();
-        result.setContent(boardRepositoryCustom.getBoardList(boardType, boardQaType, pageable));
+        Page<Board> board = boardRepositoryCustom.getBoardList(boardType, boardQaType, pageable);
+        for (int i = 0; i < board.getTotalElements(); i++) {
+            if (Util.isEmpty(board.getContent().get(i).getBoardWriter())) {
+                board.getContent().get(i).setBoardWriter("관리자");
+            }
+        }
+        result.setContent(board);
         return result;
     }
 
