@@ -139,9 +139,7 @@ public class ProfileController {
             if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
                 temp.setProfileVolume(profile.getProfileVolume());
                 // 프로필 해시태그
-                if (!Util.isEmpty(profile.getProfileHashtag())) {
-                    projectDto.getProfile().setProfileHashtag(profile.getProfileHashtag());
-                }
+                projectDto.getProfile().setProfileHashtag(profile.getProfileHashtag());
             }
             if(profileImg != null && !profileImg.isEmpty()) {
                 projectDto.setProfileImgFile(profileImg);

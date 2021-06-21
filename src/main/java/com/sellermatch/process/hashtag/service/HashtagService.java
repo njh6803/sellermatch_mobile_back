@@ -4,6 +4,7 @@ import com.sellermatch.process.hashtag.domain.Hashtag;
 import com.sellermatch.process.hashtag.domain.Hashtaglist;
 import com.sellermatch.process.hashtag.repository.HashtagRepository;
 import com.sellermatch.process.hashtag.repository.HashtaglistRepository;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,19 +31,21 @@ public class HashtagService {
 
     public void insertAndUpdateHashtag(Hashtag hashtag) throws Exception {
         AtomicInteger ai = new AtomicInteger();
-        hashtag.getHashNmList().forEach(s -> {
-            int index = ai.getAndIncrement();
-            hashtaglistRepository.findByHashNm(s).ifPresentOrElse(temp -> {
-                tagSwitch(hashtag, index, temp);
-            }, ()->{
-                Hashtaglist hashtaglist = new Hashtaglist();
-                hashtaglist.setHashNm(s);
-                hashtaglist.setFrstRegistDt(new Date());
-                hashtaglist.setFrstRegistMngr(hashtag.getFrstRegistMngr());
-                hashtaglistRepository.save(hashtaglist);
-                tagSwitch(hashtag, index, hashtaglist);
+        if (!Util.isEmpty(hashtag.getHashNmList())){
+            hashtag.getHashNmList().forEach(s -> {
+                int index = ai.getAndIncrement();
+                hashtaglistRepository.findByHashNm(s).ifPresentOrElse(temp -> {
+                    tagSwitch(hashtag, index, temp);
+                }, ()->{
+                    Hashtaglist hashtaglist = new Hashtaglist();
+                    hashtaglist.setHashNm(s);
+                    hashtaglist.setFrstRegistDt(new Date());
+                    hashtaglist.setFrstRegistMngr(hashtag.getFrstRegistMngr());
+                    hashtaglistRepository.save(hashtaglist);
+                    tagSwitch(hashtag, index, hashtaglist);
+                });
             });
-        });
+        }
         hashtagRepository.findById(hashtag.getId()).ifPresentOrElse(temp -> {
             hashtag.setNo(temp.getNo());
             hashtagRepository.save(hashtag);

@@ -9,6 +9,7 @@ import com.sellermatch.process.hashtag.service.HashtagService;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepository;
 import com.sellermatch.process.project.domain.ProjectDto;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class ProfileService {
             file = fileService.insertFile(projectDto.getProfileImgFile(),file);
             projectDto.getProfile().setProfilePhoto(file.getFilePath());
         }
-        if(projectDto.getProfile().getProfileHashtag() != null) {
+        if(!Util.isEmpty(projectDto.getProfile().getProfileHashtag())) {
             Hashtag hashtag = new Hashtag();
             hashtagRepository.findById(projectDto.getProfile().getProfileId()).ifPresentOrElse(temp -> {
                 hashtag.setFrstRegistDt(temp.getFrstRegistDt());
@@ -52,6 +53,22 @@ public class ProfileService {
                 hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
             });
 
+            hashtagService.insertAndUpdateHashtag(hashtag);
+        } else {
+            Hashtag hashtag = new Hashtag();
+            hashtagRepository.findById(projectDto.getProfile().getProfileId()).ifPresent(temp -> {
+                hashtag.setFrstRegistDt(temp.getFrstRegistDt());
+                hashtag.setFrstRegistMngr(temp.getFrstRegistMngr());
+                hashtag.setLastRegistDt(new Date());
+                hashtag.setLastRegistMngr(projectDto.getProfile().getProfileId());
+                hashtag.setHashType(temp.getHashType());
+                hashtag.setId(temp.getId());
+                hashtag.setHashTag1(null);
+                hashtag.setHashTag2(null);
+                hashtag.setHashTag3(null);
+                hashtag.setHashTag4(null);
+                hashtag.setHashTag5(null);
+            });
             hashtagService.insertAndUpdateHashtag(hashtag);
         }
         profileRepository.save(projectDto.getProfile());
