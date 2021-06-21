@@ -186,6 +186,10 @@ public class ProjectController {
         if (!Util.isEmpty(project.getProjKeyword())) {
             if (project.getProjKeyword().trim().length() > 0) {
                 String[] hashtagList = project.getProjKeyword().split(",");
+                for (int i = 0; i < hashtagList.length; i++) {
+                    hashtagList[i] = hashtagList[i].trim();
+                    hashtagList[i] = hashtagList[i].replace(" ","");
+                }
                 if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
             }
         }
@@ -245,6 +249,10 @@ public class ProjectController {
             if (!Util.isEmpty(profile.getProfileHashtag())) {
                 if (profile.getProfileHashtag().trim().length() > 0) {
                     String[] hashtagList = profile.getProfileHashtag().split(",");
+                    for (int i = 0; i < hashtagList.length; i++) {
+                        hashtagList[i] = hashtagList[i].trim();
+                        hashtagList[i] = hashtagList[i].replace(" ","");
+                    }
                     if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
                 }
             }
@@ -374,6 +382,17 @@ public class ProjectController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
             return result;
         }*/
+        // 프로젝트 해시태그 중복체크
+        if (!Util.isEmpty(project.getProjKeyword())) {
+            if (project.getProjKeyword().trim().length() > 0) {
+                String[] hashtagList = project.getProjKeyword().split(",");
+                for (int i = 0; i < hashtagList.length; i++) {
+                    hashtagList[i] = hashtagList[i].trim();
+                    hashtagList[i] = hashtagList[i].replace(" ","");
+                }
+                if (Util.hashtagDuplicateCheck(result, hashtagList)) return result;
+            }
+        }
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
             //대표이미지: NULL 체크
@@ -393,18 +412,8 @@ public class ProjectController {
                 temp.setProjEndDate(project.getProjEndDate());
                 temp.setProjDetail(project.getProjDetail());
                 temp.setProjRequire(project.getProjRequire());
+                temp.setProjKeyword(project.getProjKeyword());
                 projectDto.setProject(temp);
-
-                // 프로젝트 해시태그
-                if (!Util.isEmpty(project.getProjKeyword())) {
-                    Hashtag tagProject = new Hashtag();
-                    tagProject.setFrstRegistDt(new Date());
-                    tagProject.setFrstRegistMngr(project.getProjMemId());
-                    tagProject.setHashType(HashtagType.PROJECT.label);
-                    tagProject.setId(project.getProjId());
-                    tagProject.setHashNmList(Arrays.asList(project.getProjKeyword().split(",")));
-                    projectDto.setProjHashtag(tagProject);
-                }
 
                 projectDto.setProjImgFile(projectImg);
                 projectDto.setProjAttFile(projectAttFile);
