@@ -128,6 +128,10 @@ public class Profile {
     @Transient
     private String hashtaglist;
 
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private String tagRemoveProfileIntro;
+
     /** 필터를 위한 배열 */
     @Transient
     private String[] profileNationArr;
@@ -183,5 +187,13 @@ public class Profile {
             hashtaglist += "," + this.hashTag5;
         }
         return hashtaglist;
+    }
+
+    public String getTagRemoveProfileIntro() {
+        if (!Util.isEmpty(this.profileIntro)) {
+            tagRemoveProfileIntro = this.profileIntro.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+            return tagRemoveProfileIntro.replace(System.getProperty("line.separator").toString(), "");
+        }
+        return "";
     }
 }
