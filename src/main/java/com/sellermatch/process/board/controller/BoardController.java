@@ -41,8 +41,8 @@ public class BoardController {
         CommonDTO result = new CommonDTO();
         Page<Board> board = boardRepositoryCustom.getBoardList(boardType, boardQaType, pageable);
         for (int i = 0; i < board.getTotalElements(); i++) {
-            if (Util.isEmpty(board.getContent().get(i).getBoardWriter())) {
-                board.getContent().get(i).setBoardWriter("관리자");
+            if (Util.isEmpty(board.getContent().get(i).getMemNick())) {
+                board.getContent().get(i).setMemNick("관리자");
             }
         }
         result.setContent(board);

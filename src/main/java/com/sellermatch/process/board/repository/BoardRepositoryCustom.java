@@ -60,12 +60,6 @@ public class BoardRepositoryCustom {
                 qBoard.memNick,
                 qBoard.memSort,
                 ExpressionUtils.as(
-                        JPAExpressions.select(qBoard.memNick)
-                                .from(qMember)
-                                .where(qMember.memId.eq(qBoard.boardWriter))
-                        ,"boardWriter"
-                ),
-                ExpressionUtils.as(
                         JPAExpressions.select(qReply.replyId.count())
                                 .from(qReply)
                                 .where(qReply.replyBoardId.eq(qBoard.boardId))
