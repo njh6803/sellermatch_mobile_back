@@ -98,9 +98,8 @@ public class ProjectController {
         CommonDTO result = new CommonDTO();
 
         //대표이미지: NULL 체크
-        if(Util.isEmpty(projectImg)) {
+        if(Util.isEmpty(projectImg) || projectImg.isEmpty() || projectImg.getSize() == 0) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
-            return result;
         }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
@@ -302,6 +301,10 @@ public class ProjectController {
     @PutMapping("/project/modify")
     public CommonDTO updateProject(Project project, MultipartFile projectImg, MultipartFile projectAttFile) {
         CommonDTO result = new CommonDTO();
+        // 대표이미지 NULL 체크
+        if(Util.isEmpty(projectImg) || projectImg.isEmpty() || projectImg.getSize() == 0) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
+        }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_132);
@@ -396,7 +399,7 @@ public class ProjectController {
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
             //대표이미지: NULL 체크
-            if(Util.isEmpty(projectImg) && Util.isEmpty(temp.getProjThumbnailImg())) {
+            if(projectImg.isEmpty() && Util.isEmpty(temp.getProjThumbnailImg())) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
             } else {
                 ProjectDto projectDto = new ProjectDto();
