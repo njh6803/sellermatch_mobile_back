@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api-v1")
@@ -60,7 +62,7 @@ public class ProfileController {
     public CommonDTO updateProfile(Profile profile, MultipartFile profileImg) {
         CommonDTO result = new CommonDTO();
         // 자기소개 : NULL 체크
-        if (Util.isEmpty(profile.getProfileIntro())) {
+        if (Util.isEmpty(profile.getTagRemoveProfileIntro())) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
             return result;
         }
@@ -133,6 +135,7 @@ public class ProfileController {
             temp.setProfileNation(profile.getProfileNation());
             temp.setProfileIndus(profile.getProfileIndus());
             temp.setProfileBizSort(profile.getProfileBizSort());
+            temp.setProfileEditDate(new Date());
             if (!Util.isEmpty(profile.getProfileBizNum())) {
                 temp.setProfileBizNum(profile.getProfileBizNum());
             }

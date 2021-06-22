@@ -172,7 +172,7 @@ public class ProjectController {
             return result;
         }
         //상세설명: NULL체크
-        if(Util.isEmpty(project.getProjDetail())){
+        if(Util.isEmpty(project.getTagRemoveProjDetail())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
             return result;
         }
@@ -195,7 +195,7 @@ public class ProjectController {
         // 프로필 유효성검사-----------------------------------------------------------------------------------
         if (isExistProfile) {
             // 자기소개 : NULL 체크
-            if (Util.isEmpty(profile.getProfileIntro())) {
+            if (Util.isEmpty(profile.getTagRemoveProfileIntro())) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_121);
                 return result;
             }
@@ -230,12 +230,12 @@ public class ProjectController {
                 return result;
             }
             // 사업자번호 : NULL 체크
-            if (Util.isEmpty(profile.getProfileBizNum())){
+            /*if (Util.isEmpty(profile.getProfileBizNum())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_128);
                 return result;
-            }
+            }*/
             // 사업자번호 : 사업자번호형식 체크
-            if (!Util.isValid(profile.getProfileBizNum())){
+            if (!Util.isEmpty(profile.getProfileBizNum()) && !Util.isValid(profile.getProfileBizNum())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_129);
                 return result;
             }
@@ -290,6 +290,7 @@ public class ProjectController {
         if(isExistProfile) {
             projectDto.setProfile(profile);
             projectDto.setProfileImgFile(profileImg);
+            projectDto.getProfile().setProfileEditDate(new Date());
         }
         projectDto.setProjImgFile(projectImg);
         projectDto.setProjAttFile(projectAttFile);
@@ -376,7 +377,7 @@ public class ProjectController {
             return result;
         }
         //상세설명: NULL체크
-        if(Util.isEmpty(project.getProjDetail())){
+        if(Util.isEmpty(project.getTagRemoveProjDetail())){
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_143);
             return result;
         }
