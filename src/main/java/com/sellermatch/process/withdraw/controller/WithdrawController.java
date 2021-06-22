@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api-v1")
 public class WithdrawController {
 
     private final WithdrawRepository withdrawRepository;

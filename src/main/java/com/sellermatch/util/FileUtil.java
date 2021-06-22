@@ -229,7 +229,7 @@ public class FileUtil {
         } catch (AmazonServiceException e) {
             e.printStackTrace();
         } finally {
-            if (!Util.isEmpty(outputfile)) {
+            if (outputfile != null) {
                 if (outputfile.exists()) {
                     outputfile.delete();
                 }

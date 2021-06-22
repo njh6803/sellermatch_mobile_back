@@ -44,6 +44,7 @@ public class ProfileService {
                 hashtag.setLastRegistMngr(projectDto.getProfile().getProfileId());
                 hashtag.setHashType(temp.getHashType());
                 hashtag.setId(temp.getId());
+                hashtag.setNo(temp.getNo());
                 hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
             }, ()->{
                 hashtag.setFrstRegistDt(new Date());
@@ -52,7 +53,6 @@ public class ProfileService {
                 hashtag.setId(projectDto.getProfile().getProfileId());
                 hashtag.setHashNmList(Arrays.asList(projectDto.getProfile().getProfileHashtag().split(",")));
             });
-
             hashtagService.insertAndUpdateHashtag(hashtag);
         } else {
             Hashtag hashtag = new Hashtag();
@@ -62,14 +62,15 @@ public class ProfileService {
                 hashtag.setLastRegistDt(new Date());
                 hashtag.setLastRegistMngr(projectDto.getProfile().getProfileId());
                 hashtag.setHashType(temp.getHashType());
-                hashtag.setId(temp.getId());
                 hashtag.setHashTag1(null);
                 hashtag.setHashTag2(null);
                 hashtag.setHashTag3(null);
                 hashtag.setHashTag4(null);
                 hashtag.setHashTag5(null);
+                hashtag.setId(temp.getId());
+                hashtag.setNo(temp.getNo());
             });
-            hashtagService.insertAndUpdateHashtag(hashtag);
+            if(hashtag.getNo() != null) hashtagService.insertAndUpdateHashtag(hashtag);
         }
         profileRepository.save(projectDto.getProfile());
         return projectDto.getProfile();
