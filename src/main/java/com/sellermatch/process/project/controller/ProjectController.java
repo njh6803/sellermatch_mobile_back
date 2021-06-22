@@ -399,7 +399,7 @@ public class ProjectController {
 
         projectRepository.findById(project.getProjIdx()).ifPresentOrElse(temp -> {
             //대표이미지: NULL 체크
-            if(projectImg.isEmpty() && Util.isEmpty(temp.getProjThumbnailImg())) {
+            if(Util.isEmpty(projectImg) || projectImg.isEmpty() || projectImg.getSize() == 0) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
             } else {
                 ProjectDto projectDto = new ProjectDto();
@@ -419,7 +419,7 @@ public class ProjectController {
                 projectDto.setProject(temp);
 
                 projectDto.setProjImgFile(projectImg);
-                projectDto.setProjAttFile(projectAttFile);
+
                 try {
                     result.setContent(projectService.updateAndUpdateProject(projectDto));
                 } catch (Exception e) {

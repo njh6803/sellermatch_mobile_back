@@ -6,6 +6,7 @@ import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
 import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
 import com.sellermatch.util.ControllerResultSet;
+import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class ReplyController {
 
     private final ReplyRepository replyRepository;
     private final ReplyRepositoryCustom replyRepositoryCustom;
+    private final MailUtil mailUtil;
 
     @GetMapping("/reply/{id}")
     public CommonDTO selectReply(@PathVariable Integer id) {
@@ -82,12 +84,19 @@ public class ReplyController {
             reply.setReplyParentMemId(reply.getReplyWriter());
         }
 
+        String to = reply.getReplyParentMemId();
+        String mailType = "replyMail";
+        String subject = "";
         if (!Util.isEmpty(reply.getReplyParent()) && reply.getReplyParent() != 0) {
             reply.setReplyParent(reply.getReplyParent());
             reply.setReplyDepth("1");
+            subject = "셀러매치 답글알림";
+            //mailUtil.sendMail(to, subject, mailType, reply.getReplyContents());
         } else {
             reply.setReplyParent(replyRepository.getSeq()+1);
             reply.setReplyDepth("0");
+            subject = "셀러매치 댓글알림";
+            //mailUtil.sendMail(to, subject, mailType, reply.getReplyContents());
         }
         reply.setReplyRegDate(new Date());
 
