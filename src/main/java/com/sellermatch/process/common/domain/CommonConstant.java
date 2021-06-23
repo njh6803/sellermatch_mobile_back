@@ -87,6 +87,7 @@ public class CommonConstant {
     public final static int ERROR_MISMATCH_214 = -214;  // SNS 계정정보 불일치
     public final static int ERROR_MISMATCH_112 = -112;  // 비밀번호 확인 미일치
     public final static int ERROR_MISMATCH_148 = -148;  // 탈퇴 인증 코드 미일치
+    public final static int ERROR_MISMATCH_224 = -224;  // 이미지파일 미일치
 
     /* 접근 제한 */
     public final static int ERROR_ACCESS_200 = -200;  // 미로그인 접근불가 페이지 접근
