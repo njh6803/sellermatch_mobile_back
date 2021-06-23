@@ -167,6 +167,8 @@ public class Project {
     private String hashTag4;
     @Transient
     private String hashTag5;
+    @Transient
+    private Long replyCount;
 
     @Getter(AccessLevel.NONE)
     @Transient

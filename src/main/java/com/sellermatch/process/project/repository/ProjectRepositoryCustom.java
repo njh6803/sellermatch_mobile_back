@@ -22,6 +22,7 @@ import com.sellermatch.process.member.domain.QMember;
 import com.sellermatch.process.profile.domain.QProfile;
 import com.sellermatch.process.project.domain.Project;
 import com.sellermatch.process.project.domain.QProject;
+import com.sellermatch.process.reply.domain.QReply;
 import com.sellermatch.process.scrap.domain.QScrap;
 import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class ProjectRepositoryCustom {
     private final QApply qApply = QApply.apply;
     private final QIndus qIndus = QIndus.indus;
     private final QScrap qScrap = QScrap.scrap;
+    private final QReply qReply = QReply.reply;
 
     public Page<Project> getProjectEndList(String memId, Pageable pageable){
         JPAQuery jpaQuery = selectProjectEndList(qMember, qProject, qApply, memId, pageable);
@@ -358,6 +360,12 @@ public class ProjectRepositoryCustom {
                 qProject.projProfit,
                 qProject.projChannel,
                 ExpressionUtils.as(
+                        JPAExpressions.select(qReply.replyId.count())
+                                .from(qReply)
+                                .where(qReply.replyProjId.eq(qProject.projId))
+                        ,"replyCount"
+                ),
+                ExpressionUtils.as(
                         JPAExpressions.select(qApply.applyIdx.count())
                                 .from(qApply)
                                 .where(qApply.applyProjId.eq(qProject.projId).and(qApply.applyType.eq(ApplyType.APPLY.label)))
@@ -420,6 +428,7 @@ public class ProjectRepositoryCustom {
                 qMember.memRname
                 ))
                 .from(qProject)
+                .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
                 .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
 //                .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
                 .where(builder)
