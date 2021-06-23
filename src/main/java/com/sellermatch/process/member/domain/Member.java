@@ -118,6 +118,21 @@ public class Member implements UserDetails {
     @Column(name = "withdraw_auth_code")
     private String widthdrawAuthCode;
 
+    @Column(name = "tos_consent", columnDefinition = "char")
+    private String tosConsent;
+
+    @Column(name = "privacy_consent", columnDefinition = "char")
+    private String privacyConsent;
+
+    @Column(name = "age_consent", columnDefinition = "char")
+    private String ageConsent;
+
+    @Column(name = "marketing_consent", columnDefinition = "char")
+    private String marketingConsent;
+
+    @Column(name = "account_active_consent", columnDefinition = "char")
+    private String accountActiveConsent;
+
     @Transient
     private String memPwChk;
 

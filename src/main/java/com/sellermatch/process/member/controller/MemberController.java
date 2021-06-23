@@ -44,6 +44,14 @@ public class MemberController {
         return result;
     }
 
+    @PutMapping("/member/consent")
+    public void selectMemberList(@RequestBody Member member) {
+        memberRepository.findById(member.getMemIdx()).ifPresent(temp -> {
+            temp.setMarketingConsent(member.getMarketingConsent());
+            memberRepository.save(temp);
+        });
+    }
+
     @PutMapping("/member")
     public CommonDTO updateMember(@RequestBody Member member) throws Exception {
         CommonDTO result = new CommonDTO();
@@ -121,12 +129,40 @@ public class MemberController {
             return result;
         }
 
+        //이용약관 동의 NULL 체크
+        if(!Util.isTel(member.getTosConsent())){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_225);
+            return result;
+        }
+        //개인정보처리방침 동의 NULL 체크
+        if(!Util.isTel(member.getPrivacyConsent())){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_226);
+            return result;
+        }
+        //14세 이상 동의 NULL 체크
+        if(!Util.isTel(member.getAgeConsent())){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_227);
+            return result;
+        }
+        //마케팅 수신동의 NULL 체크
+        if(!Util.isTel(member.getMarketingConsent())){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_228);
+            return result;
+        }
+        //계정활성상태유지 동의 NULL 체크
+        if(!Util.isTel(member.getAccountActiveConsent())){
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_229);
+            return result;
+        }
+
         memberRepository.findById(member.getMemIdx()).ifPresent(temp -> {
             temp.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
             temp.setMemName(member.getMemName());
             temp.setMemCountry(member.getMemCountry());
             temp.setMemTel(member.getMemTel());
             temp.setMemNation(member.getMemNation());
+            temp.setMarketingConsent(member.getMarketingConsent());
+            temp.setAccountActiveConsent(member.getAccountActiveConsent());
             result.setContent(memberRepository.save(temp));
         });
         return result;
