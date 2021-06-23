@@ -96,14 +96,15 @@ public class ProjectController {
     @PostMapping("/project/registration")
     public CommonDTO inseretProject(Boolean isExistProfile, Project project, Profile profile, MultipartFile profileImg, MultipartFile projectImg, MultipartFile projectAttFile) throws Exception {
         CommonDTO result = new CommonDTO();
-        //대표이미지: 이미지파일 체크
-        if(projectImg.getContentType().indexOf("image") == -1) {
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_MISMATCH_224);
-        }
-
         //대표이미지: NULL 체크
         if(Util.isEmpty(projectImg) || projectImg.isEmpty() || projectImg.getSize() == 0) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_152);
+            return result;
+        } else {
+            if(projectImg.getContentType().indexOf("image") == -1) { //대표이미지: 이미지파일 체크
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_MISMATCH_224);
+                return result;
+            }
         }
         //제목: NULL체크
         if(Util.isEmpty(project.getProjTitle())){
