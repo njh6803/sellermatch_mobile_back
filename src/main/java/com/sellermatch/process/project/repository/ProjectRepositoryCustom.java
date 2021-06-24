@@ -230,6 +230,12 @@ public class ProjectRepositoryCustom {
                 qProject.projChannel,
                 qProject.projFile,
                 ExpressionUtils.as(
+                        JPAExpressions.select(qReply.replyId.count())
+                                .from(qReply)
+                                .where(qReply.replyProjId.eq(qProject.projId))
+                        ,"replyCount"
+                ),
+                ExpressionUtils.as(
                         JPAExpressions.select(qFile.orginName).distinct()
                                 .from(qFile)
                                 .where(qFile.filePath.eq(qProject.projFile))
@@ -428,7 +434,6 @@ public class ProjectRepositoryCustom {
                 qMember.memRname
                 ))
                 .from(qProject)
-                .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
                 .innerJoin(qMember).on(qProject.projMemId.eq(qMember.memId))
 //                .innerJoin(qProfile).on(qProject.projMemId.eq(qProfile.profileMemId))
                 .where(builder)
