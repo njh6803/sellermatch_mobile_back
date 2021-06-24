@@ -1,5 +1,7 @@
 package com.sellermatch.process.board.domain;
 
+import com.sellermatch.util.Util;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
@@ -62,4 +64,16 @@ public class Board {
 
     @Transient
     private Long replyCount;
+
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private String tagRemoveBoardContents;
+
+    public String getTagRemoveBoardContents() {
+        if (!Util.isEmpty(this.boardContents)) {
+            tagRemoveBoardContents = this.boardContents.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+            return tagRemoveBoardContents.replace(System.getProperty("line.separator").toString(), "");
+        }
+        return "";
+    }
 }

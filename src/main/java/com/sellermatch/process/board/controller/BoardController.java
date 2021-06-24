@@ -55,6 +55,8 @@ public class BoardController {
     @PostMapping("/board")
     public CommonDTO insertBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
+        board.setBoardId(Util.getUniqueId("B-", Integer.parseInt(board.getBoardType())));
+        board.setBoardRegDate(new Date());
         result.setContent(boardRepository.save(board));
         return result;
     }
