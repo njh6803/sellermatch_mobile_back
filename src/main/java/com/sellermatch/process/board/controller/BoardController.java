@@ -31,6 +31,7 @@ public class BoardController {
         boardRepository.findById(id).ifPresentOrElse(temp -> {
             if (Util.isEmpty(temp.getMemNick())) {
                 temp.setMemNick("관리자");
+                temp.setMemSort("3");
             }
             result.setContent(temp);
         }, () -> {
@@ -46,6 +47,7 @@ public class BoardController {
         for (int i = 0; i < board.getTotalElements(); i++) {
             if (Util.isEmpty(board.getContent().get(i).getMemNick())) {
                 board.getContent().get(i).setMemNick("관리자");
+                board.getContent().get(i).setMemSort("3");
             }
         }
         result.setContent(board);
@@ -114,12 +116,12 @@ public class BoardController {
         return result;
     }
 
-/*    @DeleteMapping("/board")
+    @DeleteMapping("/board")
     public CommonDTO deleteBoard(Board board){
         CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
             boardRepository.delete(board);
         }, () -> {});
         return result;
-    }*/
+    }
 }
