@@ -39,12 +39,13 @@ public class CommonConstant {
     public final static int ERROR_NULL_213 = -213; // 비밀번호확인 null
     public final static int ERROR_NULL_216 = -216; // 제안할 프로제트 조회결과 null
     public final static int ERROR_NULL_221 = -221; // 아이디 조회결과 null
-
     public final static int ERROR_NULL_225 = -225; // 이용약관 동의 null
     public final static int ERROR_NULL_226 = -226; // 개인정보처리방침 동의 null
     public final static int ERROR_NULL_227 = -227; // 14세 이상 동의 null
     public final static int ERROR_NULL_228 = -228; // 마케팅 수신동의 null
     public final static int ERROR_NULL_229 = -229; // 계정활성 상태유지 동의 null
+    public final static int ERROR_NULL_230 = -230; // 게시판 내용 null
+    public final static int ERROR_NULL_231 = -231; // 게시판 유형 null
 
 
     /* 중복 */

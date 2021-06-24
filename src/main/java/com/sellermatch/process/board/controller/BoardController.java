@@ -55,6 +55,22 @@ public class BoardController {
     @PostMapping("/board")
     public CommonDTO insertBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
+        // 게시판 유형 null
+        if (Util.isEmpty(board.getBoardType())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_231);
+            return result;
+        }
+        // 게시판 내용 null
+        if (Util.isEmpty(board.getBoardContents())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_230);
+            return result;
+        }
+        // 게시판 제목 null
+        if (Util.isEmpty(board.getBoardTitle())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_132);
+            return result;
+        }
+
         board.setBoardId(Util.getUniqueId("B-", Integer.parseInt(board.getBoardType())));
         board.setBoardRegDate(new Date());
         result.setContent(boardRepository.save(board));
@@ -64,6 +80,21 @@ public class BoardController {
     @PutMapping("/board")
     public CommonDTO updateBoard(@RequestBody Board board){
         CommonDTO result = new CommonDTO();
+        // 게시판 유형 null
+        if (Util.isEmpty(board.getBoardType())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_231);
+            return result;
+        }
+        // 게시판 내용 null
+        if (Util.isEmpty(board.getBoardContents())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_230);
+            return result;
+        }
+        // 게시판 제목 null
+        if (Util.isEmpty(board.getBoardTitle())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_132);
+            return result;
+        }
         boardRepository.findById(board.getBoardIdx()).ifPresent(temp -> {
             temp.setBoardTitle(board.getBoardTitle());
             temp.setBoardContents(board.getBoardContents());
