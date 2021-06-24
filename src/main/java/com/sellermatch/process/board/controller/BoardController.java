@@ -61,12 +61,12 @@ public class BoardController {
             return result;
         }
         // 게시판 내용 null
-        if (Util.isEmpty(board.getBoardContents())) {
+        if (Util.isEmpty(board.getTagRemoveBoardContents())) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_230);
             return result;
         }
         // 게시판 길이 (1000자 이하)
-        if (Util.isLengthChk(board.getBoardContents(), 0, 1000)) {
+        if (Util.isLengthChk(board.getTagRemoveBoardContents(), 0, 1000)) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_232);
             return result;
         }
@@ -91,12 +91,12 @@ public class BoardController {
             return result;
         }
         // 게시판 내용 null
-        if (Util.isEmpty(board.getBoardContents())) {
+        if (Util.isEmpty(board.getTagRemoveBoardContents())) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_230);
             return result;
         }
         // 게시판 길이 (1000자 이하)
-        if (Util.isLengthChk(board.getBoardContents(), 0, 1000)) {
+        if (Util.isLengthChk(board.getTagRemoveBoardContents(), 0, 1000)) {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_232);
             return result;
         }
