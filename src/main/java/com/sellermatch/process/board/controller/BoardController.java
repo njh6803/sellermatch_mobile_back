@@ -67,7 +67,7 @@ public class BoardController {
         }
         // 게시판 길이 (1000자 이하)
         if (Util.isLengthChk(board.getBoardContents(), 0, 1000)) {
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_151);
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_232);
             return result;
         }
         // 게시판 제목 null
