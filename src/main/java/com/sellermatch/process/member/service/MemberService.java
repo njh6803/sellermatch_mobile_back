@@ -25,7 +25,7 @@ public class MemberService {
 
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     public Member insertMember(Member member) throws Exception{
-        member.setMemRname("0");
+        member.setMemRname("1");
         member.setMemState("0");
         member.setMemClass("0");
         member.setMemDate(new Date());
