@@ -133,6 +133,9 @@ public class Member implements UserDetails {
     @Column(name = "account_active_consent", columnDefinition = "char")
     private String accountActiveConsent;
 
+    @Column(name = "application")
+    private String application;
+
     @Transient
     private String memPwChk;
 

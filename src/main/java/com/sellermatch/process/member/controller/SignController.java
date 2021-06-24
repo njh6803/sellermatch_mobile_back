@@ -190,6 +190,7 @@ public class SignController {
 
         //IP 입력
         member.setMemIp(Util.getClientIP(request));
+        member.setApplication("모바일");
         result.setContent(memberService.insertMember(member));
 
         return result;
