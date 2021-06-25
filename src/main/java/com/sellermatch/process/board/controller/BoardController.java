@@ -110,12 +110,12 @@ public class BoardController {
         boardRepository.findById(board.getBoardIdx()).ifPresent(temp -> {
             // 작성자 체크
             if (temp.getBoardWriter().equalsIgnoreCase(board.getBoardWriter())) {
-                ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
-            } else {
                 temp.setBoardTitle(board.getBoardTitle());
                 temp.setBoardContents(board.getBoardContents());
                 temp.setBoardEditDate(new Date());
                 result.setContent(boardRepository.save(temp));
+            } else {
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
             }
         });
         return result;
