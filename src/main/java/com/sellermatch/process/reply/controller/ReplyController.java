@@ -1,7 +1,11 @@
 package com.sellermatch.process.reply.controller;
 
+import com.sellermatch.process.board.repository.BoardRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.process.project.domain.Project;
+import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.reply.domain.Reply;
 import com.sellermatch.process.reply.repository.ReplyRepository;
 import com.sellermatch.process.reply.repository.ReplyRepositoryCustom;
@@ -14,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,6 +27,9 @@ public class ReplyController {
 
     private final ReplyRepository replyRepository;
     private final ReplyRepositoryCustom replyRepositoryCustom;
+    private final MemberRepository memberRepository;
+    private final ProjectRepository projectRepository;
+    private final BoardRepository boardRepository;
     private final MailUtil mailUtil;
 
     @GetMapping("/reply/{id}")
@@ -84,19 +92,39 @@ public class ReplyController {
             reply.setReplyParentMemId(reply.getReplyWriter());
         }
 
-        String to = reply.getReplyParentMemId();
-        String mailType = "replyMail";
+        String to = "";
+        String mailType = "reply";
         String subject = "";
+        String memNick = "";
+        String title = "";
         if (!Util.isEmpty(reply.getReplyParent()) && reply.getReplyParent() != 0) {
             reply.setReplyParent(reply.getReplyParent());
             reply.setReplyDepth("1");
             subject = "셀러매치 답글알림";
-            //mailUtil.sendMail(to, subject, mailType, reply.getReplyContents());
+            /*memNick = memberRepository.findByMemId(reply.getReplyWriter()).getMemNick();
+
+            if (!Util.isEmpty(reply.getReplyProjId())) {
+                title = projectRepository.findByProjId(reply.getReplyProjId()).get().getProjTitle();
+            } else {
+                title = boardRepository.findByBoardId(reply.getReplyBoardId()).getBoardTitle();
+            }
+
+            mailUtil.sendMailReply(to, subject, mailType, memNick, title);*/
         } else {
             reply.setReplyParent(replyRepository.getSeq()+1);
             reply.setReplyDepth("0");
             subject = "셀러매치 댓글알림";
-            //mailUtil.sendMail(to, subject, mailType, reply.getReplyContents());
+            memNick = memberRepository.findByMemId(reply.getReplyWriter()).getMemNick();
+
+            if (!Util.isEmpty(reply.getReplyProjId())) {
+                Optional<Project> project = projectRepository.findByProjId(reply.getReplyProjId());
+                to = project.get().getProjMemId();
+                title = project.get().getProjTitle();
+                mailUtil.sendMailReply(to, subject, mailType, memNick, title);
+            } else {
+                //title = boardRepository.findByBoardId(reply.getReplyBoardId()).getBoardTitle();
+            }
+
         }
         reply.setReplyRegDate(new Date());
 

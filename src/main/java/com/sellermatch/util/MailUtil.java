@@ -68,10 +68,25 @@ public class MailUtil{
         mailSender.send(message);
     }
 
-    private String bulid(String nickName, String type, String applyTypeName){
+    @Async
+    public void sendMailReply(String to, String subject, String type, String nickName, String projTitle) {
+
+        MimeMessagePreparator message = mimeMessage -> {
+            String content = bulid(nickName, type, projTitle);
+
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(to);
+            messageHelper.setFrom(from);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(content, true);
+        };
+        mailSender.send(message);
+    }
+
+    private String bulid(String nickName, String type, String projTitle){
         Context context = new Context();
-        if (!Util.isEmpty(applyTypeName)) {
-            context.setVariable("applyTypeName", applyTypeName);
+        if (!Util.isEmpty(projTitle)) {
+            context.setVariable("projTitle", projTitle);
         }
         context.setVariable("nickName", nickName);
         return templateEngine.process(type, context);

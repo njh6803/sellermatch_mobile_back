@@ -9,6 +9,7 @@ import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.domain.Member;
 import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.MailUtil;
 import com.sellermatch.util.Util;
@@ -27,6 +28,7 @@ public class ApplyController {
         private final ApplyRepository applyRepository;
         private final ApplyRepositoryCustom applyRepositoryCustom;
         private final MemberRepository memberRepository;
+        private final ProjectRepository projectRepository;
         private final MailUtil mailUtil;
 
         @GetMapping("/apply/{id}")
@@ -60,7 +62,7 @@ public class ApplyController {
         }
 
         @PostMapping("/apply")
-        public CommonDTO insertApply(@RequestBody Apply apply) throws Exception {
+        public CommonDTO insertApply(@RequestBody Apply apply) {
                 CommonDTO result = new CommonDTO();
                 Apply emptyContent =  new Apply();
 
@@ -103,20 +105,29 @@ public class ApplyController {
                         String subject = "";
                         String type = "";
                         String applyTypeName = "";
+                        String to = "";
+                        String nickName = "";
 
                         // 지원
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
+                                String projTitle = projectRepository.findByProjId(apply.getApplyProjId()).get().getProjTitle();
                                 type = "apply";
                                 subject = "셀러매치 지원알림";
-                                mailUtil.sendMail(apply.getProjMemId(),subject, type, temp.getMemNick());
+                                applyTypeName = "지원";
+                                to = apply.getProjMemId();
+                                nickName = temp.getMemNick();
+
+                                mailUtil.sendMail(to, subject, nickName, type, applyTypeName, projTitle, "");
                         }
                         // 제안
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
+                                Member projMember = memberRepository.findByMemId(apply.getProjMemId());
                                 type = "recommand";
                                 subject = "셀러매치 제안알림";
                                 applyTypeName = "제안";
-                                Member projMember = memberRepository.findByMemId(apply.getProjMemId());
-                                mailUtil.sendMail(apply.getApplyMemId(),subject, projMember.getMemNick() , type, applyTypeName);
+                                to = apply.getApplyMemId();
+                                nickName = projMember.getMemNick();
+                                mailUtil.sendMail(to, subject,  nickName, type, applyTypeName);
 
                         }
                 }, ()->{

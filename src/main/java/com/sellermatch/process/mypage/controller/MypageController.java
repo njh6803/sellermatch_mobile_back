@@ -110,7 +110,7 @@ public class MypageController {
     }
 
     @GetMapping("/myPage/registDelng/project/{projId}")
-    public CommonDTO selectRegistDelngProject(@PathVariable String projId) {
+    public CommonDTO selectRegistDelngProject(@PathVariable String projId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         projectRepository.findByProjId(projId).ifPresent(temp -> {
 

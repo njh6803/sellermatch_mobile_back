@@ -11,5 +11,7 @@ public interface BoardRepository extends PagingAndSortingRepository<Board, Integ
 
     Page<Board> findAll(Pageable pageable);
 
+    Board findByBoardId(String boardId);
+
     Page<Board> findByBoardTypeIn(Pageable pageable, List<String> boardType);
 }
