@@ -44,7 +44,7 @@ public class BoardController {
     public CommonDTO selectBoardList(Pageable pageable, @RequestParam List<String> boardType, @RequestParam(required = false) String boardQaType){
         CommonDTO result = new CommonDTO();
         Page<Board> board = boardRepositoryCustom.getBoardList(boardType, boardQaType, pageable);
-        for (int i = 0; i < board.getTotalElements(); i++) {
+        for (int i = 0; i < board.getSize(); i++) {
             if (Util.isEmpty(board.getContent().get(i).getMemNick())) {
                 board.getContent().get(i).setMemNick("관리자");
                 board.getContent().get(i).setMemSort("3");
