@@ -31,6 +31,15 @@ public class SignController {
         CommonDTO result = new CommonDTO();
         if(Util.isEmpty(member.getMemSnsCh())) { // 일반회원 로그인
             memberRepository.findTop1ByMemId(member.getMemId()).ifPresentOrElse(validation -> {
+                // 탈퇴회원 로그인
+                if (validation.getMemState().equalsIgnoreCase("1")) {
+                    Map<String, Object> jwt = new HashMap<>();
+                    jwt.put("token", "");
+                    jwt.put("expires", "");
+                    result.setContent(jwt);
+                    result.setResult("ERROR");
+                    result.setStatus(CommonConstant.ERROR_ACCESS_201);
+                }
                 if(validation.getMemSnsCh().equalsIgnoreCase(SnsChType.EMAIL.label)) {
                     memberRepository.findByMemIdAndMemPw(member.getMemId(), EncryptionUtils.encryptMD5(member.getMemPw())).ifPresentOrElse(temp -> {
                         Map<String, Object> jwt = jwtUtil.createToken(temp.getMemId());
