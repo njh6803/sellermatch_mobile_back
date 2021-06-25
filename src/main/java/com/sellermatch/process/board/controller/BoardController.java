@@ -108,10 +108,15 @@ public class BoardController {
             return result;
         }
         boardRepository.findById(board.getBoardIdx()).ifPresent(temp -> {
-            temp.setBoardTitle(board.getBoardTitle());
-            temp.setBoardContents(board.getBoardContents());
-            temp.setBoardEditDate(new Date());
-            result.setContent(boardRepository.save(temp));
+            // 작성자 체크
+            if (temp.getBoardWriter().equalsIgnoreCase(board.getBoardWriter())) {
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
+            } else {
+                temp.setBoardTitle(board.getBoardTitle());
+                temp.setBoardContents(board.getBoardContents());
+                temp.setBoardEditDate(new Date());
+                result.setContent(boardRepository.save(temp));
+            }
         });
         return result;
     }
