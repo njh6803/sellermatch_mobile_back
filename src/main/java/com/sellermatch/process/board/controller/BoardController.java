@@ -115,7 +115,7 @@ public class BoardController {
                 temp.setBoardEditDate(new Date());
                 result.setContent(boardRepository.save(temp));
             } else {
-                ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_MISMATCH_228);
             }
         });
         return result;

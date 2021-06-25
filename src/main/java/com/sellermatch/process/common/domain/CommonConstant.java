@@ -42,7 +42,6 @@ public class CommonConstant {
     public final static int ERROR_NULL_225 = -225; // 이용약관 동의 null
     public final static int ERROR_NULL_226 = -226; // 개인정보처리방침 동의 null
     public final static int ERROR_NULL_227 = -227; // 14세 이상 동의 null
-    //public final static int ERROR_NULL_228 = -228; // 마케팅 수신동의 null
     //public final static int ERROR_NULL_229 = -229; // 계정활성 상태유지 동의 null
     public final static int ERROR_NULL_230 = -230; // 게시판 내용 null
     public final static int ERROR_NULL_231 = -231; // 게시판 유형 null
@@ -96,6 +95,7 @@ public class CommonConstant {
     public final static int ERROR_MISMATCH_112 = -112;  // 비밀번호 확인 미일치
     public final static int ERROR_MISMATCH_148 = -148;  // 탈퇴 인증 코드 미일치
     public final static int ERROR_MISMATCH_224 = -224;  // 이미지파일 미일치
+    public final static int ERROR_MISMATCH_228 = -228; // 게시물 작성자 미일치
 
     /* 접근 제한 */
     public final static int ERROR_ACCESS_200 = -200;  // 미로그인 접근불가 페이지 접근
@@ -104,6 +104,7 @@ public class CommonConstant {
     public final static int ERROR_ACCESS_215 = -215;  // 자신의게시물에 지원, 제안, 스크랩 등
     public final static int ERROR_ACCESS_222 = -222;  // SNS가입계정 비밀번호찾기
     public final static int ERROR_ACCESS_223 = -223;  // (네이버)SNS계정인데 일반이메일 가입한 계정
+
 
     /* 공통 에러 */
     public final static int ERROR_999 = -999;  // 알수 없는 공통 에러
