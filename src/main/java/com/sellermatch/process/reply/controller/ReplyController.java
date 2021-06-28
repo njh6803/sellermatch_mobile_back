@@ -122,6 +122,7 @@ public class ReplyController {
                 title = project.get().getProjTitle();
                 mailUtil.sendMailReply(to, subject, mailType, memNick, title);
             } else {
+                // 자유게시판 댓글
                 //title = boardRepository.findByBoardId(reply.getReplyBoardId()).getBoardTitle();
             }
 
