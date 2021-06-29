@@ -30,11 +30,11 @@ public class NewsLetter {
     private Date NewsLetterEditDate;
 
     @Column(name = "NewsLetter_phone")
-    private Date NewsLetterPhone;
+    private String NewsLetterPhone;
 
     @Column(name = "NewsLetter_name")
-    private Date NewsLetterName;
+    private String NewsLetterName;
 
-    @Column(name = "NewsLetter_text")
-    private Date NewsLetterText;
+    @Column(name = "NewsLetter_text", columnDefinition = "TEXT")
+    private String NewsLetterText;
 }
