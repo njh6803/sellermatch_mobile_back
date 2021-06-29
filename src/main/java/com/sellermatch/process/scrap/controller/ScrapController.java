@@ -3,10 +3,12 @@ package com.sellermatch.process.scrap.controller;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
+import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.scrap.domain.Scrap;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import com.sellermatch.process.scrap.repository.ScrapRepositoryCustom;
 import com.sellermatch.util.ControllerResultSet;
+import com.sellermatch.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ public class ScrapController {
     private final ScrapRepository scrapRepository;
     private final MemberRepository memberRepository;
     private final ScrapRepositoryCustom scrapRepositoryCustom;
+    private final ProjectRepositoryCustom projectRepositoryCustom;
 
     @GetMapping("/scrap/{id}")
     public CommonDTO selectScrap(@PathVariable Integer id) {
@@ -67,7 +70,13 @@ public class ScrapController {
             scrap.setLastRegistMngr(temp.getMemId());
         }, ()->{});
 
-        result.setContent(scrapRepository.save(scrap));
+        scrapRepository.save(scrap);
+        if (Util.isEmpty(scrap.getScrapNo())) {
+            ControllerResultSet.errorCode(result, CommonConstant.ERROR_998);
+            return result;
+        } else {
+            result.setContent(projectRepositoryCustom.findProject(scrap.getProjIdx(), scrap.getMemIdx()));
+        }
         return result;
     }
 
@@ -85,6 +94,7 @@ public class ScrapController {
         CommonDTO result = new CommonDTO();
         scrapRepository.findByMemIdxAndProjIdx(scrap.getMemIdx(), scrap.getProjIdx()).ifPresentOrElse(temp -> {
             scrapRepository.delete(temp);
+            result.setContent(projectRepositoryCustom.findProject(scrap.getProjIdx(), scrap.getMemIdx()));
         }, () -> {});
         return result;
     }
