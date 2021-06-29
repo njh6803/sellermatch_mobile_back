@@ -28,4 +28,13 @@ public class NewsLetter {
 
     @Column(name = "NewsLetter_edit_date")
     private Date NewsLetterEditDate;
+
+    @Column(name = "NewsLetter_phone")
+    private Date NewsLetterPhone;
+
+    @Column(name = "NewsLetter_name")
+    private Date NewsLetterName;
+
+    @Column(name = "NewsLetter_text")
+    private Date NewsLetterText;
 }
