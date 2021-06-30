@@ -18,23 +18,23 @@ public class NewsLetter {
     private Integer newsLetterIdx;
 
     @Column(name = "NewsLetter_email")
-    private String NewsLetterEmail;
+    private String newsLetterEmail;
 
     @Column(name = "NewsLetter_agreeYN", columnDefinition = "char")
-    private String NewsLetterAgreeYN;
+    private String newsLetterAgreeYN;
 
     @Column(name = "NewsLetter_reg_date")
-    private Date NewsLetterRegDate;
+    private Date newsLetterRegDate;
 
     @Column(name = "NewsLetter_edit_date")
-    private Date NewsLetterEditDate;
+    private Date newsLetterEditDate;
 
     @Column(name = "NewsLetter_phone")
-    private String NewsLetterPhone;
+    private String newsLetterPhone;
 
     @Column(name = "NewsLetter_name")
-    private String NewsLetterName;
+    private String newsLetterName;
 
     @Column(name = "NewsLetter_text", columnDefinition = "TEXT")
-    private String NewsLetterText;
+    private String newsLetterText;
 }
