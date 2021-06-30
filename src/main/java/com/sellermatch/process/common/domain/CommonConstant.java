@@ -42,10 +42,10 @@ public class CommonConstant {
     public final static int ERROR_NULL_225 = -225; // 이용약관 동의 null
     public final static int ERROR_NULL_226 = -226; // 개인정보처리방침 동의 null
     public final static int ERROR_NULL_227 = -227; // 14세 이상 동의 null
-    //public final static int ERROR_NULL_229 = -229; // 계정활성 상태유지 동의 null
+    public final static int ERROR_NULL_229 = -229; // 제휴/제안 문의내용 null
     public final static int ERROR_NULL_230 = -230; // 게시판 내용 null
     public final static int ERROR_NULL_231 = -231; // 게시판 유형 null
-
+    public final static int ERROR_NULL_233 = -233; // 이메일 null
 
     /* 중복 */
     public final static int ERROR_DUPLICATE_108 = -108; // 이메일 중복
