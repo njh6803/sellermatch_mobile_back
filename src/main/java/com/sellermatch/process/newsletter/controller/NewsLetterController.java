@@ -7,17 +7,18 @@ import com.sellermatch.process.newsletter.domain.NewsLetter;
 import com.sellermatch.process.newsletter.repository.NewsLetterRepository;
 import com.sellermatch.util.ControllerResultSet;
 import com.sellermatch.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+@RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api-v1")
 public class NewsLetterController {
 
-    @Autowired
-    public NewsLetterRepository newsLetterRepository;
+    private final NewsLetterRepository newsLetterRepository;
 
     @GetMapping("/newsletter/{id}")
     public CommonDTO selectNewsLetter(@PathVariable Integer id) {
