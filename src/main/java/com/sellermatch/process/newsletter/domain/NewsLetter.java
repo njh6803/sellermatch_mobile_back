@@ -14,7 +14,7 @@ public class NewsLetter {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    @Column(name = "newsLetter_idx")
+    @Column(name = "NewsLetter_idx")
     private Integer newsLetterIdx;
 
     @Column(name = "NewsLetter_email")
