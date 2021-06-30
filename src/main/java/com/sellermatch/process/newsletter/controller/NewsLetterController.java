@@ -76,6 +76,7 @@ public class NewsLetterController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_229);
             return result;
         }
+        newsLetter.setNewsLetterAgreeYN("Y");
         newsLetter.setNewsLetterRegDate(new Date());
         newsLetter.setNewsLetterEditDate(new Date());
         result.setContent(newsLetterRepository.save(newsLetter));
