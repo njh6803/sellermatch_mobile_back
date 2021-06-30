@@ -14,18 +14,27 @@ public class NewsLetter {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    @Column(name = "newsLetter_idx")
+    @Column(name = "NewsLetter_idx")
     private Integer newsLetterIdx;
 
     @Column(name = "NewsLetter_email")
-    private String NewsLetterEmail;
+    private String newsLetterEmail;
 
     @Column(name = "NewsLetter_agreeYN", columnDefinition = "char")
-    private String NewsLetterAgreeYN;
+    private String newsLetterAgreeYN;
 
     @Column(name = "NewsLetter_reg_date")
-    private Date NewsLetterRegDate;
+    private Date newsLetterRegDate;
 
     @Column(name = "NewsLetter_edit_date")
-    private Date NewsLetterEditDate;
+    private Date newsLetterEditDate;
+
+    @Column(name = "NewsLetter_phone")
+    private String newsLetterPhone;
+
+    @Column(name = "NewsLetter_name")
+    private String newsLetterName;
+
+    @Column(name = "NewsLetter_text", columnDefinition = "TEXT")
+    private String newsLetterText;
 }

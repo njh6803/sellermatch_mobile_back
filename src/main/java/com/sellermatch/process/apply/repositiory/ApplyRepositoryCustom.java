@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.SimpleTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sellermatch.config.constant.ApplyType;
 import com.sellermatch.process.apply.domain.Apply;
 import com.sellermatch.process.apply.domain.QApply;
 import com.sellermatch.process.hashtag.domain.QHashtag;
@@ -46,7 +47,7 @@ public class ApplyRepositoryCustom {
             builder.and(qApply.applyProjId.eq(apply.getApplyProjId()));
         }
         if (!Util.isEmpty(apply.getApplyType())) {
-            builder.and(qApply.applyType.eq("1"));
+            builder.and(qApply.applyType.eq(ApplyType.APPLY.label));
         }
         if (!Util.isEmpty(apply.getApplyProjState())) {
             builder.and(qApply.applyProjState.eq(apply.getApplyProjState()));

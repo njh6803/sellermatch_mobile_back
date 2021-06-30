@@ -121,12 +121,12 @@ public class BoardController {
         return result;
     }
 
-    @DeleteMapping("/board")
+    /*@DeleteMapping("/board")
     public CommonDTO deleteBoard(Board board){
         CommonDTO result = new CommonDTO();
         boardRepository.findById(board.getBoardIdx()).ifPresentOrElse(temp -> {
             boardRepository.delete(board);
         }, () -> {});
         return result;
-    }
+    }*/
 }
