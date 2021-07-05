@@ -55,7 +55,7 @@ public class ProjectController {
     public CommonDTO getProject(@PathVariable String profileMemId, Pageable pageable) {
         CommonDTO result = new CommonDTO();
         // 판매이력리스트(등록한 거래) - 추후에 페이징처리가 필요할 수 있음
-        Page<Project> project = projectRepository.findAllByProjMemIdAndProjStateNot(profileMemId, ProjectStateType.END.label, pageable);
+        Page<Project> project = projectRepository.findAllByProjMemIdAndProjStateNot(profileMemId, ProjectStateType.STOP.label, pageable);
         result.setContent(project);
         return result;
     }
