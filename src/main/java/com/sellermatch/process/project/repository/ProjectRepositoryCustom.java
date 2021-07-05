@@ -92,6 +92,13 @@ public class ProjectRepositoryCustom {
             builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label));
         }
 
+        // 마감 필터
+        if (!Util.isEmpty(project.getEndProjectFlag())){
+            if (project.getEndProjectFlag().equalsIgnoreCase("Y")) {
+                builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label).and(qProject.projState.eq(ProjectStateType.END.label)));
+            }
+        }
+
         // 찾기유형(공급자,판매자) 필터
         if (!Util.isEmpty(project.getProjSortArr())){
             builder.and(qProject.projSort.in(project.getProjSortArr()));

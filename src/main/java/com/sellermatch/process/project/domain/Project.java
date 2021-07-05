@@ -156,6 +156,8 @@ public class Project {
     private Long scrapCheck;
     @Transient
     private String recommandProjectFlag;
+    @Transient
+    private String endProjectFlag;
 
     @Transient
     private String hashTag1;
