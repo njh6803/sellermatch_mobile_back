@@ -13,7 +13,7 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, I
 
     Optional<Project> findByProjId(String projId);
 
-    Page<Project> findAllByProjMemIdAndProjStateIsNot(String projMemId, String projState, Pageable pageable);
+    Page<Project> findAllByProjMemIdAndProjStateNot(String projMemId, String projState, Pageable pageable);
 
     int countByProjMemIdAndProjProdCerti(String projMemId, String ProjProdCerti);
 
