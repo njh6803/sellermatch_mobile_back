@@ -89,7 +89,7 @@ public class ProjectController {
         }
 
         Page<Project> projectList = projectRepositoryCustom.findAllProject(project, memIdx, pageable, search);
-        for (int i = 0; i < projectList.getSize(); i++) {
+        for (int i = 0; i < projectList.getContent().size(); i++) {
             projectList.getContent().get(i).setEndProjectFlag(project.getEndProjectFlag());
         }
         result.setContent(projectList);
