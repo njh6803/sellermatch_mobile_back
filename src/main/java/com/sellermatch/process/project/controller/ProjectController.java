@@ -88,6 +88,10 @@ public class ProjectController {
             memIdx = 0;
         }
 
+        if (Util.isEmpty(project.getEndProjectFlag())) {
+            project.setEndProjectFlag("N");
+        }
+
         Page<Project> projectList = projectRepositoryCustom.findAllProject(project, memIdx, pageable, search);
         for (int i = 0; i < projectList.getContent().size(); i++) {
             projectList.getContent().get(i).setEndProjectFlag(project.getEndProjectFlag());
