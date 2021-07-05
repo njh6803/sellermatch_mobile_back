@@ -94,9 +94,7 @@ public class ProjectRepositoryCustom {
 
         // 마감 필터
         if (!Util.isEmpty(project.getEndProjectFlag())){
-            if (project.getEndProjectFlag().equalsIgnoreCase("Y")) {
-                builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label).and(qProject.projState.eq(ProjectStateType.END.label)));
-            } else {
+            if (project.getEndProjectFlag().equalsIgnoreCase("N")) {
                 builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label));
             }
         }
