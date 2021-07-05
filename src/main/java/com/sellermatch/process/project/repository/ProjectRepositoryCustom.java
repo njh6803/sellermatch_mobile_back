@@ -96,6 +96,8 @@ public class ProjectRepositoryCustom {
         if (!Util.isEmpty(project.getEndProjectFlag())){
             if (project.getEndProjectFlag().equalsIgnoreCase("Y")) {
                 builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label).and(qProject.projState.eq(ProjectStateType.END.label)));
+            } else {
+                builder.and(qProject.projState.eq(ProjectStateType.NORMAL.label));
             }
         }
 
