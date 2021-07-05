@@ -141,6 +141,7 @@ public class ProfileController {
             }
             if (profile.getProfileSort().equalsIgnoreCase(MemberType.SELLER.label)) {
                 temp.setProfileVolume(profile.getProfileVolume());
+                temp.setProfileCareer(profile.getProfileCareer());
                 // 프로필 해시태그
                 projectDto.getProfile().setProfileHashtag(profile.getProfileHashtag());
             }
