@@ -44,7 +44,7 @@ public class MemberService {
         profile.setProfileSaleChk("0");
         profile.setProfileBizCerti("0");
         profile.setProfileState("1");
-        profile.setProfileVolume(0);
+        profile.setProfileVolume(0L);
         profile.setProfileSort(member.getMemSort());
         profile.setProfileRegDate(new Date());
         projectDto.setProfile(profile);
