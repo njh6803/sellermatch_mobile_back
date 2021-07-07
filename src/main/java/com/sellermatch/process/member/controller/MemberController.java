@@ -128,21 +128,6 @@ public class MemberController {
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_106, emptyContent);
             return result;
         }
-        //이용약관 동의 NULL 체크
-        if(Util.isEmpty(member.getTosConsent())){
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_225);
-            return result;
-        }
-        //개인정보처리방침 동의 NULL 체크
-        if(Util.isEmpty(member.getPrivacyConsent())){
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_226);
-            return result;
-        }
-        //14세 이상 동의 NULL 체크
-        if(Util.isEmpty(member.getAgeConsent())){
-            ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_227);
-            return result;
-        }
 
         memberRepository.findById(member.getMemIdx()).ifPresent(temp -> {
             temp.setMemPw(EncryptionUtils.encryptMD5(member.getMemPw()));
