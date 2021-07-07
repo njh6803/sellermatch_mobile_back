@@ -104,6 +104,7 @@ public class CommonConstant {
     public final static int ERROR_ACCESS_215 = -215;  // 자신의게시물에 지원, 제안, 스크랩 등
     public final static int ERROR_ACCESS_222 = -222;  // SNS가입계정 비밀번호찾기
     public final static int ERROR_ACCESS_223 = -223;  // (네이버)SNS계정인데 일반이메일 가입한 계정
+    public final static int ERROR_ACCESS_234 = -234;  // 비밀 게시물 접근제한
 
 
     /* 공통 에러 */

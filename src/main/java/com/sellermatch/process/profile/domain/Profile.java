@@ -47,7 +47,7 @@ public class Profile {
     private String profileSaleChk;
 
     @Column(name = "profile_volume")
-    private Integer profileVolume;
+    private Long profileVolume;
 
     @Column(name = "profile_nation")
     private String profileNation;
