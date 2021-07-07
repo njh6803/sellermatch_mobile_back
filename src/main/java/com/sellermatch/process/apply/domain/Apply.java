@@ -56,7 +56,7 @@ public class Apply {
     @Transient
     private String profileBizSort;
     @Transient
-    private Integer profileVolume;
+    private Long profileVolume;
     @Transient
     private String projMemId;
     @Transient
