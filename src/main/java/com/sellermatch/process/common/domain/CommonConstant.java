@@ -46,6 +46,8 @@ public class CommonConstant {
     public final static int ERROR_NULL_230 = -230; // 게시판 내용 null
     public final static int ERROR_NULL_231 = -231; // 게시판 유형 null
     public final static int ERROR_NULL_233 = -233; // 이메일 null
+    public final static int ERROR_NULL_235 = -235; // 판매경력 null
+    public final static int ERROR_NULL_236 = -236; // 판매채널 null
 
     /* 중복 */
     public final static int ERROR_DUPLICATE_108 = -108; // 이메일 중복

@@ -231,6 +231,16 @@ public class ProjectController {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_LENGTH_125);
                 return result;
             }
+            // 판매경력 : NULL
+            if (Util.isEmpty(profile.getProfileCareer())) {
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_235);
+                return result;
+            }
+            // 판매채널 : NULL
+            if (Util.isEmpty(profile.getProfileCh())) {
+                ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_236);
+                return result;
+            }
             // 등록지역 : NULL 체크
             if (Util.isEmpty(profile.getProfileNation())) {
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_126);
@@ -242,10 +252,10 @@ public class ProjectController {
                 return result;
             }
             // 사업자번호 : NULL 체크
-            /*if (Util.isEmpty(profile.getProfileBizNum())){
+            if (Util.isEmpty(profile.getProfileBizNum())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_NULL_128);
                 return result;
-            }*/
+            }
             // 사업자번호 : 사업자번호형식 체크
             if (!Util.isEmpty(profile.getProfileBizNum()) && !Util.isValid(profile.getProfileBizNum())){
                 ControllerResultSet.errorCode(result, CommonConstant.ERROR_FORMAT_129);
