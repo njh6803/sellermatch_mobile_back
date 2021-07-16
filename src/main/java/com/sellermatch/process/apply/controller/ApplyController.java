@@ -107,6 +107,7 @@ public class ApplyController {
                         String applyTypeName = "";
                         String to = "";
                         String nickName = "";
+                        String projMemNick = "";
 
                         // 지원
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
@@ -115,9 +116,10 @@ public class ApplyController {
                                 subject = "셀러매치 지원알림";
                                 applyTypeName = "지원";
                                 to = apply.getProjMemId();
-                                nickName = temp.getMemNick();
+                                nickName = memberRepository.findByMemId(apply.getApplyMemId()).getMemNick();
+                                projMemNick = memberRepository.findByMemId(to).getMemNick();
 
-                                mailUtil.sendMail(to, subject, nickName, type, applyTypeName, projTitle, "");
+                                mailUtil.sendMail(to, subject, nickName, type, applyTypeName, projTitle, projMemNick);
                         }
                         // 제안
                         if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
@@ -127,7 +129,8 @@ public class ApplyController {
                                 applyTypeName = "제안";
                                 to = apply.getApplyMemId();
                                 nickName = projMember.getMemNick();
-                                mailUtil.sendMail(to, subject,  nickName, type, applyTypeName);
+                                projMemNick = memberRepository.findByMemId(to).getMemNick();
+                                mailUtil.sendMail(to, subject,  nickName, type, applyTypeName, projMemNick);
 
                         }
                 }, ()->{

@@ -1,6 +1,5 @@
 package com.sellermatch.process.reply.controller;
 
-import com.sellermatch.process.board.repository.BoardRepository;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
 import com.sellermatch.process.member.repository.MemberRepository;
@@ -29,7 +28,6 @@ public class ReplyController {
     private final ReplyRepositoryCustom replyRepositoryCustom;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
-    private final BoardRepository boardRepository;
     private final MailUtil mailUtil;
 
     @GetMapping("/reply/{id}")
@@ -97,6 +95,7 @@ public class ReplyController {
         String subject = "";
         String memNick = "";
         String title = "";
+        String projMemNick = "";
         if (!Util.isEmpty(reply.getReplyParent()) && reply.getReplyParent() != 0) {
             reply.setReplyParent(reply.getReplyParent());
             reply.setReplyDepth("1");
@@ -120,7 +119,8 @@ public class ReplyController {
                 Optional<Project> project = projectRepository.findByProjId(reply.getReplyProjId());
                 to = project.get().getProjMemId();
                 title = project.get().getProjTitle();
-                mailUtil.sendMailReply(to, subject, mailType, memNick, title);
+                projMemNick = memberRepository.findByMemId(to).getMemNick();
+                mailUtil.sendMailReply(to, subject, mailType, memNick, title, projMemNick);
             } else {
                 // 자유게시판 댓글
                 //title = boardRepository.findByBoardId(reply.getReplyBoardId()).getBoardTitle();

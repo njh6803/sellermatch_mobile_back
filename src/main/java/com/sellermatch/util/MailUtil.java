@@ -41,9 +41,9 @@ public class MailUtil{
     }
 
     @Async
-    public void sendMail(String to, String subject, String nickName, String type, String applyTypeName) {
+    public void sendMail(String to, String subject, String nickName, String type, String applyTypeName, String projMemNick) {
         MimeMessagePreparator message = mimeMessage -> {
-            String content = bulid(nickName, type, applyTypeName);
+            String content = bulid(nickName, type, applyTypeName, projMemNick);
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
@@ -55,9 +55,9 @@ public class MailUtil{
     }
 
     @Async
-    public void sendMail(String to, String subject, String nickName, String type, String applyTypeName, String projTitle, String memSortName) {
+    public void sendMail(String to, String subject, String nickName, String type, String applyTypeName, String projTitle, String projMemNick) {
         MimeMessagePreparator message = mimeMessage -> {
-            String content = bulid(nickName, type, applyTypeName, projTitle, memSortName);
+            String content = bulid(nickName, type, applyTypeName, projTitle, projMemNick);
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
@@ -69,10 +69,10 @@ public class MailUtil{
     }
 
     @Async
-    public void sendMailReply(String to, String subject, String type, String nickName, String projTitle) {
+    public void sendMailReply(String to, String subject, String type, String nickName, String projTitle, String projMemNick) {
 
         MimeMessagePreparator message = mimeMessage -> {
-            String content = bulid(nickName, type, projTitle);
+            String content = bulid(nickName, type, projTitle, projMemNick);
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(to);
@@ -82,7 +82,6 @@ public class MailUtil{
         };
         mailSender.send(message);
     }
-
     private String bulid(String nickName, String type, String projTitle){
         Context context = new Context();
         if (!Util.isEmpty(projTitle)) {
@@ -92,12 +91,22 @@ public class MailUtil{
         return templateEngine.process(type, context);
     };
 
-    private String bulid(String nickName, String type, String applyTypeName, String projTitle, String memSortName) {
+    private String bulid(String nickName, String type, String projTitle, String projMemNick){
+        Context context = new Context();
+        if (!Util.isEmpty(projTitle)) {
+            context.setVariable("projTitle", projTitle);
+        }
+        context.setVariable("nickName", nickName);
+        context.setVariable("projMemNick", projMemNick);
+        return templateEngine.process(type, context);
+    };
+
+    private String bulid(String nickName, String type, String applyTypeName, String projTitle, String projMemNick) {
         Context context = new Context();
         context.setVariable("applyTypeName", applyTypeName);
         context.setVariable("nickName", nickName);
         context.setVariable("projTitle", projTitle);
-        context.setVariable("memSortName", memSortName);
+        context.setVariable("projMemNick", projMemNick);
         return templateEngine.process(type, context);
     };
 

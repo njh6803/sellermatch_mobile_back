@@ -24,7 +24,7 @@
                         <div style="text-align: left;color: #697d71;font-size: 14px;line-height: 21px;font-family: NanumSquare_ac;">
                             <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 12px;">
                                 <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
-                                    <h1 style="Margin-top: 35px;Margin-bottom: 35px;font-style: normal;font-weight: bold;color: #47805e;font-size: 30px;line-height: 32px;font-family: NanumSquare_ac;text-align: center;" lang="x-size-28"><span><span style="color:#151513">셀러매치 댓글알림이 도착했습니다!</span></span></h1>
+                                    <h1 style="Margin-top: 35px;Margin-bottom: 35px;font-style: normal;font-weight: bold;color: #47805e;font-size: 30px;line-height: 32px;font-family: NanumSquare_ac;text-align: center;" lang="x-size-28"><span><span style="color:#151513">[<span style="color:#151513" th:text="${projMemNick}"></span>]님, 셀러매치 댓글 알림이 도착했습니다</span></span></h1>
                                 </div>
                             </div>
                             <div style="Margin-left: 20px;Margin-right: 20px;">
@@ -48,8 +48,16 @@
 
                             <div style="Margin-left: 20px;Margin-right: 20px;">
                                 <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
-                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;text-align: left;"><span style="color:#151513">[</span><span style="color:#151513" th:text="${projTitle}"></span><span style="color:#151513">]에 [
-                                        <span style="color:#151513" th:text="${nickName}"></span>]님이</span><span style="color:#151513"> 댓글을 남겼습니다.</span></h3>
+                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;text-align: left;"><span style="color:#151513">[</span><span style="color:#151513" th:text="${projTitle}"></span><span style="color:#151513">]에 [<span style="color:#151513" th:text="${nickName}"></span>]님이</span><span style="color:#151513"> 댓글을 남겼습니다.</span></h3>
+                                </div>
+                            </div>
+                            <div style="Margin-left: 20px;Margin-right: 20px;">
+                                <div style="mso-line-height-rule: exactly;line-height: 25px;font-size: 1px;">&nbsp;</div>
+                            </div>
+
+                            <div style="Margin-left: 20px;Margin-right: 20px;">
+                                <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;text-align: left;"><span style="color:#151513">[</span><span style="color:#151513" th:text="${nickName}"></span><span style="color:#151513">]님의 댓글을 확인하는 방법은 아래와 같습니다.</span></h3>
                                 </div>
                             </div>
                             <div style="Margin-left: 20px;Margin-right: 20px;">
@@ -57,7 +65,16 @@
                             </div>
                             <div style="Margin-left: 20px;Margin-right: 20px;">
                                 <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
-                                    <h3 style="Margin-top: 12px;Margin-bottom: 12px;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;"><span style="color:#151513">지금 바로 댓글을 확인해보세요!</span></h3>
+                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;text-align: left;"><span style="color:#151513">셀러매치 홈페이지 우측 상단에 닉네임 클릭 > 마이페이지 접속 > </span><br><span style="color:#151513">등록한 거래 > [</span><span style="color:#151513" th:text="${projTitle}"></span><span style="color:#151513">] 클릭 > 댓글 확인</span></h3>
+                                </div>
+                            </div>
+
+                            <div style="Margin-left: 20px;Margin-right: 20px;">
+                                <div style="mso-line-height-rule: exactly;line-height: 25px;font-size: 1px;">&nbsp;</div>
+                            </div>
+                            <div style="Margin-left: 20px;Margin-right: 20px;">
+                                <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
+                                    <h3 style="Margin-top: 12px;Margin-bottom: 12px;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 18px;line-height: 24px;font-family: NanumSquare_ac;"><span style="color:#151513">지금 바로 [<span style="color:#151513" th:text="${nickName}"></span>]님의 댓글을 확인해보세요!</span></h3>
                                 </div>
                             </div>
                             <div style="Margin-left: 20px;Margin-right: 20px;">
@@ -75,7 +92,7 @@
 
                             <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 40px;">
                                 <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
-                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 20px;line-height: 24px;font-family: NanumSquare_ac;text-align: center;"><span style="color:#151513">시간을 절약하세요</span></h3>
+                                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 20px;line-height: 24px;font-family: NanumSquare_ac;text-align: center;"><span style="color:#151513">쉽고 빠른 거래</span></h3>
                                     <h3 style="Margin-top: 12px;Margin-bottom: 12px;font-style: normal;font-weight: bold;color: #d1e9dc;font-size: 20px;line-height: 24px;font-family: NanumSquare_ac;text-align: center;"><span style="color:#ff6224">셀러매치</span><span style="color:#151513">가 함께 합니다.</span></h3>
                                 </div>
                             </div>
@@ -86,7 +103,7 @@
 
                             <div style="Margin-left: 20px;Margin-right: 20px;">
                                 <div style="Margin-bottom: 20px;text-align: center;">
-                                    <!--[if !mso]--><a style="border-radius: 4px;display: inline-block;font-size: 18px;font-weight: bold;line-height: 24px;padding: 12px 24px;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #ffffff !important;background-color: #ff6224;font-family: NanumSquare_ac;" href="https://private.cmail19.com/t/y-i-ojkuttl-l-d/" rel="noopener noreferrer" target="_blank">셀러매치 바로가기</a>
+                                    <!--[if !mso]--><a style="border-radius: 4px;display: inline-block;font-size: 18px;font-weight: bold;line-height: 24px;padding: 12px 24px;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #ffffff !important;background-color: #ff6224;font-family: NanumSquare_ac;" href="${nickName}" rel="noopener noreferrer" target="_blank">댓글 확인하러 가기</a>
                                 </div>
                             </div>
 

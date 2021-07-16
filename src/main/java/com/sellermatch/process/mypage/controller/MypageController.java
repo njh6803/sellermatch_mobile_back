@@ -7,6 +7,7 @@ import com.sellermatch.process.apply.repositiory.ApplyRepository;
 import com.sellermatch.process.apply.repositiory.ApplyRepositoryCustom;
 import com.sellermatch.process.common.domain.CommonConstant;
 import com.sellermatch.process.common.domain.CommonDTO;
+import com.sellermatch.process.member.repository.MemberRepository;
 import com.sellermatch.process.profile.domain.Profile;
 import com.sellermatch.process.profile.repository.ProfileRepositoryCustom;
 import com.sellermatch.process.project.domain.Project;
@@ -31,6 +32,7 @@ public class MypageController {
     private final ScrapRepository scrapRepository;
     private final ApplyRepository applyRepository;
     private final ApplyRepositoryCustom applyRepositoryCustom;
+    private final MemberRepository memberRepository;
     private final MailUtil mailUtil;
 
     @GetMapping("/myPage/myHome/{projMemId}")
@@ -139,36 +141,36 @@ public class MypageController {
             applyRepository.updateApply(apply.getApplyIdx(), apply.getApplyProjState(), apply.getApplyType());
             result.setContent(new Apply());
             String applyTypeName = "";
-            String memSortName = "";
+            String projMemNick = "";
             String projTitle = "";
             String subject = "";
             String to = "";
+            String nickName = "";
+            String type = "";
             if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedProjectOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "지원";
                 subject = "SellerMatch 거래매칭 승인 결과 발송 메일";
-                to = apply2.getMemId();
-                if (apply2.getMemSort().equalsIgnoreCase(MemberType.PROVIDER.label)) {
-                    memSortName = "판매자";
-                }
-                if (apply2.getMemSort().equalsIgnoreCase(MemberType.SELLER.label)) {
-                    memSortName = "공급자";
-                }
-
+                to = temp.getApplyMemId();
+                nickName = memberRepository.findByMemId(apply2.getMemId()).getMemNick();
+                projMemNick = memberRepository.findByMemId(to).getMemNick();
+                type = "accept";
             }
             if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
                 projTitle = apply2.getProjTitle();
                 applyTypeName = "제안";
                 subject = "SellerMatch 거래제안 승인 결과 발송 메일";
-                memSortName = "판매자";
                 to = apply2.getMemId();
+                nickName = memberRepository.findByMemId(temp.getApplyMemId()).getMemNick();
+                projMemNick = memberRepository.findByMemId(to).getMemNick();
+                type = "recommandAccept";
             }
 
-            String type = "aceeot";
 
-            mailUtil.sendMail(to, subject, "", type, applyTypeName, projTitle, memSortName);
+
+            mailUtil.sendMail(to, subject, nickName, type, applyTypeName, projTitle, projMemNick);
        }, () -> {
             Apply emptyContent = new Apply();
             ControllerResultSet.errorCode(result, CommonConstant.ERROR_998, emptyContent);
