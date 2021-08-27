@@ -69,25 +69,43 @@ public class SignController {
                 result.setStatus(CommonConstant.ERROR_MISMATCH_102);
             });
         } else { // SNS 로그인
-            memberRepository.findTop1ByMemIdAndMemSnsCh(member.getMemId(), member.getMemSnsCh()).ifPresentOrElse(temp -> {
-                Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
-                result.setContent(jwt);
-            }, () -> {
-                if (member.getMemSnsCh().equalsIgnoreCase(SnsChType.NAVER.label)){
+            memberRepository.findTop1ByMemId(member.getMemId()).ifPresentOrElse(validation -> {
+                // 탈퇴회원 로그인
+                if (validation.getMemState().equalsIgnoreCase("1")) {
                     Map<String, Object> jwt = new HashMap<>();
                     jwt.put("token", "");
                     jwt.put("expires", "");
                     result.setContent(jwt);
                     result.setResult("ERROR");
-                    result.setStatus(CommonConstant.ERROR_ACCESS_223);
-                } else {
-                    Map<String, Object> jwt = new HashMap<>();
-                    jwt.put("token", "");
-                    jwt.put("expires", "");
-                    result.setContent(jwt);
-                    result.setResult("ERROR");
-                    result.setStatus(CommonConstant.ERROR_MISMATCH_214);
+                    result.setStatus(CommonConstant.ERROR_ACCESS_201);
                 }
+                memberRepository.findTop1ByMemIdAndMemSnsCh(member.getMemId(), member.getMemSnsCh()).ifPresentOrElse(temp -> {
+                    Map<String, Object> jwt = jwtUtil.createToken(member.getMemId());
+                    result.setContent(jwt);
+                }, () -> {
+                    if (member.getMemSnsCh().equalsIgnoreCase(SnsChType.NAVER.label)) {
+                        Map<String, Object> jwt = new HashMap<>();
+                        jwt.put("token", "");
+                        jwt.put("expires", "");
+                        result.setContent(jwt);
+                        result.setResult("ERROR");
+                        result.setStatus(CommonConstant.ERROR_ACCESS_223);
+                    } else {
+                        Map<String, Object> jwt = new HashMap<>();
+                        jwt.put("token", "");
+                        jwt.put("expires", "");
+                        result.setContent(jwt);
+                        result.setResult("ERROR");
+                        result.setStatus(CommonConstant.ERROR_MISMATCH_214);
+                    }
+                });
+            }, () -> {
+                Map<String, Object> jwt = new HashMap<>();
+                jwt.put("token", "");
+                jwt.put("expires", "");
+                result.setContent(jwt);
+                result.setResult("ERROR");
+                result.setStatus(CommonConstant.ERROR_MISMATCH_102);
             });
         }
 
