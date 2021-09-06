@@ -15,6 +15,7 @@ import com.sellermatch.process.project.repository.ProjectRepository;
 import com.sellermatch.process.project.repository.ProjectRepositoryCustom;
 import com.sellermatch.process.scrap.repository.ScrapRepository;
 import com.sellermatch.util.ControllerResultSet;
+import com.sellermatch.util.KakaoHelp;
 import com.sellermatch.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ public class MypageController {
     private final ApplyRepositoryCustom applyRepositoryCustom;
     private final MemberRepository memberRepository;
     private final MailUtil mailUtil;
+    private final KakaoHelp kakaoHelp;
 
     @GetMapping("/myPage/myHome/{projMemId}")
     public CommonDTO selectProject(@PathVariable String projMemId) {
@@ -147,6 +149,8 @@ public class MypageController {
             String to = "";
             String nickName = "";
             String type = "";
+            String memTel = "";
+            String memSort = "";
             if (apply.getApplyType().equalsIgnoreCase(ApplyType.APPLY.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedProjectOwner(temp);
                 projTitle = apply2.getProjTitle();
@@ -155,7 +159,20 @@ public class MypageController {
                 to = temp.getApplyMemId();
                 nickName = memberRepository.findByMemId(apply2.getMemId()).getMemNick();
                 projMemNick = memberRepository.findByMemId(to).getMemNick();
+                memTel = memberRepository.findByMemId(to).getMemTel();
+                memSort = apply2.getMemSort();
+
                 type = "accept";
+
+                /* 여기에 알림톡 추가 */
+                if(memSort.equals(MemberType.PROVIDER.label)) {
+                    String parameters = "{\"message\":{\"to\": \""+memTel+"\",\"from\": \"025150923\",\"text\": \"셀러매치에서 회원님이 지원한 거래처매칭 [공급지원 승인 알림]\\n\\n- 매칭명 : '"+projTitle+"' \\n- 승인자 : '"+nickName+"'\\n\\n[승인자 확인 방법]\\n\\n1. ‘마이페이지’ 클릭 (PC : 우측 상단 닉네임 클릭)\\n2. ‘지원한 거래’ 클릭\\n3. '"+nickName+"' 연락처 확인 후, 거래 시작\\n\\n* 해당 메시지는 거래처 매칭 게시글 등록자가 회원님의 거래 지원을 승인했을 경우 발송됩니다.\",\"type\": \"ATA\",\"kakaoOptions\": {\"pfId\": \"KA01PF210708054305604abh2BH2e0wI\",\"title\":\"공급지원 승인 알림\",\"templateId\": \"KA01TP210803043726531c2fOuTIkHJG\",\"buttons\": [{\"buttonName\": \"거래 승인 확인하러 가기\",\"buttonType\": \"WL\",\"linkMo\": \"https://m.sellermatch.co.kr/mypage\",\"linkPc\": \"https://sellermatch.co.kr/myPage/myHome\"}]}}}";
+                    kakaoHelp.sendMessage(parameters);
+                } else {
+                    String parameters = "{\"message\":{\"to\": \""+memTel+"\",\"from\": \"025150923\",\"text\": \"셀러매치에서 회원님이 지원한 거래처매칭 [판매지원 승인 알림]\\n\\n- 매칭명 : '"+projTitle+"' \\n- 승인자 : '"+nickName+"'\\n\\n[승인자 확인 방법]\\n\\n1. ‘마이페이지’ 클릭 (PC : 우측 상단 닉네임 클릭)\\n2. ‘지원한 거래’ 클릭\\n3. '"+nickName+"' 연락처 확인 후, 거래 시작\\n\\n* 해당 메시지는 거래처 매칭 게시글 등록자가 회원님의 거래 지원을 승인했을 경우 발송됩니다.\",\"type\": \"ATA\",\"kakaoOptions\": {\"pfId\": \"KA01PF210708054305604abh2BH2e0wI\",\"title\":\"판매지원 승인 알림\",\"templateId\": \"KA01TP210803043229308SiT4wVEh6ND\",\"buttons\": [{\"buttonName\": \"거래 승인 확인하러 가기\",\"buttonType\": \"WL\",\"linkMo\": \"https://m.sellermatch.co.kr/mypage\",\"linkPc\": \"https://sellermatch.co.kr/myPage/myHome\"}]}}}";
+                    kakaoHelp.sendMessage(parameters);
+                }
+                /* 여기에 알림톡 추가 끝*/
             }
             if (apply.getApplyType().equalsIgnoreCase(ApplyType.RECOMMEND.label)) {
                 Apply apply2 = applyRepositoryCustom.getAcceptedRecommandOwner(temp);
@@ -166,6 +183,12 @@ public class MypageController {
                 nickName = memberRepository.findByMemId(temp.getApplyMemId()).getMemNick();
                 projMemNick = memberRepository.findByMemId(to).getMemNick();
                 type = "recommandAccept";
+                memTel = apply2.getMemTel();
+
+                /* 여기에 알림톡 추가 */
+                String parameters = "{\"message\":{\"to\": \""+memTel+"\",\"from\": \"025150923\",\"text\": \"셀러매치에서 회원님 공급제안 보고 승인한 [제안승인 알림]\\n\\n- 제안 상품 : '"+projTitle+"'\\n- 승인자 : '"+nickName+"'\\n\\n[승인자 확인 방법]\\n\\n1. ‘마이페이지’ 클릭 (PC : 우측 상단 닉네임 클릭)\\n2. ‘제안한 거래’ 클릭\\n3. '"+nickName+"' 연락처 확인 후, 거래 시작\\n\\n* 해당 메시지는 회원님의 공급제안 내용을 보고 제안을 받은 판매자가 제안 승인 할 경우 발송됩니다.\",\"type\": \"ATA\",\"kakaoOptions\": {\"pfId\": \"KA01PF210708054305604abh2BH2e0wI\",\"title\":\"제안승인 알림\",\"templateId\": \"KA01TP210803033949987K2XBjznIb3P\",\"buttons\": [{\"buttonName\": \"거래 승인 확인하러 가기\",\"buttonType\": \"WL\",\"linkMo\": \"https://m.sellermatch.co.kr/mypage\",\"linkPc\": \"https://sellermatch.co.kr/myPage/myHome\"}]}}}";
+                kakaoHelp.sendMessage(parameters);
+                /* 여기에 알림톡 추가 끝*/
             }
 
 
