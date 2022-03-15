@@ -10,8 +10,6 @@
 
 ![](https://images.velog.io/images/njh4803/post/0b12d914-7994-493c-abf8-3dc1fc73555d/%EC%BA%A1%EC%B2%98.PNG)
 
-## Prerequisite
-
 ## Environment
 __Java__ Version 11.0.1 <BR>
 __Spring Boot__ Version 2.4.5 <BR>
